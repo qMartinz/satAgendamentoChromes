@@ -118,5 +118,5 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 
 function painelAdm(){
-  location.assign("../PainelAdm");
+  location.assign("./PainelAdm");
 }

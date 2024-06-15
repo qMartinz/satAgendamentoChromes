@@ -6,13 +6,13 @@ window.addEventListener("DOMContentLoaded", function() {
             document.getElementById("paginaLogin").hidden = true;
             document.getElementById("paginaPainel").hidden = false;
             console.log("Login automático permitido")
-        } else if (sessionStorage.getItem("sessionID") !== sheetData[0].session && sessionStorage.getItem("sessionID" !== null)) {
+        } else if (sessionStorage.getItem("sessionID") !== sheetData[0].session && sessionStorage.getItem("sessionID") !== null) {
             document.getElementById("loginInfo").textContent = "Sessão expirada, repita o login.";
             document.getElementById("loginInfo").hidden = false;
             document.getElementById("paginaLogin").hidden = false;
             document.getElementById("paginaPainel").hidden = true;
             console.log("Sessão expirada")
-        } else if (sessionStorage.getItem("sessionID" == null)) {
+        } else if (sessionStorage.getItem("sessionID")  == null) {
             document.getElementById("paginaLogin").hidden = false;
             document.getElementById("paginaPainel").hidden = true;
             console.log("Sessão não iniciada")

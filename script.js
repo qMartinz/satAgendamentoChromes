@@ -116,7 +116,3 @@ window.addEventListener("DOMContentLoaded", function() {
       });
   });
 });
-
-function painelAdm(){
-  location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm");
-}

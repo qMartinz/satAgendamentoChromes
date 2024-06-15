@@ -2,20 +2,38 @@ window.addEventListener("DOMContentLoaded", function() {
     const login = document.getElementById('login');
 
     const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID") == sheetData[0].session) {
+        if (sessionStorage.getItem("sessionID")  == null) {
+            document.getElementById("paginaLogin").hidden = false;
+            document.getElementById("paginaPainel").hidden = true;
+            console.log("Sessão não iniciada");
+            return;
+        }
+
+        const sessionId = sessionStorage.getItem("sessionID");
+        let usuario = null;
+
+        sheetData.forEach(user => {
+            if (user.session == sessionId) {
+                sessionStorage.setItem("user", user.usuario);
+                usuario = user.usuario;
+            }
+
+            if (user.usuario == sessionStorage.getItem("user")) {
+                document.getElementById("ola").textContent += user.nome;
+            }
+        });
+
+        if (usuario !== null) {
             document.getElementById("paginaLogin").hidden = true;
             document.getElementById("paginaPainel").hidden = false;
-            console.log("Login automático permitido")
-        } else if (sessionStorage.getItem("sessionID") !== sheetData[0].session && sessionStorage.getItem("sessionID") !== null) {
+            console.log("Login automático permitido");
+            return;
+        } else {
             document.getElementById("loginInfo").textContent = "Sessão expirada, repita o login.";
             document.getElementById("loginInfo").hidden = false;
             document.getElementById("paginaLogin").hidden = false;
             document.getElementById("paginaPainel").hidden = true;
-            console.log("Sessão expirada")
-        } else if (sessionStorage.getItem("sessionID")  == null) {
-            document.getElementById("paginaLogin").hidden = false;
-            document.getElementById("paginaPainel").hidden = true;
-            console.log("Sessão não iniciada")
+            console.log("Sessão expirada");
         }
     }
     
@@ -38,17 +56,24 @@ window.addEventListener("DOMContentLoaded", function() {
             let senha = document.getElementById("senha").value;
         
             const sheetDataHandler = (sheetData) => {
-                if (sheetData[0].usuario == usuario && sheetData[0].senha == senha) {
-                    sessionStorage.setItem("sessionID", sheetData[0].session);
-                    document.getElementById("paginaLogin").hidden = true;
-                    document.getElementById("paginaPainel").hidden = false;
-                    console.log("Login permitido")
-                } else {
-                    document.getElementById("loginInfo").textContent = "Usuário ou senha incorreto.";
-                    document.getElementById("loginInfo").hidden = false;
-                    console.log("Login inválido")
-                    login.reset();
-                }
+                sheetData.forEach(user => {
+                    if (user.usuario == usuario && user.senha == senha) {
+                        sessionStorage.setItem("sessionID", user.session);
+                        document.getElementById("paginaLogin").hidden = true;
+                        document.getElementById("paginaPainel").hidden = false;
+                        sessionStorage.setItem("user", user.usuario);
+                        console.log("Login permitido")
+
+                        if (user.usuario == sessionStorage.getItem("user")) {
+                            document.getElementById("ola").textContent += user.nome;
+                        }
+                    } else {
+                        document.getElementById("loginInfo").textContent = "Usuário ou senha incorreto.";
+                        document.getElementById("loginInfo").hidden = false;
+                        console.log("Login inválido")
+                        login.reset();
+                    }
+                });
             }
             
             getSheetData({

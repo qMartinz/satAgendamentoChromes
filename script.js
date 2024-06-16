@@ -144,5 +144,6 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado){
   if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento) return true;
+  if (fimAgendado == fim && inicio == inicioAgendado) return true;
   return false;
 }

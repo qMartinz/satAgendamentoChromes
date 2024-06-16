@@ -14,17 +14,9 @@
 <body>
     <form method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
         <div id="aula">
-            <div> <input type="checkbox" class="aula" name="aula01" id="aula01"> <label for="aula01">1ª Aula</label> <label for="aula01" class="teste" hidden>Chromes já agendados nessa aula</label></div>
-            <div> <input type="checkbox" class="aula" name="aula02" id="aula02"> <label for="aula02">2ª Aula</label> <label for="aula02" class="teste" hidden>Chromes já agendados nessa aula</label></div>
-            <div> <input type="checkbox" class="aula" name="aula03" id="aula03"> <label for="aula03">3ª Aula</label> <label for="aula03" class="teste" hidden>Chromes já agendados nessa aula</label></div>
-            <div> <input type="checkbox" class="aula" name="aula04" id="aula04"> <label for="aula04">4ª Aula</label> <label for="aula04" class="teste" hidden>Chromes já agendados nessa aula</label></div>
-            <div> <input type="checkbox" class="aula" name="aula05" id="aula05"> <label for="aula05">5ª Aula</label> <label for="aula05" class="teste" hidden>Chromes já agendados nessa aula</label></div>
-            <div> <input type="checkbox" class="aula" name="aula06" id="aula06"> <label for="aula06">6ª Aula</label> <label for="aula06" class="teste" hidden>Chromes já agendados nessa aula</label></div>
+            <input type="datetime-local" name="emprestimohora" id="emprestimohora" required> <label for="emprestimohora">Empréstimo</label>
+            <input type="datetime-local" name="devolucaohora" id="devolucaohora" required> <label for="devolucaohora">Devolução</label>
         </div>
-        <select name="periodo" id="periodo">
-            <option value="m">Manhã</option>
-            <option value="t">Tarde</option>
-        </select>
         <select name="turma" id="turma">
             <option value="jd">Jardim</option>
             <option value="pre">Pré</option>
@@ -40,6 +32,8 @@
             <option value="1m">1º Médio</option>
             <option value="2m">2º Médio</option>
             <option value="3m">3º Médio</option>
+            <option value="bl">Bilíngue</option>
+            <option value="up">Uso Próprio</option>
         </select>
         <input name="nome" type="text" placeholder="Nome" required>
         <div id="chrome">

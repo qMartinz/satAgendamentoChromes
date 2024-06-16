@@ -1,5 +1,3 @@
-// new Date("01/01/1970 " + horafim) < new Date("01/01/1970 " + horainicio)
-
 function desabilitarChromes(v, p, sheetData){
   const agendados = sheetData.filter(e => e[v] == "on");
   console.log("sheetdata", sheetData);

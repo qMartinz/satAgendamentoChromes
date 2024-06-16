@@ -138,8 +138,8 @@ window.addEventListener("DOMContentLoaded", function() {
 });
 
 function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado){
-  var fimEstaEntreAgendamento = fimAgendado > fim && fim > inicioAgendado;
-  var inicioEstaEntreAgendamento = inicio > inicioAgendado && fimAgendado > inicio;
+  var fimEstaEntreAgendamento = fimAgendado >= fim && fim > inicioAgendado;
+  var inicioEstaEntreAgendamento = inicio >= inicioAgendado && fimAgendado > inicio;
 
   if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;

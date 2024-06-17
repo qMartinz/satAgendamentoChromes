@@ -23,7 +23,6 @@ document.getElementById("emprestimohora").addEventListener('change', function(e)
   let horainicio = new Date(e.target.value);
   let horafim = new Date(document.getElementById("devolucaohora").value);
   if (isNaN(horafim)) return;
-  
 
   const sheetDataHandler = (sheetData) => {
 
@@ -96,6 +95,13 @@ window.addEventListener("DOMContentLoaded", function() {
       return false;
     }
 
+    const horainicio = new Date(document.getElementById("emprestimohora").value);
+    const horafim = new Date(document.getElementById("devolucaohora").value);
+    if (horafim <= horainicio || (horafim < new Date() || horainicio < new Date())){
+      alert("Horário de empréstimo e devolução inválidos!\r\nO horário de devolução deve ser após o horário de emprestimo e os horário não podem ser alguma data anterior ao dia de hoje.");
+      return false;
+    }
+
     const data = new FormData(agendamento);
       const action = e.target.action;
       fetch(action, {
@@ -142,6 +148,7 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado){
   if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento) return true;
+  if (fimAgendado < fim && fim > inicioAgendado && inicioAgendado > inicio && inicio < fimAgendado) return true;
   if (fimAgendado == fim && inicio == inicioAgendado) return true;
   return false;
 }

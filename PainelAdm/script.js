@@ -29,6 +29,7 @@ window.addEventListener("DOMContentLoaded", function() {
             document.getElementById("paginaLogin").hidden = true;
             document.getElementById("paginaPainel").hidden = false;
             console.log("Login automático permitido");
+            criarTabela();
         } else {
             document.getElementById("loginInfo").textContent = "Sessão expirada, repita o login.";
             document.getElementById("loginInfo").hidden = false;
@@ -62,11 +63,13 @@ window.addEventListener("DOMContentLoaded", function() {
                         sessionStorage.setItem("sessionID", user.session);
                         sessionStorage.setItem("user", user.usuario);
                         location.reload();
+                        return true;
                     } else {
                         document.getElementById("loginInfo").textContent = "Usuário ou senha incorreto.";
                         document.getElementById("loginInfo").hidden = false;
                         console.log("Login inválido")
                         login.reset();
+                        return false;
                     }
                 });
             }
@@ -157,8 +160,8 @@ function criarLinha(agendamento){
     const chromes = document.createElement("td");
     chromes.classList.add("chromes");
 
-    const devolvido = document.createElement("input");
-    devolvido.type = "checkbox";
+    const devolvido = document.createElement("button");
+    devolvido.textContent = "Registrar Devolução"
     devolvido.classList.add("devolvido");
 
     linha.appendChild(data);
@@ -170,9 +173,20 @@ function criarLinha(agendamento){
     linha.appendChild(devolvido);
 }
 
-window.addEventListener("DOMContentLoaded", function() {
-    const sheetDataHandler = (sheetData) => {        
+function criarTabela() {
+    const sheetDataHandler = (sheetData) => {
         if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
+
+        let agendamentos = [];
+        sheetData.forEach(element => {
+            let agendamento = {};
+            let chromes = [];
+            Object.entries(element).forEach(element2 => {
+                if (element2[0].startsWith("chrome")) {
+                    chromes.push(element2[0]);
+                }
+            });
+        });
 
         sheetData.forEach(agendamento => criarLinha(agendamento));
     }
@@ -182,4 +196,4 @@ window.addEventListener("DOMContentLoaded", function() {
     sheetName: "Agendamentos",
     callback: sheetDataHandler,
     });
-});
+}

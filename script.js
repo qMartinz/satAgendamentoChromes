@@ -88,10 +88,14 @@ document.getElementById("devolucaohora").addEventListener('change', function(e) 
 window.addEventListener("DOMContentLoaded", function() {
   const agendamento = document.getElementById('agendamento');
   agendamento.addEventListener("submit", function(e) {
+    let submitButton = agendamento.querySelector("[type='submit']");
+    if (submitButton) submitButton.disabled = true;
+
     e.preventDefault();
 
     if (!(document.querySelectorAll(".chrome:checked").length>0)){
       alert("Selecione ao menos um Chrome para realizar o agendamento!");
+      submitButton.disabled = false;
       return false;
     }
 
@@ -99,6 +103,7 @@ window.addEventListener("DOMContentLoaded", function() {
     const horafim = new Date(document.getElementById("devolucaohora").value);
     if (horafim <= horainicio || (horafim < new Date() || horainicio < new Date())){
       alert("Horário de empréstimo e devolução inválidos!\r\nO horário de devolução deve ser após o horário de emprestimo e os horário não podem ser alguma data anterior ao dia de hoje.");
+      submitButton.disabled = false;
       return false;
     }
 

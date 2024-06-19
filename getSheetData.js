@@ -32,6 +32,8 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
                   rowObject[propName] = "";
               } else if (typeof cellData["v"] == "string" && cellData["v"].startsWith("Date")) {
                   rowObject[propName] = new Date(cellData["v"]);
+              } else if (!isNaN(Number(cellData["v"])) && cellData["v"] !== null) {
+                  rowObject[propName] = Number(cellData["v"])
               } else {
                   rowObject[propName] = cellData["v"];
               }

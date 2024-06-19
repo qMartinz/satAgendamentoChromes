@@ -1,3 +1,52 @@
+const ORDERNAR_ID = function(a, b) {
+    return b - a;
+}
+
+const ORDENAR_DATE = function(a, b) {
+    return new Date(b.Date) - new Date(a.Date);
+}
+
+const ORDENAR_START = function(a, b) {
+    return new Date(b.emprestimohora) - new Date(a.emprestimohora);
+}
+
+const ORDENAR_END = function(a, b) {
+    return new Date(b.devolucaohora) - new Date(a.devolucaohora);
+}
+
+const ORDENAR_TURMA = function(a, b) {
+    return b.turma - a.turma;
+}
+
+// Não funciona
+const ORDENAR_CHROMES = function(a, b) {
+    let agendamentoA = {};
+    let chromes = [];
+    Object.entries(a).forEach(element2 => {
+        if (element2[0].startsWith("chrome") && element2[1] == "on") {
+            chromes.push(element2[0]);
+        } else if (!element2[0].startsWith("chrome")) {
+            agendamentoA[element2[0]] = element2[1];
+        }
+        agendamentoA.chromes = chromes;
+    });
+    agendamentoA.id = id;
+
+    let agendamentoB = {};
+    chromes = [];
+    Object.entries(b).forEach(element2 => {
+        if (element2[0].startsWith("chrome") && element2[1] == "on") {
+            chromes.push(element2[0]);
+        } else if (!element2[0].startsWith("chrome")) {
+            agendamentoB[element2[0]] = element2[1];
+        }
+        agendamentoB.chromes = chromes;
+    });
+    agendamentoB.id = id;
+
+    return agendamentoB.chromes.length - agendamentoA.chromes.length;
+}
+
 let usuario = null;
 let sessionID = null;
 
@@ -29,7 +78,8 @@ window.addEventListener("DOMContentLoaded", function() {
             document.getElementById("paginaLogin").hidden = true;
             document.getElementById("paginaPainel").hidden = false;
             console.log("Login automático permitido");
-            criarTabela();
+            criarTabelaAgendamentos();
+            criarTabelaChromes();
         } else {
             document.getElementById("loginInfo").textContent = "Sessão expirada, repita o login.";
             document.getElementById("loginInfo").hidden = false;
@@ -87,6 +137,9 @@ function criarLinha(agendamento){
     const linha = document.createElement("tr");
     document.getElementById("agendamentos").appendChild(linha);
     
+    const id = document.createElement("td");
+    id.textContent = agendamento.id;
+
     const data = document.createElement("td");
     let dmadata = agendamento.Date.split("T")[0].split("-");
     data.textContent = dmadata[2] + "/" + dmadata[1] + "/" + dmadata[0] + " às " + agendamento.Date.split("T")[1];
@@ -101,52 +154,55 @@ function criarLinha(agendamento){
 
     const turma = document.createElement("td");
     switch (agendamento.turma){
-        case "jd":
+        case 0:
+            turma.textContent = "Maternal";
+            break;
+        case 1:
             turma.textContent = "Jardim";
             break;
-        case "pre":
+        case 2:
             turma.textContent = "Pré";
             break;
-        case "1":
+        case 3:
             turma.textContent = "1º Ano";
             break;
-        case "2":
+        case 4:
             turma.textContent = "2º Ano";
             break;
-        case "3":
+        case 5:
             turma.textContent = "3º Ano";
             break;
-        case "4":
+        case 6:
             turma.textContent = "4º Ano";
             break;
-        case "5":
+        case 7:
             turma.textContent = "5º Ano";
             break;
-        case "6":
+        case 8:
             turma.textContent = "6º Ano";
             break;
-        case "7":
+        case 9:
             turma.textContent = "7º Ano";
             break;
-        case "8":
+        case 10:
             turma.textContent = "8º Ano";
             break;
-        case "9":
+        case 11:
             turma.textContent = "9º Ano";
             break;
-        case "1m":
+        case 12:
             turma.textContent = "1º Médio";
             break;
-        case "2m":
+        case 13:
             turma.textContent = "2º Médio";
             break;
-        case "3m":
+        case 14:
             turma.textContent = "3º Médio";
             break;
-        case "bil":
+        case 15:
             turma.textContent = "Bilíngue";
             break;
-        case "up":
+        case 16:
             turma.textContent = "Uso Próprio";
             break;
         default:
@@ -158,39 +214,160 @@ function criarLinha(agendamento){
     nome.textContent = agendamento.nome;
 
     const chromes = document.createElement("td");
-    chromes.classList.add("chromes");
+    var btnChromes = document.createElement("button");
+    btnChromes.textContent = agendamento.chromes.length + " Chromes";
+    btnChromes.classList.add("chromes");
+    btnChromes.id = agendamento.id;
+    chromes.appendChild(btnChromes);
 
-    const devolvido = document.createElement("button");
-    devolvido.textContent = "Registrar Devolução"
-    devolvido.classList.add("devolvido");
+    const obs = document.createElement("td");
+    obs.textContent = agendamento.obs;
 
+    const devolvido = document.createElement("td");
+    var btnDevolvido = document.createElement("button");
+    btnDevolvido.textContent = "Registrar";
+    btnDevolvido.classList.add("devolvido");
+    btnDevolvido.id = agendamento.id;
+    devolvido.appendChild(btnDevolvido);
+
+    linha.appendChild(id);
     linha.appendChild(data);
     linha.appendChild(horainicio);
     linha.appendChild(horafim);
     linha.appendChild(turma);
     linha.appendChild(nome);
     linha.appendChild(chromes);
+    linha.appendChild(obs);
     linha.appendChild(devolvido);
 }
 
-function criarTabela() {
+function criarTabelaAgendamentos() {
     const sheetDataHandler = (sheetData) => {
         if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
 
         let agendamentos = [];
-        sheetData.forEach(element => {
+
+        for (id = 0; id < sheetData.length; id++){
+            const element = sheetData[id];
             let agendamento = {};
             let chromes = [];
             Object.entries(element).forEach(element2 => {
-                if (element2[0].startsWith("chrome")) {
+                if (element2[0].startsWith("chrome") && element2[1] == "on") {
                     chromes.push(element2[0]);
+                } else if (!element2[0].startsWith("chrome")) {
+                    agendamento[element2[0]] = element2[1];
                 }
-            });
-        });
 
-        sheetData.forEach(agendamento => criarLinha(agendamento));
+                agendamento.chromes = chromes;
+            });
+            agendamento.id = id;
+            agendamentos.push(agendamento);
+        }
+        agendamentos.sort(ORDENAR_DATE).forEach(agendamento => criarLinha(agendamento));
+    }
+    getSheetData({
+    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+    sheetName: "Agendamentos",
+    callback: sheetDataHandler,
+    });
+}
+
+document.querySelectorAll(".chromes").forEach(btn => btn.addEventListener("click", function(){
+        console.log(btn.id);
+}));
+
+document.getRootNode().addEventListener("click", function(e){
+    const sheetDataHandler = (sheetData) => {
+        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
+
+        const btn = e.target;
+        let chromes = [];
+        
+        Object.entries(sheetData[btn.id]).forEach(element2 => {
+            if (element2[0].startsWith("chrome") && element2[1] == "on") {
+                chromes.push(element2[0]);
+            }
+        });
+        
+        if (btn.classList.contains("chromes")) {
+            const listaDiv = document.getElementById("listaChromes")
+            listaDiv.hidden = false;
+
+            const lista = listaDiv.querySelector("ul");
+            lista.innerHTML = "";
+            chromes.forEach(chrome => {
+                console.log(chrome);
+                const item = document.createElement("li");
+                item.textContent = "Chrome " + chrome.replace("chrome", "");
+                lista.appendChild(item);
+            });
+        }
     }
     
+    getSheetData({
+    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+    sheetName: "Agendamentos",
+    callback: sheetDataHandler,
+    });
+});
+
+document.getElementById("voltarListaChromes").addEventListener("click", function(){
+    document.getElementById('listaChromes').hidden = true;
+    document.getElementById("listaChromes").querySelector("ul").innerHTML = "";
+});
+
+function criarTabelaChromes() {
+    const sheetDataHandler = (sheetData) => {
+        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
+
+        let agendamentos = [];
+        let chromeRows = document.querySelectorAll(".chromeRow");
+
+        for (id = 0; id < sheetData.length; id++){
+            const element = sheetData[id];
+            let agendamento = {};
+            let chromesAgendados = [];
+            Object.entries(element).forEach(element2 => {
+                if (element2[0].startsWith("chrome") && element2[1] == "on") {
+                    chromesAgendados.push(element2[0]);
+                } else if (!element2[0].startsWith("chrome")) {
+                    agendamento[element2[0]] = element2[1];
+                }
+
+                agendamento.chromes = chromesAgendados;
+            });
+            agendamento.id = id;
+            agendamentos.push(agendamento);
+        }
+
+        agendamentos = agendamentos.sort(ORDENAR_DATE);
+
+        
+
+        chromeRows.forEach(tr => {
+            const nome = document.createElement("td");
+            nome.textContent = "Chrome " + tr.id;
+
+            const status = document.createElement("td");
+            let statusString = "Livre";
+
+            agendamentos.forEach(agendamento => {
+                console.log(agendamento);
+                console.log("chrome" + tr.id);
+                if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= agendamento.emprestimohora) && agendamento.chromes.includes("chrome" + tr.id)) {
+                    statusString = "Em uso";
+                } else if (new Date() < agendamento.emprestimohora && agendamento.chromes.includes("chrome" + tr.id)) {
+                    statusString = "Agendado";
+                }
+            });
+
+            status.textContent = statusString;
+
+            tr.appendChild(nome);
+            tr.appendChild(status);
+        });
+    }
+
     getSheetData({
     sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
     sheetName: "Agendamentos",

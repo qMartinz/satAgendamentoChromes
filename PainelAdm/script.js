@@ -349,22 +349,52 @@ function criarTabelaChromes() {
             nome.textContent = "Chrome " + tr.id;
 
             const status = document.createElement("td");
-            let statusString = "Livre";
+            let statusString = "Disponível";
 
             agendamentos.forEach(agendamento => {
                 console.log(agendamento);
-                console.log("chrome" + tr.id);
-                if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= agendamento.emprestimohora) && agendamento.chromes.includes("chrome" + tr.id)) {
+                console.log();
+
+                if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= new Date(agendamento.emprestimohora)) && agendamento.chromes.includes("chrome" + tr.id)) {
                     statusString = "Em uso";
-                } else if (new Date() < agendamento.emprestimohora && agendamento.chromes.includes("chrome" + tr.id)) {
+                } 
+                
+                if (new Date() < new Date(agendamento.emprestimohora) && agendamento.chromes.includes("chrome" + tr.id) && statusString != "Em uso") {
                     statusString = "Agendado";
                 }
             });
 
             status.textContent = statusString;
 
+            const agendamentoRecente = agendamentos.sort(ORDENAR_DATE).find(a => a.chromes.includes("chrome" + tr.id));
+
+            const ultimoAgendDate = document.createElement("td");
+            if (agendamentoRecente != null) {
+                let date = agendamentoRecente.Date;
+                let dmaDateSplit = date.split("T")[0].split("-");
+                ultimoAgendDate.textContent = dmaDateSplit[2] + "/" + dmaDateSplit[1] + "/" + dmaDateSplit[0] + " às " + date.split("T")[1]
+            } else {
+                ultimoAgendDate.textContent = "Nenhum agendamento";
+            }
+
+            const ultimoUsuario = document.createElement("td");
+            const ultimaDevolucao = agendamentos.sort(ORDENAR_END).find(a => a.chromes.includes("chrome" + tr.id) && new Date() > new Date(a.emprestimohora));
+            if (ultimaDevolucao != null) {
+                ultimoUsuario.textContent = ultimaDevolucao.nome;
+            } else {
+                ultimoUsuario.textContent = "Nenhum usuário";
+            }
+
+            const ocupar = document.createElement("td");
+            const btnOcupar = document.createElement("button");
+            ocupar.appendChild(btnOcupar);
+            btnOcupar.textContent = "Ocupar";
+
             tr.appendChild(nome);
             tr.appendChild(status);
+            tr.appendChild(ultimoAgendDate);
+            tr.appendChild(ultimoUsuario);
+            tr.appendChild(ocupar);
         });
     }
 

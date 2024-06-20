@@ -272,10 +272,6 @@ function criarTabelaAgendamentos() {
     });
 }
 
-document.querySelectorAll(".chromes").forEach(btn => btn.addEventListener("click", function(){
-        console.log(btn.id);
-}));
-
 document.getRootNode().addEventListener("click", function(e){
     const sheetDataHandler = (sheetData) => {
         if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
@@ -296,11 +292,26 @@ document.getRootNode().addEventListener("click", function(e){
             const lista = listaDiv.querySelector("ul");
             lista.innerHTML = "";
             chromes.forEach(chrome => {
-                console.log(chrome);
                 const item = document.createElement("li");
                 item.textContent = "Chrome " + chrome.replace("chrome", "");
                 lista.appendChild(item);
             });
+        }
+
+        if (btn.classList.contains("devolvido")) {
+            console.log("clicked");
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://script.google.com/macros/s/AKfycbxerMgWc7BUiAv4s6pUAwfsp7iznZPlkc9mk5W2cummCqQbApvrXc8pyPW6gbqHlqKJ/exec");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            const body = JSON.stringify(sheetData[btn.id]);
+            xhr.onload = () => {
+                if (xhr.readyState == 4 && xhr.status == 201) {
+                    console.log(JSON.parse(xhr.responseText));
+                } else {
+                    console.log(`Error: ${xhr.status}`);
+                }
+            };
+            xhr.send(body);
         }
     }
     
@@ -352,9 +363,6 @@ function criarTabelaChromes() {
             let statusString = "Disponível";
 
             agendamentos.forEach(agendamento => {
-                console.log(agendamento);
-                console.log();
-
                 if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= new Date(agendamento.emprestimohora)) && agendamento.chromes.includes("chrome" + tr.id)) {
                     statusString = "Em uso";
                 } 

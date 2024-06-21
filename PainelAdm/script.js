@@ -110,6 +110,7 @@ window.addEventListener("DOMContentLoaded", function() {
         
             const sheetDataHandler = (sheetData) => {
                 sheetData.forEach(user => {
+                    console.log(user.usuario, user.senha)
                     if (user.usuario == usuario && user.senha == senha) {
                         sessionStorage.setItem("sessionID", user.session);
                         sessionStorage.setItem("user", user.usuario);
@@ -230,7 +231,9 @@ function criarLinha(agendamento){
     btnDevolvido.textContent = "Registrar";
     btnDevolvido.classList.add("devolvido");
     btnDevolvido.id = agendamento.id;
-    btnDevolvido.onclick = function(e) { registrarDevolucao(e.target.id); };
+    btnDevolvido.onclick = function(e) { 
+        registrarDevolucao(e.target.id);
+    };
     devolvido.appendChild(btnDevolvido);
 
     linha.appendChild(id);
@@ -247,6 +250,8 @@ function criarLinha(agendamento){
 function criarTabelaAgendamentos() {
     const sheetDataHandler = (sheetData) => {
         if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
+
+        document.getElementById("agendamentos").innerHTML = "";
 
         let agendamentos = [];
 
@@ -266,7 +271,7 @@ function criarTabelaAgendamentos() {
             agendamento.id = id;
             agendamentos.push(agendamento);
         }
-        agendamentos.sort(ORDENAR_DATE).forEach(agendamento => criarLinha(agendamento));
+        agendamentos.filter(a => a.devolvido !== "on").sort(ORDENAR_DATE).forEach(a => criarLinha(a));
     }
     getSheetData({
         sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
@@ -309,6 +314,8 @@ function criarTabelaChromes() {
         
 
         chromeRows.forEach(tr => {
+            tr.innerHTML = "";
+
             const nome = document.createElement("td");
             nome.textContent = "Chrome " + tr.id;
 
@@ -316,6 +323,8 @@ function criarTabelaChromes() {
             let statusString = "Disponível";
 
             agendamentos.forEach(agendamento => {
+                if (agendamento.devolvido == "on") return;
+
                 if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= new Date(agendamento.emprestimohora)) && agendamento.chromes.includes("chrome" + tr.id)) {
                     statusString = "Em uso";
                 } 
@@ -367,9 +376,26 @@ function criarTabelaChromes() {
 }
 
 function registrarDevolucao(id){
+    document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = true);
+
     const sheetDataHandler = (sheetData) => {
+
+        let agendamentos = [];
+
+        for (i = 0; i < sheetData.length; i++){
+            const element = sheetData[i];
+            let agendamento = {};
+            Object.entries(element).forEach(element2 => agendamento[element2[0]] = element2[1]);
+            agendamento.id = i;
+            agendamentos.push(agendamento);
+        }
+
         console.log("clicked");
-        arquivarAgendamento(sheetData[id]);
+        devolverAgendamento(id);
+        console.log(id);
+        adicionarAoArquivo(agendamentos[id]);
+        document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
+        alert("Devolução registrada!");
     }
     
     getSheetData({
@@ -411,18 +437,16 @@ function mostrarListaChromes(id){
     
 }
 
-async function arquivarAgendamento(agendamento) {
-    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A'; // ID da sua planilha
-    const range = 'Arquivados'; // Nome da aba onde você quer adicionar os dados
+async function adicionarAoArquivo(agendamento) {
+    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
+    const sheet = 'Arquivados';
 
-    const data = {
-        // Seus dados aqui. Exemplo:
-        properties: agendamento
-    };
+    let agendValues = Object.values(agendamento);
+    agendValues.shift();
+    agendValues.splice(0, 0, agendamento.id);
 
-    // Transformando os dados em um formato que a API entende
     const values = [
-        Object.values(data.properties)
+        agendValues
     ];
 
     const resource = {
@@ -432,13 +456,45 @@ async function arquivarAgendamento(agendamento) {
     try {
         const result = await gapi.client.sheets.spreadsheets.values.append({
         spreadsheetId,
-        range,
+        range: sheet,
         valueInputOption: 'RAW',
-        insertDataOption: 'INSERT_ROWS', // Garante que uma nova linha seja inserida
+        insertDataOption: 'INSERT_ROWS',
+        resource,
+        });
+        console.log('Dados adicionados:', resource);
+    } catch (err) {
+        console.error('Erro ao adicionar dados:', err);
+    } finally {
+        criarTabelaAgendamentos();
+        criarTabelaChromes();
+    }
+  }
+
+async function devolverAgendamento(id){
+    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
+    const range = "Agendamentos!" + "A" + (Number(id) + 2).toString();
+
+    const data = {
+        properties: "on"
+    };
+
+    const values = [
+        ["on"]
+    ];
+
+    const resource = {
+        values,
+    };
+
+    try {
+        const result = await gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: range,
+        valueInputOption: 'RAW',
         resource,
         });
         console.log('Dados adicionados:', resource);
     } catch (err) {
         console.error('Erro ao adicionar dados:', err);
     }
-  }
+}

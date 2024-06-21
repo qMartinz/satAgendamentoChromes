@@ -78,6 +78,7 @@ window.addEventListener("DOMContentLoaded", function() {
             document.getElementById("paginaLogin").hidden = true;
             document.getElementById("paginaPainel").hidden = false;
             console.log("Login automático permitido");
+            handleAuthorize();
             criarTabelaAgendamentos();
             criarTabelaChromes();
         } else {
@@ -218,6 +219,7 @@ function criarLinha(agendamento){
     btnChromes.textContent = agendamento.chromes.length + " Chromes";
     btnChromes.classList.add("chromes");
     btnChromes.id = agendamento.id;
+    btnChromes.onclick = function(e) { mostrarListaChromes(e.target.id); };
     chromes.appendChild(btnChromes);
 
     const obs = document.createElement("td");
@@ -228,6 +230,7 @@ function criarLinha(agendamento){
     btnDevolvido.textContent = "Registrar";
     btnDevolvido.classList.add("devolvido");
     btnDevolvido.id = agendamento.id;
+    btnDevolvido.onclick = function(e) { registrarDevolucao(e.target.id); };
     devolvido.appendChild(btnDevolvido);
 
     linha.appendChild(id);
@@ -266,61 +269,11 @@ function criarTabelaAgendamentos() {
         agendamentos.sort(ORDENAR_DATE).forEach(agendamento => criarLinha(agendamento));
     }
     getSheetData({
-    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-    sheetName: "Agendamentos",
-    callback: sheetDataHandler,
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: "Agendamentos",
+        callback: sheetDataHandler,
     });
 }
-
-document.getRootNode().addEventListener("click", function(e){
-    const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
-
-        const btn = e.target;
-        let chromes = [];
-        
-        Object.entries(sheetData[btn.id]).forEach(element2 => {
-            if (element2[0].startsWith("chrome") && element2[1] == "on") {
-                chromes.push(element2[0]);
-            }
-        });
-        
-        if (btn.classList.contains("chromes")) {
-            const listaDiv = document.getElementById("listaChromes")
-            listaDiv.hidden = false;
-
-            const lista = listaDiv.querySelector("ul");
-            lista.innerHTML = "";
-            chromes.forEach(chrome => {
-                const item = document.createElement("li");
-                item.textContent = "Chrome " + chrome.replace("chrome", "");
-                lista.appendChild(item);
-            });
-        }
-
-        if (btn.classList.contains("devolvido")) {
-            console.log("clicked");
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://script.google.com/macros/s/AKfycbxerMgWc7BUiAv4s6pUAwfsp7iznZPlkc9mk5W2cummCqQbApvrXc8pyPW6gbqHlqKJ/exec");
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            const body = JSON.stringify(sheetData[btn.id]);
-            xhr.onload = () => {
-                if (xhr.readyState == 4 && xhr.status == 201) {
-                    console.log(JSON.parse(xhr.responseText));
-                } else {
-                    console.log(`Error: ${xhr.status}`);
-                }
-            };
-            xhr.send(body);
-        }
-    }
-    
-    getSheetData({
-    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-    sheetName: "Agendamentos",
-    callback: sheetDataHandler,
-    });
-});
 
 document.getElementById("voltarListaChromes").addEventListener("click", function(){
     document.getElementById('listaChromes').hidden = true;
@@ -407,8 +360,85 @@ function criarTabelaChromes() {
     }
 
     getSheetData({
-    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-    sheetName: "Agendamentos",
-    callback: sheetDataHandler,
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: "Agendamentos",
+        callback: sheetDataHandler,
     });
 }
+
+function registrarDevolucao(id){
+    const sheetDataHandler = (sheetData) => {
+        console.log("clicked");
+        arquivarAgendamento(sheetData[id]);
+    }
+    
+    getSheetData({
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: "Agendamentos",
+        callback: sheetDataHandler,
+    });
+}
+
+function mostrarListaChromes(id){
+    const sheetDataHandler = (sheetData) => {
+        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
+
+        let chromes = [];
+        
+        Object.entries(sheetData[id]).forEach(element2 => {
+            if (element2[0].startsWith("chrome") && element2[1] == "on") {
+                chromes.push(element2[0]);
+            }
+        });
+        
+        const listaDiv = document.getElementById("listaChromes")
+        listaDiv.hidden = false;
+
+        const lista = listaDiv.querySelector("ul");
+        lista.innerHTML = "";
+        chromes.forEach(chrome => {
+            const item = document.createElement("li");
+            item.textContent = "Chrome " + chrome.replace("chrome", "");
+            lista.appendChild(item);
+        });
+    }
+
+    getSheetData({
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: "Agendamentos",
+        callback: sheetDataHandler,
+    });
+    
+}
+
+async function arquivarAgendamento(agendamento) {
+    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A'; // ID da sua planilha
+    const range = 'Arquivados'; // Nome da aba onde você quer adicionar os dados
+
+    const data = {
+        // Seus dados aqui. Exemplo:
+        properties: agendamento
+    };
+
+    // Transformando os dados em um formato que a API entende
+    const values = [
+        Object.values(data.properties)
+    ];
+
+    const resource = {
+        values,
+    };
+
+    try {
+        const result = await gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS', // Garante que uma nova linha seja inserida
+        resource,
+        });
+        console.log('Dados adicionados:', resource);
+    } catch (err) {
+        console.error('Erro ao adicionar dados:', err);
+    }
+  }

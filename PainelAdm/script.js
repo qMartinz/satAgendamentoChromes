@@ -394,8 +394,6 @@ function registrarDevolucao(id){
         devolverAgendamento(id);
         console.log(id);
         adicionarAoArquivo(agendamentos[id]);
-        document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
-        alert("Devolução registrada!");
     }
     
     getSheetData({
@@ -443,6 +441,7 @@ async function adicionarAoArquivo(agendamento) {
 
     let agendValues = Object.values(agendamento);
     agendValues.shift();
+    agendValues.pop();
     agendValues.splice(0, 0, agendamento.id);
 
     const values = [
@@ -467,6 +466,8 @@ async function adicionarAoArquivo(agendamento) {
     } finally {
         criarTabelaAgendamentos();
         criarTabelaChromes();
+        document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
+        alert("Devolução registrada!");
     }
   }
 

@@ -108,7 +108,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open('GET',
             'https://oauth2.googleapis.com/v3/userinfo&' +
-            'access_token=' + params['access_token']);
+            'access_token=' + gapi.client.getToken());
         xhr.onreadystatechange = function (e) {
           if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.response);

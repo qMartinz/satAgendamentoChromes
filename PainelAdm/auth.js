@@ -70,6 +70,8 @@
           if (resp.error !== undefined) {
             throw (resp);
           }
+
+          console.log(gapi.auth2.currentUser);
           document.getElementById('authorize_button').style.visibility = 'hidden';
           document.getElementById('signout_button').style.visibility = 'visible';
           document.getElementById("paginaPainel").hidden = false;

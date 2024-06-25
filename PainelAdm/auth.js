@@ -72,7 +72,7 @@
             }
 
             const userInfo = await gapi.client.request({
-                'path': 'https://oauth2.googleapis.com/tokeninfo'
+                'path': 'https://oauth2.googleapis.com/tokeninfo?id_token=' + gapi.client.getToken()
             });
 
             const userEmail = userInfo.result.email;

@@ -47,94 +47,6 @@ const ORDENAR_CHROMES = function(a, b) {
     return agendamentoB.chromes.length - agendamentoA.chromes.length;
 }
 
-let usuario = null;
-let sessionID = null;
-
-window.addEventListener("DOMContentLoaded", function() {
-    const login = document.getElementById('login');
-
-    const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID")  == null) {
-            document.getElementById("paginaLogin").hidden = false;
-            document.getElementById("paginaPainel").hidden = true;
-            console.log("Sessão não iniciada");
-            return;
-        }
-
-        sessionId = sessionStorage.getItem("sessionID");
-
-        sheetData.forEach(user => {
-            if (user.session == sessionId) {
-                sessionStorage.setItem("user", user.usuario);
-                usuario = user.usuario;
-            }
-
-            if (user.usuario == sessionStorage.getItem("user")) {
-                document.getElementById("ola").textContent += user.nome;
-            }
-        });
-
-        if (usuario !== null) {
-            document.getElementById("paginaLogin").hidden = true;
-            document.getElementById("paginaPainel").hidden = false;
-            console.log("Login automático permitido");
-            handleAuthorize();
-            criarTabelaAgendamentos();
-            criarTabelaChromes();
-        } else {
-            document.getElementById("loginInfo").textContent = "Sessão expirada, repita o login.";
-            document.getElementById("loginInfo").hidden = false;
-            document.getElementById("paginaLogin").hidden = false;
-            document.getElementById("paginaPainel").hidden = true;
-            console.log("Sessão expirada");
-        }
-    }
-    
-    getSheetData({
-    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-    sheetName: "Login",
-    callback: sheetDataHandler,
-    });
-
-    login.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const data = new FormData(login);
-        const action = e.target.action;
-        fetch(action, {
-        method: 'POST',
-        body: data,
-        })
-        .then(() => {
-            let usuario = document.getElementById("usuario").value;
-            let senha = document.getElementById("senha").value;
-        
-            const sheetDataHandler = (sheetData) => {
-                sheetData.forEach(user => {
-                    console.log(user.usuario, user.senha)
-                    if (user.usuario == usuario && user.senha == senha) {
-                        sessionStorage.setItem("sessionID", user.session);
-                        sessionStorage.setItem("user", user.usuario);
-                        location.reload();
-                        return true;
-                    } else {
-                        document.getElementById("loginInfo").textContent = "Usuário ou senha incorreto.";
-                        document.getElementById("loginInfo").hidden = false;
-                        console.log("Login inválido")
-                        login.reset();
-                        return false;
-                    }
-                });
-            }
-            
-            getSheetData({
-            sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-            sheetName: "Login",
-            callback: sheetDataHandler,
-            });
-        });
-    });
-});
-
 function criarLinha(agendamento){
     const linha = document.createElement("tr");
     document.getElementById("agendamentos").appendChild(linha);
@@ -249,9 +161,7 @@ function criarLinha(agendamento){
 
 function criarTabelaAgendamentos() {
     const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
-
-        document.getElementById("agendamentos").innerHTML = "";
+        document.getElementById("agendamentos").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Chromes</td><td>Observações</td><td>Devolvido</td></tr>";
 
         let agendamentos = [];
 
@@ -271,6 +181,7 @@ function criarTabelaAgendamentos() {
             agendamento.id = id;
             agendamentos.push(agendamento);
         }
+        
         agendamentos.filter(a => a.devolvido !== "on").sort(ORDENAR_DATE).forEach(a => criarLinha(a));
     }
     getSheetData({
@@ -287,8 +198,6 @@ document.getElementById("voltarListaChromes").addEventListener("click", function
 
 function criarTabelaChromes() {
     const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
-
         let agendamentos = [];
         let chromeRows = document.querySelectorAll(".chromeRow");
 
@@ -405,8 +314,6 @@ function registrarDevolucao(id){
 
 function mostrarListaChromes(id){
     const sheetDataHandler = (sheetData) => {
-        if (sessionStorage.getItem("sessionID")  == null || usuario == null) return;
-
         let chromes = [];
         
         Object.entries(sheetData[id]).forEach(element2 => {

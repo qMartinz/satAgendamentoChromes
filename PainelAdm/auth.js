@@ -12,7 +12,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file';
+      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email';
 
       let tokenClient;
       let gapiInited = false;
@@ -67,17 +67,33 @@
        */
       function handleAuthorize(){
         tokenClient.callback = async (resp) => {
-          if (resp.error !== undefined) {
-            throw (resp);
-          }
+            if (resp.error !== undefined) {
+                throw (resp);
+            }
 
-          console.log(gapi.auth2.currentUser);
-          document.getElementById('authorize_button').style.visibility = 'hidden';
-          document.getElementById('signout_button').style.visibility = 'visible';
-          document.getElementById("paginaPainel").hidden = false;
-          console.log("Login permitido");
-          criarTabelaAgendamentos();
-          criarTabelaChromes();
+            const userInfo = await gapi.client.request({
+                'path': 'https://www.googleapis.com/oauth2/v3/userinfo'
+            });
+
+            const userEmail = userInfo.result.email;
+
+            // Verificar se o usuário é editor da planilha
+            const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A'; // Substitua pelo ID da sua planilha
+            const permissions = await gapi.client.drive.permissions.list({
+                'fileId': spreadsheetId,
+                'fields': 'permissions(emailAddress, role)'
+            });
+
+            const isEditor = permissions.result.permissions.some(permission => permission.emailAddress === userEmail && (permission.role === 'writer' || permission.role === 'owner'));
+
+            if (!isEditor) console.log("Permissão negada!");
+
+            document.getElementById('authorize_button').style.visibility = 'hidden';
+            document.getElementById('signout_button').style.visibility = 'visible';
+            document.getElementById("paginaPainel").hidden = false;
+            console.log("Login permitido");
+            criarTabelaAgendamentos();
+            criarTabelaChromes();
         };
 
         if (gapi.client.getToken() === null) {

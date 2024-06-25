@@ -72,7 +72,7 @@
             }
 
             const userInfo = await gapi.client.request({
-                'path': 'https://oauth2.googleapis.com/v2/tokeninfo'
+                'path': 'https://oauth2.googleapis.com/v3/userinfo'
             });
             console.log(userInfo.result);
 

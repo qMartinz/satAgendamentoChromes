@@ -12,7 +12,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile openid';
+      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email openid';
 
       let tokenClient;
       let gapiInited = false;
@@ -72,7 +72,7 @@
             }
 
             const userInfo = await gapi.client.request({
-                'path': 'https://oauth2.googleapis.com/tokeninfo?id_token=' + gapi.client.getToken()
+                'path': 'https://oauth2.googleapis.com/v2/tokeninfo?id_token=' + gapi.client.getToken()
             });
 
             const userEmail = userInfo.result.email;

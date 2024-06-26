@@ -12,7 +12,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email openid';
+      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid';
 
       let tokenClient;
       let gapiInited = false;
@@ -67,9 +67,11 @@
        */
       function handleAuthorize(){
         tokenClient.callback = async (resp) => {
-            if (resp.error !== undefined) {
-                throw (resp);
-            }
+          if (resp.error !== undefined) {
+              throw (resp);
+          }
+          
+          showPainel();
         };
 
         if (gapi.client.getToken() === null) {
@@ -80,50 +82,28 @@
           // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
         }
-
-        showPainel();
       }
 
-      async function showPainel(){
-        /*
-        const userInfo = await gapi.client.request({
-          'path': 'https://oauth2.googleapis.com/v3/userinfo'
+      async function showPainel(){        
+        gapi.client.load('drive', 'v3', function () {
+          const permissions = gapi.client.drive.permissions.list({
+            fileId: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A"
+          }).then(function(response) {
+            console.log('Login permitido');
+
+            document.getElementById('authorize_button').style.visibility = 'hidden';
+            document.getElementById('signout_button').style.visibility = 'visible';
+            document.getElementById("paginaPainel").hidden = false;
+            criarTabelaAgendamentos();
+            criarTabelaChromes();
+          }, function(error) {
+              console.error('Erro ao verificar permissões:', error);
+              if (error.status === 403) {
+                console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+                location.assign("https://example.com/");
+              }
+          });
         });
-        console.log(userInfo.result);
-
-        const userEmail = userInfo.result.email;
-
-        // Verificar se o usuário é editor da planilha
-        const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A'; // Substitua pelo ID da sua planilha
-        const permissions = await gapi.client.drive.permissions.list({
-            'fileId': spreadsheetId,
-            'fields': 'permissions(emailAddress, role)'
-        });
-
-        const isEditor = permissions.result.permissions.some(permission => permission.emailAddress === userEmail && (permission.role === 'writer' || permission.role === 'owner'));
-
-        if (!isEditor) console.log("Permissão negada!");
-        */
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET',
-            'https://oauth2.googleapis.com/v3/userinfo&' +
-            'access_token=' + gapi.client.getToken());
-        xhr.onreadystatechange = function (e) {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.response);
-          } else if (xhr.readyState === 4 && xhr.status === 401) {
-            console.log("erro fi");
-          }
-        };
-        xhr.send(null);
-
-        document.getElementById('authorize_button').style.visibility = 'hidden';
-        document.getElementById('signout_button').style.visibility = 'visible';
-        document.getElementById("paginaPainel").hidden = false;
-        console.log("Login permitido");
-        criarTabelaAgendamentos();
-        criarTabelaChromes();
       }
 
       /**

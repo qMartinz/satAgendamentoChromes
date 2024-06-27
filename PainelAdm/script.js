@@ -144,7 +144,8 @@ function criarLinha(agendamento){
     btnDevolvido.classList.add("devolvido");
     btnDevolvido.id = agendamento.id;
     btnDevolvido.onclick = function(e) { 
-        registrarDevolucao(e.target.id);
+        document.getElementById("devolucaoform").hidden = false;
+        document.getElementById("devolucaoform").querySelector("button[type='submit']") = e.target.id;
     };
     devolvido.appendChild(btnDevolvido);
 
@@ -350,6 +351,7 @@ async function adicionarAoArquivo(agendamento) {
     agendValues.shift();
     agendValues.pop();
     agendValues.splice(0, 0, agendamento.id);
+    agendValues.push(document.forms["devolucaoform"]["obs"].value);
 
     const values = [
         agendValues
@@ -406,3 +408,19 @@ async function devolverAgendamento(id){
         console.error('Erro ao adicionar dados:', err);
     }
 }
+
+document.getElementById("devolucaoform").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    registrarDevolucao(e.target.querySelector("button[type='submit']").id);
+
+    const data = new FormData(e.target);
+    const action = e.target.action;
+    fetch(action, {
+    method: 'POST',
+    body: data,
+    })
+    .then(() => {
+
+    });
+});

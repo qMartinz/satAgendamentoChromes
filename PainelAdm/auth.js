@@ -100,7 +100,7 @@
               console.error('Erro ao verificar permissões:', error);
               if (error.status === 403) {
                 console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
-                location.assign("https://example.com/");
+                location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
               }
           });
         });

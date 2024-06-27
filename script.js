@@ -108,15 +108,15 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     const data = new FormData(agendamento);
-      const action = e.target.action;
-      fetch(action, {
-      method: 'POST',
-      body: data,
-      })
-      .then(() => {
-        alert("Agendamento feito!");
-        location.reload();
-      });
+    const action = e.target.action;
+    fetch(action, {
+    method: 'POST',
+    body: data,
+    })
+    .then(() => {
+      alert("Agendamento feito!");
+      location.reload();
+    });
   });
 
   const sheetDataHandler = (sheetData) => {

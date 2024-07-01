@@ -152,7 +152,7 @@ function criarLinha(agendamento){
 
 function criarTabelaAgendamentos() {
     const sheetDataHandler = (sheetData) => {
-        document.getElementById("agendamentos").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Email</td><td>Chromes</td><td>Observações</td><td>Devolvido</td></tr>";
+        document.getElementById("agendamentos").innerHTML = document.getElementById("falseAgendamentos").innerHTML;
 
         let agendamentos = [];
 
@@ -486,7 +486,7 @@ function criarLinhaArquivados(arquivado){
 
 function criarTabelaArquivados() {
     const sheetDataHandler = (sheetData) => {
-        document.getElementById("arquivados").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Email</td><td>Chromes</td><td>Observações</td></tr>";
+        document.getElementById("arquivados").innerHTML = document.getElementById("falseArquivados").innerHTML;
 
         let arquivo = [];
 

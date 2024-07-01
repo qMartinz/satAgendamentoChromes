@@ -189,90 +189,105 @@ document.getElementById("voltarListaChromes").addEventListener("click", function
 
 function criarTabelaChromes() {
     const sheetDataHandler = (sheetData) => {
-        let agendamentos = [];
-        let chromeRows = document.querySelectorAll(".chromeRow");
+        const chromeSheetDataHandler = (chromeSheetData) => {
+            console.log(chromeSheetData);
 
-        for (id = 0; id < sheetData.length; id++){
-            const element = sheetData[id];
-            let agendamento = {};
-            let chromesAgendados = [];
-            Object.entries(element).forEach(element2 => {
-                if (element2[0].startsWith("chrome") && element2[1] == "on") {
-                    chromesAgendados.push(element2[0]);
-                } else if (!element2[0].startsWith("chrome")) {
-                    agendamento[element2[0]] = element2[1];
+            const chromeTabela = document.getElementById("chromes");
+            chromeTabela.innerHTML = document.getElementById("falseChromes").innerHTML;
+
+            /*
+            let agendamentos = [];
+            let chromeRows = document.querySelectorAll(".chromeRow");
+    
+            for (id = 0; id < sheetData.length; id++){
+                const element = sheetData[id];
+                let agendamento = {};
+                let chromesAgendados = [];
+                Object.entries(element).forEach(element2 => {
+                    if (element2[0].startsWith("chrome") && element2[1] == "on") {
+                        chromesAgendados.push(element2[0]);
+                    } else if (!element2[0].startsWith("chrome")) {
+                        agendamento[element2[0]] = element2[1];
+                    }
+    
+                    agendamento.chromes = chromesAgendados;
+                });
+                agendamento.id = id;
+                agendamentos.push(agendamento);
+            }
+    
+            agendamentos = agendamentos.sort(ORDENAR_DATE);
+    
+            
+    
+            chromeRows.forEach(tr => {
+                tr.innerHTML = "";
+    
+                const nome = document.createElement("td");
+                nome.textContent = "Chrome " + tr.id;
+    
+                const status = document.createElement("td");
+                let statusString = "Disponível";
+    
+                agendamentos.forEach(agendamento => {
+                    if (agendamento.devolvido == "on") return;
+                    if (!agendamento.chromes.includes("chrome" + tr.id)) return;
+    
+                    var pastEmprestimo = new Date() >= new Date(agendamento.emprestimohora);
+                    var pastDevolucao = new Date() > new Date(agendamento.devolucaohora);
+    
+                    if (pastDevolucao) {
+                        statusString = "Aguardando devolução";
+                    }
+    
+                    if (!pastDevolucao && pastEmprestimo) {
+                        statusString = "Em uso";
+                    }
+                    
+                    if (!pastEmprestimo && statusString != "Em uso") {
+                        statusString = "Agendado";
+                    }
+                });
+    
+                status.textContent = statusString;
+    
+                const agendamentoRecente = agendamentos.sort(ORDENAR_DATE).find(a => a.chromes.includes("chrome" + tr.id));
+    
+                const ultimoAgendDate = document.createElement("td");
+                if (agendamentoRecente != null) {
+                    let date = agendamentoRecente.Date;
+                    let dmaDateSplit = date.split("T")[0].split("-");
+                    ultimoAgendDate.textContent = dmaDateSplit[2] + "/" + dmaDateSplit[1] + "/" + dmaDateSplit[0] + " às " + date.split("T")[1]
+                } else {
+                    ultimoAgendDate.textContent = "Nenhum agendamento";
                 }
-
-                agendamento.chromes = chromesAgendados;
+    
+                const ultimoUsuario = document.createElement("td");
+                const ultimaDevolucao = agendamentos.sort(ORDENAR_END).find(a => a.chromes.includes("chrome" + tr.id) && new Date() > new Date(a.emprestimohora));
+                if (ultimaDevolucao != null) {
+                    ultimoUsuario.textContent = ultimaDevolucao.nome;
+                } else {
+                    ultimoUsuario.textContent = "Nenhum usuário";
+                }
+    
+                const ocupar = document.createElement("td");
+                const btnOcupar = document.createElement("button");
+                ocupar.appendChild(btnOcupar);
+                btnOcupar.textContent = "Ocupar";
+    
+                tr.appendChild(nome);
+                tr.appendChild(status);
+                tr.appendChild(ultimoAgendDate);
+                tr.appendChild(ultimoUsuario);
+                tr.appendChild(ocupar);
             });
-            agendamento.id = id;
-            agendamentos.push(agendamento);
+            */
         }
 
-        agendamentos = agendamentos.sort(ORDENAR_DATE);
-
-        
-
-        chromeRows.forEach(tr => {
-            tr.innerHTML = "";
-
-            const nome = document.createElement("td");
-            nome.textContent = "Chrome " + tr.id;
-
-            const status = document.createElement("td");
-            let statusString = "Disponível";
-
-            agendamentos.forEach(agendamento => {
-                if (agendamento.devolvido == "on") return;
-                if (!agendamento.chromes.includes("chrome" + tr.id)) return;
-
-                var pastEmprestimo = new Date() >= new Date(agendamento.emprestimohora);
-                var pastDevolucao = new Date() > new Date(agendamento.devolucaohora);
-
-                if (pastDevolucao) {
-                    statusString = "Aguardando devolução";
-                }
-
-                if (!pastDevolucao && pastEmprestimo) {
-                    statusString = "Em uso";
-                }
-                
-                if (!pastEmprestimo && statusString != "Em uso") {
-                    statusString = "Agendado";
-                }
-            });
-
-            status.textContent = statusString;
-
-            const agendamentoRecente = agendamentos.sort(ORDENAR_DATE).find(a => a.chromes.includes("chrome" + tr.id));
-
-            const ultimoAgendDate = document.createElement("td");
-            if (agendamentoRecente != null) {
-                let date = agendamentoRecente.Date;
-                let dmaDateSplit = date.split("T")[0].split("-");
-                ultimoAgendDate.textContent = dmaDateSplit[2] + "/" + dmaDateSplit[1] + "/" + dmaDateSplit[0] + " às " + date.split("T")[1]
-            } else {
-                ultimoAgendDate.textContent = "Nenhum agendamento";
-            }
-
-            const ultimoUsuario = document.createElement("td");
-            const ultimaDevolucao = agendamentos.sort(ORDENAR_END).find(a => a.chromes.includes("chrome" + tr.id) && new Date() > new Date(a.emprestimohora));
-            if (ultimaDevolucao != null) {
-                ultimoUsuario.textContent = ultimaDevolucao.nome;
-            } else {
-                ultimoUsuario.textContent = "Nenhum usuário";
-            }
-
-            const ocupar = document.createElement("td");
-            const btnOcupar = document.createElement("button");
-            ocupar.appendChild(btnOcupar);
-            btnOcupar.textContent = "Ocupar";
-
-            tr.appendChild(nome);
-            tr.appendChild(status);
-            tr.appendChild(ultimoAgendDate);
-            tr.appendChild(ultimoUsuario);
-            tr.appendChild(ocupar);
+        getSheetData({
+            sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+            sheetName: "Chromes",
+            callback: chromeSheetDataHandler,
         });
     }
 

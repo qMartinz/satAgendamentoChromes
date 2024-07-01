@@ -40,7 +40,7 @@ document.getElementById("emprestimohora").addEventListener('change', function(e)
         const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
         const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
 
-        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado);
+        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido);
       });
     });
   }
@@ -73,7 +73,7 @@ document.getElementById("devolucaohora").addEventListener('change', function(e) 
         const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
         const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
 
-        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado);
+        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido);
       });
     });
   }
@@ -146,10 +146,11 @@ window.addEventListener("DOMContentLoaded", function() {
   });
 });
 
-function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado){
+function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido){
   var fimEstaEntreAgendamento = fimAgendado >= fim && fim > inicioAgendado;
   var inicioEstaEntreAgendamento = inicio >= inicioAgendado && fimAgendado > inicio;
 
+  if (fimAgendado < inicio && !devolvido) return true;
   if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento) return true;

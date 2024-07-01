@@ -96,6 +96,7 @@
             document.getElementById("paginaPainel").hidden = false;
             criarTabelaAgendamentos();
             criarTabelaChromes();
+            criarTabelaArquivados();
           }, function(error) {
               console.error('Erro ao verificar permissões:', error);
               if (error.status === 403) {

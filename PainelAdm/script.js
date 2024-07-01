@@ -47,6 +47,47 @@ const ORDENAR_CHROMES = function(a, b) {
     return agendamentoB.chromes.length - agendamentoA.chromes.length;
 }
 
+function getTurma(id) {
+    switch (id){
+        case 0:
+            return "Maternal";
+        case 1:
+            return "Jardim";
+        case 2:
+            return "Pré";
+        case 3:
+            return "1º Ano";
+        case 4:
+            return "2º Ano";
+        case 5:
+            return "3º Ano";
+        case 6:
+            return "4º Ano";
+        case 7:
+            return "5º Ano";
+        case 8:
+            return "6º Ano";
+        case 9:
+            return "7º Ano";
+        case 10:
+            return "8º Ano";
+        case 11:
+            return "9º Ano";
+        case 12:
+            return "1º Médio";
+        case 13:
+            return "2º Médio";
+        case 14:
+            return "3º Médio";
+        case 15:
+            return "Bilíngue";
+        case 16:
+            return "Uso Próprio";
+        default:
+            return "Turma Inválida";
+    }
+}
+
 function criarLinha(agendamento){
     const linha = document.createElement("tr");
     document.getElementById("agendamentos").appendChild(linha);
@@ -67,62 +108,7 @@ function criarLinha(agendamento){
     horafim.textContent = dmahorafim[2] + "/" + dmahorafim[1] + "/" + dmahorafim[0] + " às " + agendamento.devolucaohora.split("T")[1];
 
     const turma = document.createElement("td");
-    switch (agendamento.turma){
-        case 0:
-            turma.textContent = "Maternal";
-            break;
-        case 1:
-            turma.textContent = "Jardim";
-            break;
-        case 2:
-            turma.textContent = "Pré";
-            break;
-        case 3:
-            turma.textContent = "1º Ano";
-            break;
-        case 4:
-            turma.textContent = "2º Ano";
-            break;
-        case 5:
-            turma.textContent = "3º Ano";
-            break;
-        case 6:
-            turma.textContent = "4º Ano";
-            break;
-        case 7:
-            turma.textContent = "5º Ano";
-            break;
-        case 8:
-            turma.textContent = "6º Ano";
-            break;
-        case 9:
-            turma.textContent = "7º Ano";
-            break;
-        case 10:
-            turma.textContent = "8º Ano";
-            break;
-        case 11:
-            turma.textContent = "9º Ano";
-            break;
-        case 12:
-            turma.textContent = "1º Médio";
-            break;
-        case 13:
-            turma.textContent = "2º Médio";
-            break;
-        case 14:
-            turma.textContent = "3º Médio";
-            break;
-        case 15:
-            turma.textContent = "Bilíngue";
-            break;
-        case 16:
-            turma.textContent = "Uso Próprio";
-            break;
-        default:
-            turma.textContent = "Turma Inválida";
-            break;
-    }
+    turma.textContent = getTurma(agendamento.turma);
 
     const nome = document.createElement("td");
     nome.textContent = agendamento.nome;
@@ -145,7 +131,7 @@ function criarLinha(agendamento){
     btnDevolvido.id = agendamento.id;
     btnDevolvido.onclick = function(e) { 
         document.getElementById("devolucaoform").hidden = false;
-        document.getElementById("devolucaoform").querySelector("button[type='submit']") = e.target.id;
+        document.getElementById("devolucaoform").querySelector('button[type="submit"]').id = e.target.id;
     };
     devolvido.appendChild(btnDevolvido);
 
@@ -234,12 +220,20 @@ function criarTabelaChromes() {
 
             agendamentos.forEach(agendamento => {
                 if (agendamento.devolvido == "on") return;
+                if (!agendamento.chromes.includes("chrome" + tr.id)) return;
 
-                if ((new Date() <= new Date(agendamento.devolucaohora) && new Date() >= new Date(agendamento.emprestimohora)) && agendamento.chromes.includes("chrome" + tr.id)) {
+                var pastEmprestimo = new Date() >= new Date(agendamento.emprestimohora);
+                var pastDevolucao = new Date() > new Date(agendamento.devolucaohora);
+
+                if (pastDevolucao) {
+                    statusString = "Aguardando devolução";
+                }
+
+                if (!pastDevolucao && pastEmprestimo) {
                     statusString = "Em uso";
-                } 
+                }
                 
-                if (new Date() < new Date(agendamento.emprestimohora) && agendamento.chromes.includes("chrome" + tr.id) && statusString != "Em uso") {
+                if (!pastEmprestimo && statusString != "Em uso") {
                     statusString = "Agendado";
                 }
             });
@@ -347,22 +341,26 @@ async function adicionarAoArquivo(agendamento) {
     const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
     const sheet = 'Arquivados';
 
-    let agendValues = Object.values(agendamento);
-    agendValues.shift();
-    agendValues.pop();
-    agendValues.splice(0, 0, agendamento.id);
-    agendValues.push(document.forms["devolucaoform"]["obs"].value);
+    var agendValues = agendamento;
+    delete agendValues.devolvido;
+    agendValues.obsdevolucao = document.forms["devolucaoform"]["obs"].value;
+    agendValues.id = agendValues.id.toString();
+    agendValues.turma = agendValues.turma.toString();
+    console.log("aaaa", agendValues);
 
     const values = [
-        agendValues
+        [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, 
+            agendValues.chrome1, agendValues.chrome2, agendValues.chrome3, agendValues.chrome4, agendValues.chrome5, agendValues.chrome6, agendValues.chrome7, agendValues.chrome8, agendValues.chrome9, agendValues.chrome10, 
+        agendValues.obs, agendValues.obsdevolucao]
     ];
+    console.log(values);
 
     const resource = {
         values,
     };
 
     try {
-        const result = await gapi.client.sheets.spreadsheets.values.append({
+        const result1 = await gapi.client.sheets.spreadsheets.values.append({
         spreadsheetId,
         range: sheet,
         valueInputOption: 'RAW',
@@ -375,6 +373,7 @@ async function adicionarAoArquivo(agendamento) {
     } finally {
         criarTabelaAgendamentos();
         criarTabelaChromes();
+        criarTabelaArquivados();
         document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
         alert("Devolução registrada!");
     }
@@ -410,9 +409,13 @@ async function devolverAgendamento(id){
 }
 
 document.getElementById("devolucaoform").addEventListener("submit", function(e){
+    let form = document.getElementById("devolucaoform");
+    let submitButton = form.querySelector("[type='submit']");
+    if (submitButton) submitButton.disabled = true;
+
     e.preventDefault();
 
-    registrarDevolucao(e.target.querySelector("button[type='submit']").id);
+    registrarDevolucao(e.target.querySelector('button[type="submit"]').id);
 
     const data = new FormData(e.target);
     const action = e.target.action;
@@ -421,6 +424,88 @@ document.getElementById("devolucaoform").addEventListener("submit", function(e){
     body: data,
     })
     .then(() => {
-
+        form.hidden = true;
+        form.reset();
+        submitButton.disabled = false;
     });
 });
+
+function criarLinhaArquivados(arquivado){
+    const linha = document.createElement("tr");
+    document.getElementById("arquivados").appendChild(linha);
+    
+    const id = document.createElement("td");
+    id.textContent = arquivado.id;
+
+    const data = document.createElement("td");
+    let dmadata = arquivado.Date.split("T")[0].split("-");
+    data.textContent = dmadata[2] + "/" + dmadata[1] + "/" + dmadata[0] + " às " + arquivado.Date.split("T")[1];
+
+    const horainicio = document.createElement("td");
+    let dmahorainicio = arquivado.emprestimohora.split("T")[0].split("-");
+    horainicio.textContent = dmahorainicio[2] + "/" + dmahorainicio[1] + "/" + dmahorainicio[0] + " às " + arquivado.emprestimohora.split("T")[1];
+
+    const horafim = document.createElement("td");
+    let dmahorafim = arquivado.devolucaohora.split("T")[0].split("-");
+    horafim.textContent = dmahorafim[2] + "/" + dmahorafim[1] + "/" + dmahorafim[0] + " às " + arquivado.devolucaohora.split("T")[1];
+
+    const turma = document.createElement("td");
+    turma.textContent = getTurma(arquivado.turma);
+
+    const nome = document.createElement("td");
+    nome.textContent = arquivado.nome;
+
+    const chromes = document.createElement("td");
+    var btnChromes = document.createElement("button");
+    btnChromes.textContent = arquivado.chromes.length + " Chromes";
+    btnChromes.classList.add("chromes");
+    btnChromes.id = arquivado.id + "";
+    btnChromes.onclick = function(e) { mostrarListaChromes(e.target.id); };
+    chromes.appendChild(btnChromes);
+
+    const obsdevolucao = document.createElement("td");
+    obsdevolucao.textContent = arquivado.obsdevolucao;
+
+    linha.appendChild(id);
+    linha.appendChild(data);
+    linha.appendChild(horainicio);
+    linha.appendChild(horafim);
+    linha.appendChild(turma);
+    linha.appendChild(nome);
+    linha.appendChild(chromes);
+    linha.appendChild(obsdevolucao);
+}
+
+function criarTabelaArquivados() {
+    const sheetDataHandler = (sheetData) => {
+        document.getElementById("arquivados").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Chromes</td><td>Observações</td></tr>";
+
+        let arquivo = [];
+
+        for (id = 0; id < sheetData.length; id++){
+            const element = sheetData[id];
+            let arquivado = {};
+            let chromes = [];
+            Object.entries(element).forEach(element2 => {
+                if (element2[0].startsWith("chrome") && element2[1] == "on") {
+                    chromes.push(element2[0]);
+                } else if (!element2[0].startsWith("chrome")) {
+                    arquivado[element2[0]] = element2[1];
+                }
+
+                arquivado.chromes = chromes;
+            });
+            arquivado.id = sheetData[id]["id"];
+            arquivo.push(arquivado);
+        }
+
+        console.log(arquivo);
+        
+        arquivo.sort(ORDENAR_DATE).forEach(a => criarLinhaArquivados(a));
+    }
+    getSheetData({
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: "Arquivados",
+        callback: sheetDataHandler,
+    });
+}

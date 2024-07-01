@@ -21,12 +21,12 @@
 
     <button onclick="location.assign('https://qmartinz.github.io/satAgendamentoChromes')">Voltar</button>
     <div id="paginaPainel" hidden>
-        <div id="ola">olá </div>
+        <h2>Agendamentos</h2>
         <table id="agendamentos"></table>
         <form id="devolucaoform" hidden>
             <input type="text" name="obs" id="obs">
             <button type="submit">Registrar Devolução</button>
-            <button onclick="document.getElementById('devolucaoform').hidden = true">Cancelar</button>
+            <button type="button" onclick="document.getElementById('devolucaoform').hidden = true">Cancelar</button>
         </form>
         <div id="listaChromes" hidden>
             <ul>
@@ -35,6 +35,7 @@
             <button id="voltarListaChromes">Voltar</button>
         </div>
         <br>
+        <h2>Chromes</h2>
         <table id="chromesDisponíveis">
             <tr>
                 <td>Chrome</td>
@@ -54,6 +55,9 @@
             <tr class="chromeRow" id="9"></tr>
             <tr class="chromeRow" id="10"></tr>
         </table>
+        <br>
+        <h2>Arquivados</h2>
+        <table id="arquivados"></table>
     </div>
 </body>
 </html>

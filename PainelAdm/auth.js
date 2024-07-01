@@ -65,13 +65,13 @@
       /**
        *  Sign in the user upon button click.
        */
-      function handleAuthorize(){
+      function handleAuthorize(showPainel){
         tokenClient.callback = async (resp) => {
           if (resp.error !== undefined) {
               throw (resp);
           }
           
-          showPainel();
+          if (showPainel) showPainel();
         };
 
         if (gapi.client.getToken() === null) {

@@ -509,3 +509,7 @@ function criarTabelaArquivados() {
         callback: sheetDataHandler,
     });
 }
+
+async function authorizePainel() {
+    await new Promise((resolve, reject) => handleAuthorize(resolve, reject, true));
+}

@@ -10,7 +10,7 @@
     <title>Painel de Administrador</title>
 </head>
 <body>
-    <button id="authorize_button" onclick="await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false))">Login</button>
+    <button id="authorize_button" onclick="authorizePainel()">Login</button>
     <button id="signout_button" onclick="handleSignoutClick()">Logout</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>

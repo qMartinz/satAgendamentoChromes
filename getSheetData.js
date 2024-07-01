@@ -13,7 +13,6 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
     function responseToObjects(res) {
       // credit to Laurence Svekis https://www.udemy.com/course/sheet-data-ajax/
       const jsData = JSON.parse(res.substring(47).slice(0, -2));
-      console.log(jsData);
       let data = [];
       const columns = jsData.table.cols;
       const rows = jsData.table.rows;

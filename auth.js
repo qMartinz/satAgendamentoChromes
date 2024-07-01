@@ -18,7 +18,7 @@
       let gapiInited = false;
       let gisInited = false;
 
-      document.getElementById('signout_button').style.visibility = 'hidden';
+      if (document.getElementById('authorize_button') != null) document.getElementById('signout_button').style.visibility = 'hidden';
 
       /**
        * Callback after api.js is loaded.
@@ -57,7 +57,7 @@
        * Enables user interaction after all libraries are loaded.
        */
       function maybeEnableButtons() {
-        if (gapiInited && gisInited) {
+        if (gapiInited && gisInited && document.getElementById('authorize_button') != null) {
           document.getElementById('authorize_button').style.visibility = 'visible';
         }
       }

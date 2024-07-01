@@ -25,23 +25,32 @@ document.getElementById("emprestimohora").addEventListener('change', function(e)
   if (isNaN(horafim)) return;
 
   const sheetDataHandler = (sheetData) => {
+    const chromeSheetDataHandler = (chromeSheetData) => {
+      document.querySelectorAll(".chrome").forEach(chrome => {
+        chrome.disabled = false;
+        const agendados = sheetData.filter(e => e["chrome" + (Number(chrome.id) + 1).toString()] == "on");
 
-    document.querySelectorAll(".chrome").forEach(chrome => {
-      chrome.disabled = false;
-      const agendados = sheetData.filter(e => e[chrome.id] == "on");
+        agendados.forEach(element => {
+          let fimAgendado = element.devolucaohora;
+          let splitFimAgendado = fimAgendado.split("T");
 
-      agendados.forEach(element => {
-        let fimAgendado = element.devolucaohora;
-        let splitFimAgendado = fimAgendado.split("T");
+          let inicioAgendado = element.emprestimohora;
+          let splitInicioAgendado = inicioAgendado.split("T");
 
-        let inicioAgendado = element.emprestimohora;
-        let splitInicioAgendado = inicioAgendado.split("T");
+          const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
+          const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
 
-        const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
-        const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
+          if (horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido)) chrome.disabled = true;
+        });
 
-        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido);
+        if (chromeSheetData[Number(chrome.id)].ocupado == "on") chrome.disabled = true;
       });
+    }
+
+    getSheetData({
+      sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+      sheetName: "Chromes",
+      callback: chromeSheetDataHandler,
     });
   }
 
@@ -58,23 +67,32 @@ document.getElementById("devolucaohora").addEventListener('change', function(e) 
   if (isNaN(horainicio)) return;
 
   const sheetDataHandler = (sheetData) => {
+    const chromeSheetDataHandler = (chromeSheetData) => {
+      document.querySelectorAll(".chrome").forEach(chrome => {
+        chrome.disabled = false;
+        const agendados = sheetData.filter(e => e["chrome" + (Number(chrome.id) + 1).toString()] == "on");
+  
+        agendados.forEach(element => {
+          let fimAgendado = element.devolucaohora;
+          let splitFimAgendado = fimAgendado.split("T");
+  
+          let inicioAgendado = element.emprestimohora;
+          let splitInicioAgendado = inicioAgendado.split("T");
+  
+          const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
+          const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
+  
+          if (horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido)) chrome.disabled = true;
+        });
 
-    document.querySelectorAll(".chrome").forEach(chrome => {
-      chrome.disabled = false;
-      const agendados = sheetData.filter(e => e[chrome.id] == "on");
-
-      agendados.forEach(element => {
-        let fimAgendado = element.devolucaohora;
-        let splitFimAgendado = fimAgendado.split("T");
-
-        let inicioAgendado = element.emprestimohora;
-        let splitInicioAgendado = inicioAgendado.split("T");
-
-        const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
-        const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
-
-        chrome.disabled = horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido);
+        if (chromeSheetData[Number(chrome.id)].ocupado == "on") chrome.disabled = true;
       });
+    }
+
+    getSheetData({
+      sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+      sheetName: "Chromes",
+      callback: chromeSheetDataHandler,
     });
   }
 
@@ -138,22 +156,31 @@ window.addEventListener("DOMContentLoaded", function() {
   });
 
   const sheetDataHandler = (sheetData) => {
-    let chromesOcupados = [];
-    const agendados = sheetData.filter(e => e["outro"] == "on");
-    agendados.forEach(element => {
-      Object.entries(element).forEach(item => {
-        if (!chromesOcupados.includes(item[0]) && item[0].toString().startsWith("chrome") && item[1] == "on") {
-          chromesOcupados.push(item[0]);
-        }
-      });
-    });
+    const chromeSheetDataHandler = (chromeSheetData) => {
+      for (id = 0; id < chromeSheetData.length; id++) {
+        const div = document.createElement("div");
+        const input = document.createElement("input");
 
-    chromesOcupados = chromesOcupados.flat();
+        input.type = "checkbox";
+        input.classList.add("chrome");
+        input.name = "chrome" + (Number(id) + 1).toString();
+        input.id = id;
+        
+        const label = document.createElement("label");
+        label.htmlFor = input.name;
+        label.textContent = "Chrome " + (Number(id) + 1).toString();
 
-    console.log("Chromes ocupados no horário selecionado:", chromesOcupados);
-
-    chromesOcupados.forEach(chrome => {
-      document.getElementById(chrome).disabled = true;
+        div.appendChild(input);
+        div.appendChild(label);
+        document.getElementById("chrome").appendChild(div);
+        if (chromeSheetData[id].ocupado == "on") input.disabled = true;
+      }
+    }
+  
+    getSheetData({
+      sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+      sheetName: "Chromes",
+      callback: chromeSheetDataHandler,
     });
   }
 

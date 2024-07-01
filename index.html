@@ -12,6 +12,10 @@
     <title>Agendamento</title>
 </head>
 <body>
+    <script type="text/javascript" src="./auth.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
     <form method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
         <div id="aula">
             <input type="datetime-local" name="emprestimohora" id="emprestimohora" required> <label for="emprestimohora">Empréstimo</label>

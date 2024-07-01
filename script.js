@@ -87,11 +87,13 @@ document.getElementById("devolucaohora").addEventListener('change', function(e) 
 
 window.addEventListener("DOMContentLoaded", function() {
   const agendamento = document.getElementById('agendamento');
-  agendamento.addEventListener("submit", function(e) {
+  agendamento.addEventListener("submit", async function(e) {
     let submitButton = agendamento.querySelector("[type='submit']");
     if (submitButton) submitButton.disabled = true;
 
     e.preventDefault();
+
+    await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false));
 
     if (!(document.querySelectorAll(".chrome:checked").length>0)){
       alert("Selecione ao menos um Chrome para realizar o agendamento!");
@@ -107,15 +109,29 @@ window.addEventListener("DOMContentLoaded", function() {
       return false;
     }
 
-    const data = new FormData(agendamento);
-    const action = e.target.action;
-    fetch(action, {
-    method: 'POST',
-    body: data,
-    })
-    .then(() => {
-      alert("Agendamento feito!");
-      location.reload();
+    await gapi.client.load('people', 'v1', function() {
+      gapi.client.people.people.get({
+        resourceName: "people/me",
+        personFields: "emailAddresses"
+      }).then(async function(response) {
+        const email = response.result.emailAddresses[0].value;
+        const domain = email.split('@')[1];
+        if (domain === 'colegiosatelite.com.br') {
+          const data = new FormData(agendamento);
+          const action = e.target.action;
+          await fetch(action, {
+          method: 'POST',
+          body: data,
+          }).then(() => {
+            alert("Agendamento feito!");
+            location.reload();
+          });
+        } else {
+          alert("Sua conta institucional não possui permissão para realizar agendamentos!");
+          submitButton.disabled = false;
+          return false;
+        }
+      });
     });
   });
 
@@ -150,7 +166,7 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido
   var fimEstaEntreAgendamento = fimAgendado >= fim && fim > inicioAgendado;
   var inicioEstaEntreAgendamento = inicio >= inicioAgendado && fimAgendado > inicio;
 
-  if (fimAgendado < inicio && !devolvido) return true;
+  if (fimAgendado < inicio && fimAgendado < new Date() && !devolvido) return true;
   if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
   if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento) return true;

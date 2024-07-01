@@ -112,12 +112,14 @@ window.addEventListener("DOMContentLoaded", function() {
     await gapi.client.load('people', 'v1', function() {
       gapi.client.people.people.get({
         resourceName: "people/me",
-        personFields: "emailAddresses"
+        personFields: "emailAddresses,names"
       }).then(async function(response) {
         const email = response.result.emailAddresses[0].value;
         const domain = email.split('@')[1];
         if (domain === 'colegiosatelite.com.br') {
           const data = new FormData(agendamento);
+          data.append("email", email);
+          data.append("nome", response.result.names[0].displayName);
           const action = e.target.action;
           await fetch(action, {
           method: 'POST',

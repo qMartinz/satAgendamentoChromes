@@ -113,6 +113,9 @@ function criarLinha(agendamento){
     const nome = document.createElement("td");
     nome.textContent = agendamento.nome;
 
+    const email = document.createElement("td");
+    email.textContent = agendamento.email;
+
     const chromes = document.createElement("td");
     var btnChromes = document.createElement("button");
     btnChromes.textContent = agendamento.chromes.length + " Chromes";
@@ -141,6 +144,7 @@ function criarLinha(agendamento){
     linha.appendChild(horafim);
     linha.appendChild(turma);
     linha.appendChild(nome);
+    linha.appendChild(email);
     linha.appendChild(chromes);
     linha.appendChild(obs);
     linha.appendChild(devolvido);
@@ -148,7 +152,7 @@ function criarLinha(agendamento){
 
 function criarTabelaAgendamentos() {
     const sheetDataHandler = (sheetData) => {
-        document.getElementById("agendamentos").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Chromes</td><td>Observações</td><td>Devolvido</td></tr>";
+        document.getElementById("agendamentos").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Email</td><td>Chromes</td><td>Observações</td><td>Devolvido</td></tr>";
 
         let agendamentos = [];
 
@@ -349,7 +353,7 @@ async function adicionarAoArquivo(agendamento) {
     console.log("aaaa", agendValues);
 
     const values = [
-        [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, 
+        [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, agendValues.email, 
             agendValues.chrome1, agendValues.chrome2, agendValues.chrome3, agendValues.chrome4, agendValues.chrome5, agendValues.chrome6, agendValues.chrome7, agendValues.chrome8, agendValues.chrome9, agendValues.chrome10, 
         agendValues.obs, agendValues.obsdevolucao]
     ];
@@ -455,6 +459,9 @@ function criarLinhaArquivados(arquivado){
     const nome = document.createElement("td");
     nome.textContent = arquivado.nome;
 
+    const email = document.createElement("td");
+    email.textContent = arquivado.email;
+
     const chromes = document.createElement("td");
     var btnChromes = document.createElement("button");
     btnChromes.textContent = arquivado.chromes.length + " Chromes";
@@ -472,13 +479,14 @@ function criarLinhaArquivados(arquivado){
     linha.appendChild(horafim);
     linha.appendChild(turma);
     linha.appendChild(nome);
+    linha.appendChild(email);
     linha.appendChild(chromes);
     linha.appendChild(obsdevolucao);
 }
 
 function criarTabelaArquivados() {
     const sheetDataHandler = (sheetData) => {
-        document.getElementById("arquivados").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Chromes</td><td>Observações</td></tr>";
+        document.getElementById("arquivados").innerHTML = "<tr><td>ID</td><td>Data</td><td>Horario do empréstimo</td><td>Horario da devolução</td><td>Turma</td><td>Nome</td><td>Email</td><td>Chromes</td><td>Observações</td></tr>";
 
         let arquivo = [];
 

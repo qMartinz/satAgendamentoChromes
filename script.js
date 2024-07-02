@@ -120,23 +120,29 @@ async function agendar(e) {
  * @param {Object[]} chromeData Dados da planilha de Chromes 
  */
 function createChromeCheckboxes(chromeData){
-  for (id = 0; id < chromeData.length; id++) {
-    const div = document.createElement("div");
-    const input = document.createElement("input");
+  for (col = 0; col < chromeData.length/10; col++){
+    const divCol = document.createElement("div");
+    divCol.classList.add(".chromeCol");
+    document.getElementById("chrome").appendChild(divCol);
 
-    input.type = "checkbox";
-    input.classList.add("chrome");
-    input.name = "chrome" + (Number(id) + 1).toString();
-    input.id = id;
-    
-    const label = document.createElement("label");
-    label.htmlFor = input.id;
-    label.textContent = "Chrome " + (Number(id) + 1).toString();
-
-    div.appendChild(input);
-    div.appendChild(label);
-    document.getElementById("chrome").appendChild(div);
-    if (chromeData[id].ocupado == "on") input.disabled = true;
+    for (id = 0 + (10 * col); id < 10 + 10 * col; id++) {
+      const div = document.createElement("div");
+      const input = document.createElement("input");
+  
+      input.type = "checkbox";
+      input.classList.add("chrome");
+      input.name = "chrome" + (Number(id) + 1).toString();
+      input.id = id;
+      
+      const label = document.createElement("label");
+      label.htmlFor = input.id;
+      label.textContent = "Chrome " + (Number(id) + 1).toString();
+  
+      div.appendChild(input);
+      div.appendChild(label);
+      divCol.appendChild(div);
+      if (chromeData[id].ocupado == "on") input.disabled = true;
+    }
   }
 }
 

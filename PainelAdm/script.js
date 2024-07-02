@@ -116,6 +116,23 @@ function criarLinha(agendamento){
     const email = document.createElement("td");
     email.textContent = agendamento.email;
 
+    const status = document.createElement("td");
+    let statusString = "Agendado";
+
+    var pastEmprestimo = new Date() >= new Date(agendamento.emprestimohora);
+    var pastDevolucao = new Date() > new Date(agendamento.devolucaohora);
+
+    if (!pastDevolucao && pastEmprestimo) {
+        statusString = "Em uso";
+    }
+
+    
+    if (pastDevolucao) {
+        statusString = "Aguardando devolução";
+    }
+
+    status.textContent = statusString;
+
     const chromes = document.createElement("td");
     var btnChromes = document.createElement("button");
     btnChromes.textContent = agendamento.chromes.length + " Chromes";
@@ -145,6 +162,7 @@ function criarLinha(agendamento){
     linha.appendChild(turma);
     linha.appendChild(nome);
     linha.appendChild(email);
+    linha.appendChild(status);
     linha.appendChild(chromes);
     linha.appendChild(obs);
     linha.appendChild(devolvido);

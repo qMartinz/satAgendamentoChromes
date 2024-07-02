@@ -166,7 +166,7 @@ window.addEventListener("DOMContentLoaded", function() {
         input.id = id;
         
         const label = document.createElement("label");
-        label.htmlFor = input.name;
+        label.htmlFor = input.id;
         label.textContent = "Chrome " + (Number(id) + 1).toString();
 
         div.appendChild(input);

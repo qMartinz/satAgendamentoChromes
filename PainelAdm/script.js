@@ -18,34 +18,43 @@ const ORDENAR_TURMA = function(a, b) {
     return b.turma - a.turma;
 }
 
-// Não funciona
-const ORDENAR_CHROMES = function(a, b) {
-    let agendamentoA = {};
-    let chromes = [];
-    Object.entries(a).forEach(element2 => {
-        if (element2[0].startsWith("chrome") && element2[1] == "on") {
-            chromes.push(element2[0]);
-        } else if (!element2[0].startsWith("chrome")) {
-            agendamentoA[element2[0]] = element2[1];
-        }
-        agendamentoA.chromes = chromes;
-    });
-    agendamentoA.id = id;
-
-    let agendamentoB = {};
-    chromes = [];
-    Object.entries(b).forEach(element2 => {
-        if (element2[0].startsWith("chrome") && element2[1] == "on") {
-            chromes.push(element2[0]);
-        } else if (!element2[0].startsWith("chrome")) {
-            agendamentoB[element2[0]] = element2[1];
-        }
-        agendamentoB.chromes = chromes;
-    });
-    agendamentoB.id = id;
-
-    return agendamentoB.chromes.length - agendamentoA.chromes.length;
+const ORDENAR_NOME = function(a, b) {
+    return a.nome.localeCompare(b.nome);
 }
+
+const ORDENAR_EMAIL = function(a, b) {
+    return a.email.localeCompare(b.email);
+}
+
+const ORDENAR_STATUS = function(a, b) {
+    let statusA = 0;
+    var pastEmprestimoA = new Date() >= new Date(a.emprestimohora);
+    var pastDevolucaoA = new Date() > new Date(a.devolucaohora);
+    if (!pastDevolucaoA && pastEmprestimoA) {
+        statusA = 1;
+    }
+    if (pastDevolucaoA) {
+        statusA = 2;
+    }
+
+    let statusB = 0;
+    var pastEmprestimoB = new Date() >= new Date(b.emprestimohora);
+    var pastDevolucaoB = new Date() > new Date(b.devolucaohora);
+    if (!pastDevolucaoB && pastEmprestimoB) {
+        statusB = 1;
+    }
+    if (pastDevolucaoB) {
+        statusB = 2;
+    }
+
+    return statusB - statusA;
+}
+
+const ORDENAR_CHROMES = function(a, b) {
+    return b.chromes.length - a.chromes.length;
+}
+
+
 
 function getTurma(id) {
     switch (id){
@@ -191,7 +200,7 @@ function criarTabelaAgendamentos() {
             agendamentos.push(agendamento);
         }
         
-        agendamentos.filter(a => a.devolvido !== "on").sort(ORDENAR_DATE).forEach(a => criarLinha(a));
+        agendamentos.filter(a => a.devolvido !== "on").sort(ORDENAR_STATUS).forEach(a => criarLinha(a));
     }
     getSheetData({
         sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",

@@ -89,6 +89,9 @@
         }
       }
 
+      /**
+       * Abre o painel de administrador caso o usuário possua permissão de editar a planilha com os dados dos agendamentos.
+       */
       async function showPainel(){        
         gapi.client.load('drive', 'v3', function () {
           const permissions = gapi.client.drive.permissions.list({

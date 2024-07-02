@@ -25,15 +25,15 @@
         <table id="agendamentos"></table>
         <table id="falseAgendamentos" hidden>
             <tr>
-                <td>ID</td>
-                <td>Data</td>
-                <td>Horario do empréstimo</td>
-                <td>Horario da devolução</td>
-                <td>Turma</td>
-                <td>Nome</td>
-                <td>Email</td>
-                <td>Status</td>
-                <td>Chromes</td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_ID)">ID</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_DATE)">Data</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_START)">Horário do empréstimo</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_END)">Horário da devolução</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_TURMA)">Turma</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_NOME)">Nome</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_EMAIL)">Email</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_STATUS)">Status</button></td>
+                <td><button onclick="changeSortAgendamentos(ORDENAR_CHROMES)">Chromes</button></td>
                 <td>Observações</td>
                 <td>Devolução</td>
             </tr>
@@ -67,14 +67,14 @@
         <table id="arquivados"></table>
         <table id="falseArquivados" hidden>
             <tr>
-                <td>ID</td>
-                <td>Data</td>
-                <td>Horario do empréstimo</td>
-                <td>Horario da devolução</td>
-                <td>Turma</td>
-                <td>Nome</td>
-                <td>Email</td>
-                <td>Chromes</td>
+                <td><button onclick="changeSortArquivados(ORDENAR_ID)">ID</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_DATE)">Data</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_START)">Horário do empréstimo</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_END)">Horário da devolução</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_TURMA)">Turma</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_NOME)">Nome</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_EMAIL)">Email</button></td>
+                <td><button onclick="changeSortArquivados(ORDENAR_CHROMES)">Chromes</button></td>
                 <td>Observações</td>
             </tr>
         </table>

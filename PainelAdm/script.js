@@ -1,4 +1,4 @@
-const ORDERNAR_ID = function(a, b) {
+const ORDENAR_ID = function(a, b) {
     return b - a;
 }
 
@@ -54,7 +54,18 @@ const ORDENAR_CHROMES = function(a, b) {
     return b.chromes.length - a.chromes.length;
 }
 
+let ordenarAgendamentos = ORDENAR_ID;
+let ordenarArquivados = ORDENAR_ID;
 
+function changeSortAgendamentos(sortFunction){
+    ordenarAgendamentos = sortFunction;
+    criarTabelaAgendamentos();
+}
+
+function changeSortArquivados(sortFunction){
+    ordenarArquivados = sortFunction;
+    criarTabelaArquivados();
+}
 
 function getTurma(id) {
     switch (id){
@@ -200,7 +211,7 @@ function criarTabelaAgendamentos() {
             agendamentos.push(agendamento);
         }
         
-        agendamentos.filter(a => a.devolvido !== "on").sort(ORDENAR_STATUS).forEach(a => criarLinha(a));
+        agendamentos.filter(a => a.devolvido !== "on").sort(ordenarAgendamentos).forEach(a => criarLinha(a));
     }
     getSheetData({
         sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
@@ -310,7 +321,7 @@ function criarTabelaChromes() {
                 agendamento.id = id;
                 agendamentos.push(agendamento);
             }
-            agendamentos = agendamentos.sort(ORDENAR_DATE);
+            agendamentos = agendamentos.sort(ordenarAgendamentos);
 
             let chromes = [];
             for (id = 0; id < chromeSheetData.length; id++){
@@ -594,7 +605,7 @@ function criarTabelaArquivados() {
             arquivo.push(arquivado);
         }
         
-        arquivo.sort(ORDENAR_DATE).forEach(a => criarLinhaArquivados(a));
+        arquivo.sort(ordenarArquivados).forEach(a => criarLinhaArquivados(a));
     }
     getSheetData({
         sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",

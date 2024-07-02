@@ -193,12 +193,15 @@ function criarLinhaChromes(agendamentos, chrome){
     const nome = document.createElement("td");
     nome.textContent = "Chrome " + (Number(chrome.id) + 1).toString();
 
+    const modelo = document.createElement("td");
+    modelo.textContent = chrome.modelo;
+
     const status = document.createElement("td");
     let statusString = "Disponível";
 
     agendamentos.forEach(agendamento => {
         if (agendamento.devolvido == "on") return;
-        if (!agendamento.chromes.includes("chrome" + chrome.id)) return;
+        if (!agendamento.chromes.includes("chrome" + (Number(chrome.id) + 1).toString())) return;
 
         var pastEmprestimo = new Date() >= new Date(agendamento.emprestimohora);
         var pastDevolucao = new Date() > new Date(agendamento.devolucaohora);
@@ -219,7 +222,7 @@ function criarLinhaChromes(agendamentos, chrome){
     if (chrome.ocupado == "on") statusString = "Ocupado";
     status.textContent = statusString;
 
-    const agendamentoRecente = agendamentos.sort(ORDENAR_DATE).find(a => a.chromes.includes("chrome" + chrome.id));
+    const agendamentoRecente = agendamentos.sort(ORDENAR_DATE).find(a => a.chromes.includes("chrome" + (Number(chrome.id) + 1).toString()));
 
     const ultimoAgendDate = document.createElement("td");
     if (agendamentoRecente != null) {
@@ -231,7 +234,7 @@ function criarLinhaChromes(agendamentos, chrome){
     }
 
     const ultimoUsuario = document.createElement("td");
-    const ultimaDevolucao = agendamentos.sort(ORDENAR_END).find(a => a.chromes.includes("chrome" + chrome.id) && new Date() > new Date(a.emprestimohora));
+    const ultimaDevolucao = agendamentos.sort(ORDENAR_END).find(a => a.chromes.includes("chrome" + (Number(chrome.id) + 1).toString()) && new Date() > new Date(a.emprestimohora));
     if (ultimaDevolucao != null) {
         ultimoUsuario.textContent = ultimaDevolucao.nome;
     } else {
@@ -239,13 +242,16 @@ function criarLinhaChromes(agendamentos, chrome){
     }
 
     const ocupar = document.createElement("td");
-    const btnOcupar = document.createElement("button");
+    const btnOcupar = document.createElement("input");
     btnOcupar.id = chrome.id;
-    btnOcupar.onclick = function (e){ ocuparChrome(e.target.id); }
+    btnOcupar.type = "checkbox";
+    btnOcupar.checked = chrome.ocupado == "on";
+    btnOcupar.onchange = function (e){ ocuparChrome(e.target.id, e.target.checked); }
     ocupar.appendChild(btnOcupar);
     btnOcupar.textContent = "Ocupar";
 
     tr.appendChild(nome);
+    tr.appendChild(modelo);
     tr.appendChild(status);
     tr.appendChild(ultimoAgendDate);
     tr.appendChild(ultimoUsuario);
@@ -257,8 +263,6 @@ function criarLinhaChromes(agendamentos, chrome){
 function criarTabelaChromes() {
     const sheetDataHandler = (sheetData) => {
         const chromeSheetDataHandler = (chromeSheetData) => {
-            console.log(chromeSheetData);
-
             const chromeTabela = document.getElementById("chromes");
             chromeTabela.innerHTML = document.getElementById("falseChromes").innerHTML;
 
@@ -307,16 +311,19 @@ function criarTabelaChromes() {
     });
 }
 
-async function ocuparChrome(id){
+async function ocuparChrome(id, ocupado){
     const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
     const range = "Chromes!" + "B" + (Number(id) + 2).toString();
+    document.querySelectorAll("#chromes input").forEach(e => e.disabled = true);
+
+    let value = ocupado ? "on" : "off";
 
     const data = {
-        properties: "on"
+        properties: value
     };
 
     const values = [
-        ["on"]
+        [value]
     ];
 
     const resource = {
@@ -324,16 +331,18 @@ async function ocuparChrome(id){
     };
 
     try {
-        const result = await gapi.client.sheets.spreadsheets.values.append({
-        spreadsheetId,
+        const result = await gapi.client.sheets.spreadsheets.values.update({
+        spreadsheetId: spreadsheetId,
         range: range,
         valueInputOption: 'RAW',
         resource,
         });
-        console.log('Dados adicionados:', resource);
-        criarTabelaChromes();
+
+        await new Promise(() => criarTabelaChromes());
     } catch (err) {
         console.error('Erro ao adicionar dados:', err);
+    } finally {
+        document.querySelectorAll("#chromes input").forEach(e => e.disabled = false);
     }
 }
 
@@ -352,9 +361,7 @@ function registrarDevolucao(id){
             agendamentos.push(agendamento);
         }
 
-        console.log("clicked");
         devolverAgendamento(id);
-        console.log(id);
         adicionarAoArquivo(agendamentos[id]);
     }
     
@@ -404,14 +411,12 @@ async function adicionarAoArquivo(agendamento) {
     agendValues.obsdevolucao = document.forms["devolucaoform"]["obs"].value;
     agendValues.id = agendValues.id.toString();
     agendValues.turma = agendValues.turma.toString();
-    console.log("aaaa", agendValues);
 
     const values = [
         [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, agendValues.email, 
             agendValues.chrome1, agendValues.chrome2, agendValues.chrome3, agendValues.chrome4, agendValues.chrome5, agendValues.chrome6, agendValues.chrome7, agendValues.chrome8, agendValues.chrome9, agendValues.chrome10, 
         agendValues.obs, agendValues.obsdevolucao]
     ];
-    console.log(values);
 
     const resource = {
         values,
@@ -425,7 +430,6 @@ async function adicionarAoArquivo(agendamento) {
         insertDataOption: 'INSERT_ROWS',
         resource,
         });
-        console.log('Dados adicionados:', resource);
     } catch (err) {
         console.error('Erro ao adicionar dados:', err);
     } finally {
@@ -460,7 +464,6 @@ async function devolverAgendamento(id){
         valueInputOption: 'RAW',
         resource,
         });
-        console.log('Dados adicionados:', resource);
     } catch (err) {
         console.error('Erro ao adicionar dados:', err);
     }
@@ -560,8 +563,6 @@ function criarTabelaArquivados() {
             arquivado.id = sheetData[id]["id"];
             arquivo.push(arquivado);
         }
-
-        console.log(arquivo);
         
         arquivo.sort(ORDENAR_DATE).forEach(a => criarLinhaArquivados(a));
     }

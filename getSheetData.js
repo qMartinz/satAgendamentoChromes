@@ -1,3 +1,7 @@
+/**
+ * Captura os dados de uma página específica da planilha e roda a função especificada no parâmetro Dados.
+ * @param {Object} Dados Objeto com o ID da planilha, nome da página e função para a utilização dos dados. 
+ */
 const getSheetData = ({ sheetID, sheetName, callback }) => {
     const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`;
     const url = `${base}&sheet=${encodeURIComponent(
@@ -42,3 +46,26 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
       return data;
     }
   };
+
+/**
+ * Callback para utilizar os dados da planilha
+ * @callback sheetDataCallback
+ * @param {Object[]} sheetData
+ */
+
+/**
+ * Implementação de {@link getSheetData} para utilizar os dados de uma página especificada da planilha
+ * @param {string} sheetName Título da página da planilha
+ * @param {sheetDataCallback} sheetDataCallback Callback que utiliza os dados da planilha
+ */
+function getSheetDataCallback(sheetName, sheetDataCallback){
+  const sheetDataHandler = (sheetData) => {
+    sheetDataCallback(sheetData);
+  }
+
+  getSheetData({
+    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+    sheetName: sheetName,
+    callback: sheetDataHandler,
+  });
+}

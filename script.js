@@ -110,7 +110,14 @@ window.addEventListener("DOMContentLoaded", function() {
 
     e.preventDefault();
 
-    await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false));
+    var rejected = false;
+    var authorized = await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false)).catch((err) => {
+      alert("Faça login com uma conta válida!");
+      submitButton.disabled = false;
+      rejected = true;
+    });
+
+    if (rejected) return false;
 
     if (!(document.querySelectorAll(".chrome:checked").length>0)){
       alert("Selecione ao menos um Chrome para realizar o agendamento!");
@@ -143,7 +150,8 @@ window.addEventListener("DOMContentLoaded", function() {
           body: data,
           }).then(() => {
             alert("Agendamento feito!");
-            location.reload();
+            agendamento.reset();
+            submitButton.disabled = false;
           });
         } else {
           alert("Sua conta institucional não possui permissão para realizar agendamentos!");

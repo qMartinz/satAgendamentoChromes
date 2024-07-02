@@ -39,7 +39,6 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
           }
           data.push(rowObject);
       }
-      //console.log(data);
       return data;
     }
   };

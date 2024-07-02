@@ -1,6 +1,5 @@
 function desabilitarChromes(v, p, sheetData){
   const agendados = sheetData.filter(e => e[v] == "on");
-  console.log("sheetdata", sheetData);
   let chromesOcupados = [];
 
   agendados.forEach(element => {

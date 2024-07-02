@@ -413,10 +413,13 @@ async function adicionarAoArquivo(agendamento) {
     agendValues.turma = agendValues.turma.toString();
 
     const values = [
-        [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, agendValues.email, 
-            agendValues.chrome1, agendValues.chrome2, agendValues.chrome3, agendValues.chrome4, agendValues.chrome5, agendValues.chrome6, agendValues.chrome7, agendValues.chrome8, agendValues.chrome9, agendValues.chrome10, 
-        agendValues.obs, agendValues.obsdevolucao]
+        [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, agendValues.email]
     ];
+
+    var chromes = Object.entries(agendValues).filter(p => p[0].startsWith('chrome'));
+    chromes.forEach(c => values[0].push(c[1]));
+
+    values[0].push(agendValues.obs, agendValues.obsdevolucao);
 
     const resource = {
         values,

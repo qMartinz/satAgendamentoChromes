@@ -12,7 +12,7 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid';
+      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid';
 
       let tokenClient;
       let gapiInited = false;
@@ -71,7 +71,12 @@
               reject(resp);
           }
           
-          if (painel) showPainel();
+          if (painel) {
+            showPainel();
+          } else {
+            showAgendamentos();
+          };
+
           resolve();
         };
 
@@ -89,28 +94,54 @@
         }
       }
 
+      async function showAgendamentos(){
+        getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
+        document.getElementById('authorize_button').style.visibility = 'hidden';
+        document.getElementById('signout_button').style.visibility = 'visible';
+        document.getElementById("agendamento").hidden = false;
+      }
+
       /**
        * Abre o painel de administrador caso o usuário possua permissão de editar a planilha com os dados dos agendamentos.
        */
       async function showPainel(){        
-        gapi.client.load('drive', 'v3', function () {
-          const permissions = gapi.client.drive.permissions.list({
-            fileId: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A"
-          }).then(function(response) {
-            console.log('Login permitido');
+        gapi.client.load('drive', 'v3', function() {
+          gapi.client.drive.about.get({
+            fields: "user"
+          }).then((about) => {
+            var userId = about.result.user.permissionId;
+            const permissions = gapi.client.drive.permissions.list({
+              fileId: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A"
+            }).then(function(response) {
+              var permissions = response.result.permissions;
+              var userHasPermission = permissions.some(function(permission) {
+                  return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner'));
+              });
 
-            document.getElementById('authorize_button').style.visibility = 'hidden';
-            document.getElementById('signout_button').style.visibility = 'visible';
-            document.getElementById("paginaPainel").hidden = false;
-            criarTabelaAgendamentos();
-            criarTabelaChromes();
-            criarTabelaArquivados();
-          }, function(error) {
-              console.error('Erro ao verificar permissões:', error);
-              if (error.status === 403) {
+              if (!userHasPermission){
                 console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
                 location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+                return;
               }
+
+              document.getElementById('authorize_button').style.visibility = 'hidden';
+              document.getElementById('signout_button').style.visibility = 'visible';
+              document.getElementById("paginaPainel").hidden = false;
+              criarTabelaAgendamentos();
+              criarTabelaChromes();
+              criarTabelaArquivados();
+            }, function(error) {
+                console.error('Erro ao verificar permissões:', error);
+                if (error.status === 403) {
+                  console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+                  location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+                }
+
+                if (error.status === 404) {
+                  console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
+                  location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+                }
+            });
           });
         });
       }
@@ -118,13 +149,14 @@
       /**
        *  Sign out the user upon button click.
        */
-      function handleSignoutClick() {
+      function handleSignoutClick(painel) {
         const token = gapi.client.getToken();
         if (token !== null) {
           google.accounts.oauth2.revoke(token.access_token);
           gapi.client.setToken('');
           document.getElementById('signout_button').style.visibility = 'hidden';
           document.getElementById('authorize_button').style.visibility = 'visible';
-          document.getElementById("paginaPainel").hidden = true;
+          if (painel) document.getElementById("paginaPainel").hidden = true;
+          if (!painel) document.getElementById("agendamento").hidden = true;
         }
       }

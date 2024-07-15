@@ -3,42 +3,44 @@
  * @param {Object} Dados Objeto com o ID da planilha, nome da página e função para a utilização dos dados. 
  */
 const getSheetData = ({ sheetID, sheetName, callback }) => {
-    const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?`;
-    const url = `${base}&sheet=${encodeURIComponent(
-      sheetName
-    )}&tq=${encodeURIComponent('SELECT *')}`;
-  
-    fetch(url)
-      .then((res) => res.text())
-      .then((response) => {
-        callback(responseToObjects(response));
-      });
+  gapi.client.load('sheets', 'v4', function() {
+    gapi.client.sheets.spreadsheets.get({
+      spreadsheetId: sheetID,
+      ranges: sheetName,
+      includeGridData: true
+    }).then((response) => {
+      var rowData = response.result.sheets[0].data[0].rowData;
+      callback(responseToObjects(rowData));
+    }, (error) => {
+      console.error('Erro ao utilizar dados da planilha:', error);
+      if (error.status === 403){
+        console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
+        location.assign("https://qmartinz.github.io/satAgendamentoChromes/AcessoNegado");
+      }
+    });
+  });
   
     function responseToObjects(res) {
-      // credit to Laurence Svekis https://www.udemy.com/course/sheet-data-ajax/
-      const jsData = JSON.parse(res.substring(47).slice(0, -2));
       let data = [];
-      const columns = jsData.table.cols;
-      const rows = jsData.table.rows;
       let rowObject;
       let cellData;
       let propName;
 
-      let labels = rows[0];
+      let labels = res[0]["values"];
         
-      for (let r = 1, rowMax = rows.length; r < rowMax; r++) {
+      for (let r = 1, rowMax = res.length; r < rowMax; r++) {
           rowObject = {};
-          for (let c = 0, colMax = columns.length; c < colMax; c++) {
-              propName = labels["c"][c]["v"];
-              cellData = rows[r]["c"][c];
+          for (let c = 0, colMax = labels.length; c < colMax; c++) {
+              propName = labels[c]["formattedValue"];
+              cellData = res[r]["values"][c]["formattedValue"];
               if (cellData === null) {
                   rowObject[propName] = "";
-              } else if (typeof cellData["v"] == "string" && cellData["v"].startsWith("Date")) {
-                  rowObject[propName] = new Date(cellData["v"]);
-              } else if (!isNaN(Number(cellData["v"])) && cellData["v"] !== null) {
-                  rowObject[propName] = Number(cellData["v"])
+              } else if (typeof cellData == "string" && cellData.startsWith("Date")) {
+                  rowObject[propName] = new Date(cellData);
+              } else if (!isNaN(Number(cellData)) && cellData !== null) {
+                  rowObject[propName] = Number(cellData)
               } else {
-                  rowObject[propName] = cellData["v"];
+                  rowObject[propName] = cellData;
               }
           }
           data.push(rowObject);

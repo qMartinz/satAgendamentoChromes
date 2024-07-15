@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <script src="./getSheetData.js" type="text/javascript" defer></script>
     <script src="./script.js" type="text/javascript" defer></script>
 
     <link rel="stylesheet" href="./style.css">
@@ -12,11 +11,17 @@
     <title>Agendamento</title>
 </head>
 <body>
+    <button id="authorize_button" onclick="authorizeAgendamentos()">Login</button>
+    <button id="signout_button" onclick="handleSignoutClick(false)">Logout</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
     <script type="text/javascript" src="./auth.js"></script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    <script src="./getSheetData.js" type="text/javascript" defer></script>
 
-    <form method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
+    <form hidden method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
         <div id="aula">
             <input type="datetime-local" name="emprestimohora" id="emprestimohora" required> <label for="emprestimohora">Empréstimo</label>
             <input type="datetime-local" name="devolucaohora" id="devolucaohora" required> <label for="devolucaohora">Devolução</label>

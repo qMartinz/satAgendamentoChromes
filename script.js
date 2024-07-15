@@ -55,17 +55,6 @@ async function agendar(e) {
 
   e.preventDefault();
 
-  // Verifica se o usuário logou com sucesso
-  var rejected = false;
-  await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false)).catch((err) => rejected = true);
-
-  // Cancela o agendamento caso o usuário não tenha feito login
-  if (rejected) {
-    alert("Faça login com uma conta válida!");
-    submitButton.disabled = false;
-    return false;
-  };
-
   // Cancela o agendamento caso o usuário não tenha selecionado um chrome
   if (!(document.querySelectorAll(".chrome:checked").length>0)){
     alert("Selecione ao menos um Chrome para realizar o agendamento!");
@@ -154,8 +143,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
   // Evento acionado quando o usuário tenta realizar um agendamento
   agendamento.addEventListener("submit", (e) => agendar(e));
-
-  getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
 });
 
 /**
@@ -178,4 +165,11 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido
   if (fimAgendado < fim && fim > inicioAgendado && inicioAgendado > inicio && inicio < fimAgendado) return true;
   if (fimAgendado == fim && inicio == inicioAgendado) return true;
   return false;
+}
+
+/**
+ * Implementação de {@link handleAuthorize} para realizar o login e abrir o painel de administrador
+ */
+async function authorizeAgendamentos() {
+  await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false));
 }

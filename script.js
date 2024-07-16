@@ -91,6 +91,8 @@ async function agendar(e) {
       const data = new FormData(agendamento);
       data.append("email", email);
       data.append("nome", response.result.names[0].displayName);
+      data.append("accesstoken", gapi.client.getToken().access_token);
+      data.append("idtoken", "");
       const action = e.target.action;
       await fetch(action, {
       method: 'POST',
@@ -98,7 +100,10 @@ async function agendar(e) {
       }).then(() => {
         alert("Agendamento feito!");
         agendamento.reset();
+        getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
         submitButton.disabled = false;
+      }, function(err) {
+        console.error("Erro ao adicionar agendamento", err);
       });
     });
   });
@@ -109,6 +114,7 @@ async function agendar(e) {
  * @param {Object[]} chromeData Dados da planilha de Chromes 
  */
 function createChromeCheckboxes(chromeData){
+  document.getElementById("chrome").innerHTML = "";
   for (col = 0; col < chromeData.length/10; col++){
     const divCol = document.createElement("div");
     divCol.classList.add(".chromeCol");

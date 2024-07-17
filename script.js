@@ -92,12 +92,11 @@ async function agendar(e) {
       data.append("email", email);
       data.append("nome", response.result.names[0].displayName);
       data.append("accesstoken", gapi.client.getToken().access_token);
-      data.append("idtoken", "");
       const action = e.target.action;
       await fetch(action, {
       method: 'POST',
       body: data,
-      }).then(() => {
+      }).then((r) => {
         alert("Agendamento feito!");
         agendamento.reset();
         getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));

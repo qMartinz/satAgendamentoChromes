@@ -99,8 +99,6 @@
         document.getElementById('authorize_button').style.visibility = 'hidden';
         document.getElementById('signout_button').style.visibility = 'visible';
         document.getElementById("agendamento").hidden = false;
-        console.log(gapi.client.getToken());
-        console.log(tokenClient);
       }
 
       /**

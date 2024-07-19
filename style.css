@@ -1,6 +1,116 @@
-label.teste{
-    content: "Chromes agendados nesse horário";
-    font-size: xx-small;
-    padding-left: 4px;
-    color: red;
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.authpanel {
+    position: relative;
+    height: 100%;
+}
+
+.auth {
+    width: 70px;
+}
+
+.authcontainer {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 10px;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    padding-top: 0;
+}
+
+.logout{
+    z-index: 2;
+}
+
+.adminpanel {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 10px;
+}
+
+#agendamento {
+    width: max-content;
+    height: max-content;
+}
+
+#content {
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+#content[style*="hidden"]{
+    z-index: -1;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+#chrome {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    gap: 0 30px;
+    margin: auto;
+    width: max-content;
+    padding: 20px;
+}
+
+.chromeCol{
+    text-align: left;
+}
+
+.inputlabel {
+    display: block;
+}
+
+.date {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 0 30px;
+    text-align: center;
+    width: max-content;
+    margin: auto;
+    padding: 20px;
+}
+
+button {
+    display: block;
+    margin: auto;
+}
+
+#turma {
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+#obs {
+    display: block;
+    margin: auto;
+    padding: 0 150px 0 150px;
+    text-align: center;
+}
+
+.submit {
+    margin-top: 20px;
 }

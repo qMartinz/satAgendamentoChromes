@@ -116,7 +116,7 @@ function createChromeCheckboxes(chromeData){
   document.getElementById("chrome").innerHTML = "";
   for (col = 0; col < chromeData.length/10; col++){
     const divCol = document.createElement("div");
-    divCol.classList.add(".chromeCol");
+    divCol.classList.add("chromeCol");
     document.getElementById("chrome").appendChild(divCol);
 
     for (id = 0 + (10 * col); id < 10 + 10 * col; id++) {

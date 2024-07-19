@@ -18,7 +18,9 @@
       let gapiInited = false;
       let gisInited = false;
 
-      if (document.getElementById('authorize_button') != null) document.getElementById('signout_button').style.visibility = 'hidden';
+      if (document.getElementById('authorize_button') != null) {
+        document.getElementById('signout_button').style.visibility = 'hidden';
+      };
 
       /**
        * Callback after api.js is loaded.
@@ -98,7 +100,7 @@
         getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
         document.getElementById('authorize_button').style.visibility = 'hidden';
         document.getElementById('signout_button').style.visibility = 'visible';
-        document.getElementById("agendamento").hidden = false;
+        document.getElementById("content").style.visibility = 'visible';
       }
 
       /**
@@ -157,6 +159,6 @@
           document.getElementById('signout_button').style.visibility = 'hidden';
           document.getElementById('authorize_button').style.visibility = 'visible';
           if (painel) document.getElementById("paginaPainel").hidden = true;
-          if (!painel) document.getElementById("agendamento").hidden = true;
+          if (!painel) document.getElementById("content").style.visibility = 'hidden';
         }
       }

@@ -1,25 +1,73 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
 #header {
-    height: 10%;
-    background-color: rgb(142, 134, 255);
+    height: 15%;
+    background-color: rgb(63, 61, 78);
     display: block;
 }
 
+/*
+    Start CSS provisório p/ header
+*/
+
+#header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    color: white;
+    text-align: center;
+}
+
+#header h2 {
+    margin-top: 0;
+    color: white;
+    text-align: center;
+}
+
+/*
+    End CSS provisório p/ header
+*/
+
 #page {
-    height: 80%;
-    background-color: rgb(255, 246, 208);
+    height: 75%;
+    background-color: rgb(255, 255, 255);
     display: block;
 }
 
 #footer {
     height: 10%;
-    background-color: rgb(142, 134, 255);
+    background-color: rgb(63, 61, 78);
     display: block;
 }
 
-html, body {
-    margin: 0;
-    height: 100%;
+/*
+    Start CSS provisório p/ header
+*/
+
+#footer h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 20px;
+    color: white;
+    text-align: center;
 }
+
+#footer h4 {
+    margin-top: 0;
+    color: white;
+    text-align: center;
+}
+
+/*
+    End CSS provisório p/ header
+*/
+
+/* 
+    Start page CSS
+*/
 
 .authpanel {
     position: relative;
@@ -124,3 +172,7 @@ button {
 .submit {
     margin-top: 20px;
 }
+
+/* 
+    End page CSS
+*/

@@ -51,7 +51,7 @@ document.getElementById("devolucaohora").addEventListener('change', function(e) 
 
 async function agendar(e) {
   let submitButton = agendamento.querySelector("[type='submit']");
-  if (submitButton) submitButton.disabled = true; // Desabilita o botão de agendar para evitar duplicatas
+  document.getElementById("overlay").hidden = false;
 
   e.preventDefault();
 
@@ -100,7 +100,7 @@ async function agendar(e) {
         alert("Agendamento feito!");
         agendamento.reset();
         getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
-        submitButton.disabled = false;
+        document.getElementById("overlay").hidden = true;
       }, function(err) {
         console.error("Erro ao adicionar agendamento", err);
       });

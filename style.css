@@ -3,6 +3,43 @@ html, body {
     height: 100%;
 }
 
+#overlay {
+    background-color: rgba(0, 0, 0, 0.247);    
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: background-color 1s ease;
+}
+
+#overlay .overlay_popup {
+    background-color: rgb(128, 96, 22);
+    border-radius: 10px;
+    width: max-content;
+    padding: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: background-color 1s ease;
+}
+
+#overlay .overlay_popup .loading_text {
+    color: white;
+    animation: blinker 2s linear infinite;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
 #header {
     height: 15%;
     background-color: rgb(63, 61, 78);
@@ -53,7 +90,7 @@ input::-moz-placeholder {
 }
 
 /*
-    Start header CSS
+Start header CSS
 */
 
 #header h1 {
@@ -71,11 +108,11 @@ input::-moz-placeholder {
 }
 
 /*
-    End header CSS
+End header CSS
 */
 
 /* 
-    Start page CSS
+Start page CSS
 */
 
 .authpanel {
@@ -219,7 +256,7 @@ button {
 }
 
 /*
-    Start checkbox CSS
+Start checkbox CSS
 */
 
 .checkbox-wrapper-4 * {
@@ -337,15 +374,15 @@ button {
 
 
 /*
-    End checkbox CSS
+End checkbox CSS
 */
 
 /* 
-    End page CSS
+End page CSS
 */
 
 /*
-    Start footer CSS
+Start footer CSS
 */
 
 #footer h3 {
@@ -365,5 +402,5 @@ button {
 }
 
 /*
-    End footer CSS
+End footer CSS
 */

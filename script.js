@@ -120,21 +120,19 @@ function createChromeCheckboxes(chromeData){
     document.getElementById("chrome").appendChild(divCol);
 
     for (id = 0 + (10 * col); id < 10 + 10 * col; id++) {
-      const div = document.createElement("div");
+      const wrapper = document.createElement("div");
+      wrapper.classList.add('checkbox-wrapper-4');
+      wrapper.innerHTML = '<label class="cbx" for="' + id + '"><span><svg width="12px" height="10px"><use xlink:href="#check-4"></use></svg></span><span>' + "Chrome " + (Number(id) + 1).toString() + '</span></label><svg class="inline-svg"><symbol id="check-4" viewBox="0 0 12 10"><polyline points="1.5 6 4.5 9 10.5 1"></polyline></symbol></svg>'
+
       const input = document.createElement("input");
   
       input.type = "checkbox";
-      input.classList.add("chrome");
+      input.classList.add("chrome", "inp-cbx");
       input.name = "chrome" + (Number(id) + 1).toString();
       input.id = id;
-      
-      const label = document.createElement("label");
-      label.htmlFor = input.id;
-      label.textContent = "Chrome " + (Number(id) + 1).toString();
-  
-      div.appendChild(input);
-      div.appendChild(label);
-      divCol.appendChild(div);
+
+      wrapper.insertBefore(input, wrapper.childNodes[0]);
+      divCol.appendChild(wrapper);
       if (chromeData[id].ocupado == "on") input.disabled = true;
     }
   }

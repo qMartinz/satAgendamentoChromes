@@ -14,8 +14,17 @@
 
     <div id="overlay" hidden>
         <div class="overlay_popup">
-            <div class="loading_text">
+            <div class="loading_text" id="loading">
                 Realizando agendamento...
+            </div>
+            <div class="success_text" id="success" hidden>
+                <span>Agendamento realizado com sucesso.</span>
+                <button class="loading_return" id="loading_return" onclick="closeLoading()">Voltar</button>
+            </div>
+            <div class="error_text" id="error" hidden>
+                <span>Erro ao realizar o agendamento!</span>
+                <span id="error_reason"></span>
+                <button class="loading_return" id="loading_return" onclick="closeLoading()">Voltar</button>
             </div>
         </div>
     </div>

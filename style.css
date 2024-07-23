@@ -3,43 +3,6 @@ html, body {
     height: 100%;
 }
 
-#overlay {
-    background-color: rgba(0, 0, 0, 0.247);    
-    z-index: 3;
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    transition: background-color 1s ease;
-}
-
-#overlay .overlay_popup {
-    background-color: rgb(128, 96, 22);
-    border-radius: 10px;
-    width: max-content;
-    padding: 10px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: background-color 1s ease;
-}
-
-#overlay .overlay_popup .loading_text {
-    color: white;
-    animation: blinker 2s linear infinite;
-    text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 15px;
-}
-
-@keyframes blinker {
-    50% {
-        opacity: 0;
-    }
-}
-
 #header {
     height: 15%;
     background-color: rgb(63, 61, 78);
@@ -231,6 +194,7 @@ Start page CSS
     width: max-content;
     margin: auto;
     padding: 20px;
+    font-weight: normal;
 }
 
 button {
@@ -454,6 +418,80 @@ Start text input CSS
 
 /*
 End text input CSS
+*/
+
+/*
+Start overlay CSS
+*/
+
+#overlay {
+    background-color: rgba(0, 0, 0, 0.247);    
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: background-color 1s ease;
+}
+
+#overlay .overlay_popup {
+    background-color: rgb(73, 54, 5);
+    border-radius: 10px;
+    width: max-content;
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: background-color 1s ease;
+}
+
+#overlay .overlay_popup .loading_text {
+    color: white;
+    animation: blinker 2s linear infinite;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    padding: 10px;
+}
+
+#overlay .overlay_popup span {
+    display: block;
+    color: white;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    padding-bottom: 5px;
+}
+
+#overlay .loading_return {
+    display: block;
+    background-color: rgb(128, 96, 22);
+    border-width: 0px ;
+    border-radius: 5px;
+    padding: 5px  20px 5px 20px;
+    width: max-content;
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+#overlay .loading_return:hover {
+    background-color: rgb(243, 209, 130);
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+/*
+End overlay CSS
 */
 
 /* 

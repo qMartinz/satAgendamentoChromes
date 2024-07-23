@@ -247,8 +247,6 @@ button {
 #obs {
     display: block;
     margin: auto;
-    padding: 0 150px 0 150px;
-    text-align: center;
 }
 
 .submit {
@@ -388,18 +386,74 @@ Start date input CSS
     box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
 }
 
-.dateinput input:hover {
+.dateinput input[type="datetime-local"]:hover {
     background: rgb(30, 75, 163, 0.06);
     border-color: rgb(30, 75, 163);
 }
 
-.dateinput input:focus {
-    background-color: rgb(30, 75, 163, 0.06);
-    border: 1px solid rgb(30, 75, 163);
+.dateinput input[type="datetime-local"]:focus {
+    background: rgb(30, 75, 163, 0.06);
+    border-color: rgb(30, 75, 163);
+    outline: none;
 }
 
 /*
 End date input CSS
+*/
+
+/*
+Start select CSS
+*/
+
+#turma {
+    border: 1px solid #cccfdb;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
+}
+
+#turma:hover {
+    background: rgb(30, 75, 163, 0.06);
+    border-color: rgb(30, 75, 163);
+}
+
+#turma:focus {
+    background: rgb(30, 75, 163, 0.06);
+    border-color: rgb(30, 75, 163);
+    outline: none;
+}
+
+/*
+End select CSS
+*/
+
+/*
+Start text input CSS
+*/
+
+#obs {
+    border: 1px solid #cccfdb;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
+    padding: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+#obs:hover {
+    background: rgb(30, 75, 163, 0.06);
+    border-color: rgb(30, 75, 163);
+}
+
+#obs:focus {
+    background: rgb(30, 75, 163, 0.06);
+    border-color: rgb(30, 75, 163);
+    outline: none;
+}
+
+/*
+End text input CSS
 */
 
 /* 

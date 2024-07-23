@@ -34,29 +34,33 @@ function desabilitarChromes(sheetData, chromeSheetData){
 /**
  * Evento para desabilitar chromes quando #emprestimohora for alterado
  */
-document.getElementById("emprestimohora").addEventListener('change', function(e) {
-  getSheetDataCallback("Agendamentos", (sheetData) => getSheetDataCallback("Chromes", (chromeSheetData) => {
+document.getElementById("emprestimohora").addEventListener('change', async function(e) {
+  agendamento.querySelector("[type='submit']").disabled = true;
+  await getSheetDataCallback("Agendamentos", (sheetData) => getSheetDataCallback("Chromes", (chromeSheetData) => {
     desabilitarChromes(sheetData, chromeSheetData)
   }));
+  agendamento.querySelector("[type='submit']").disabled = false;
 });
 
 /**
  * Evento para desabilitar chromes quando #devolucaohora for alterado
  */
-document.getElementById("devolucaohora").addEventListener('change', function(e) {
-  getSheetDataCallback("Agendamentos", (sheetData) => getSheetDataCallback("Chromes", (chromeSheetData) => {
+document.getElementById("devolucaohora").addEventListener('change', async function(e) {
+  agendamento.querySelector("[type='submit']").disabled = true;
+  await getSheetDataCallback("Agendamentos", (sheetData) => getSheetDataCallback("Chromes", (chromeSheetData) => {
     desabilitarChromes(sheetData, chromeSheetData)
   }));
+  agendamento.querySelector("[type='submit']").disabled = false;
 });
 
 async function agendar(e) {
   let submitButton = agendamento.querySelector("[type='submit']");
-  document.getElementById("overlay").hidden = false;
+  agendamento.querySelector("[type='submit']").hidden = false;
 
   e.preventDefault();
 
   // Cancela o agendamento caso o usuário não tenha selecionado um chrome
-  if (!(document.querySelectorAll(".chrome:checked").length>0)){
+  if (!(document.querySelectorAll(".chrome:checked:not([disabled])").length>0)){
     alert("Selecione ao menos um Chrome para realizar o agendamento!");
     submitButton.disabled = false;
     return false;

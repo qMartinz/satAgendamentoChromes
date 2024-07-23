@@ -61,13 +61,22 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
  * @param {sheetDataCallback} sheetDataCallback Callback que utiliza os dados da planilha
  */
 function getSheetDataCallback(sheetName, sheetDataCallback){
-  const sheetDataHandler = (sheetData) => {
-    sheetDataCallback(sheetData);
-  }
+  var promise = new Promise((res, rej) => {
+    try {
+      const sheetDataHandler = async (sheetData) => {
+        await sheetDataCallback(sheetData);
+        res();
+      }
 
-  getSheetData({
-    sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
-    sheetName: sheetName,
-    callback: sheetDataHandler,
+      getSheetData({
+        sheetID: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A",
+        sheetName: sheetName,
+        callback: sheetDataHandler,
+      });
+    } catch (err) {
+      rej();
+    }
   });
+
+  return promise;
 }

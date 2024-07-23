@@ -7,77 +7,95 @@
     <script src="./script.js" type="text/javascript" defer></script>
     <script src="../getSheetData.js" type="text/javascript" defer></script>
 
+    <link rel="stylesheet" href="./style.css">
+
     <title>Painel de Administrador</title>
 </head>
 <body>
-    <button id="authorize_button" onclick="authorizePainel()">Login</button>
-    <button id="signout_button" onclick="handleSignoutClick(true)">Logout</button>
+    <div id="header">
+        <h1>Agendamento de Empréstimo de Chromes</h1>
+        <h2>Colégio Satélite</h2>
+    </div>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    <div id="page">
+        <script type="text/javascript" src="../auth.js"></script>
+        <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+        <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 
-    <script type="text/javascript" src="../auth.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
-
-    <button onclick="location.assign('https://qmartinz.github.io/satAgendamentoChromes')">Voltar</button>
-    <div id="paginaPainel" hidden>
-        <h2>Agendamentos</h2>
-        <table id="agendamentos"></table>
-        <table id="falseAgendamentos" hidden>
-            <tr>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_ID)">ID</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_DATE)">Data</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_START)">Horário do empréstimo</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_END)">Horário da devolução</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_TURMA)">Turma</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_NOME)">Nome</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_EMAIL)">Email</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_STATUS)">Status</button></td>
-                <td><button onclick="changeSortAgendamentos(ORDENAR_CHROMES)">Chromes</button></td>
-                <td>Observações</td>
-                <td>Devolução</td>
-            </tr>
-        </table>
-        <form id="devolucaoform" hidden>
-            <input type="text" name="obs" id="obs">
-            <button type="submit">Registrar Devolução</button>
-            <button type="button" onclick="document.getElementById('devolucaoform').hidden = true">Cancelar</button>
-        </form>
-        <div id="listaChromes" hidden>
-            <ul>
-                
-            </ul>
-            <button id="voltarListaChromes">Voltar</button>
+        <div class="buttons">
+            <div class="auth">
+                <button id="authorize_button" onclick="authorizePainel()">Login</button>
+                <button id="signout_button" onclick="handleSignoutClick(true)">Logout</button>
+            </div>
+            <div class="return">
+                <button onclick="location.assign('https://qmartinz.github.io/satAgendamentoChromes')">Voltar</button>
+            </div>
         </div>
-        <br>
-        <h2>Chromes</h2>
-        <table id="chromes"></table>
-        <table id="falseChromes" hidden>
-            <tr>
-                <td>Chrome</td>
-                <td>Modelo</td>
-                <td>Status</td>
-                <td>Último agendamento</td>
-                <td>Último usuário</td>
-                <td>Ocupado</td>
-            </tr>
-        </table>
-        <br>
-        <h2>Arquivados</h2>
-        <table id="arquivados"></table>
-        <table id="falseArquivados" hidden>
-            <tr>
-                <td><button onclick="changeSortArquivados(ORDENAR_ID)">ID</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_DATE)">Data</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_START)">Horário do empréstimo</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_END)">Horário da devolução</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_TURMA)">Turma</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_NOME)">Nome</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_EMAIL)">Email</button></td>
-                <td><button onclick="changeSortArquivados(ORDENAR_CHROMES)">Chromes</button></td>
-                <td>Observações</td>
-            </tr>
-        </table>
+
+        <div id="paginaPainel" hidden>
+            <h2>Agendamentos</h2>
+            <table id="agendamentos"></table>
+            <table id="falseAgendamentos" hidden>
+                <tr>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_ID)">ID</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_DATE)">Data</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_START)">Horário do empréstimo</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_END)">Horário da devolução</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_TURMA)">Turma</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_NOME)">Nome</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_EMAIL)">Email</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_STATUS)">Status</button></td>
+                    <td><button onclick="changeSortAgendamentos(ORDENAR_CHROMES)">Chromes</button></td>
+                    <td>Observações</td>
+                    <td>Devolução</td>
+                </tr>
+            </table>
+            <form id="devolucaoform" hidden>
+                <input type="text" name="obs" id="obs">
+                <button type="submit">Registrar Devolução</button>
+                <button type="button" onclick="document.getElementById('devolucaoform').hidden = true">Cancelar</button>
+            </form>
+            <div id="listaChromes" hidden>
+                <ul>
+                    
+                </ul>
+                <button id="voltarListaChromes">Voltar</button>
+            </div>
+            <br>
+            <h2>Chromes</h2>
+            <table id="chromes"></table>
+            <table id="falseChromes" hidden>
+                <tr>
+                    <td>Chrome</td>
+                    <td>Modelo</td>
+                    <td>Status</td>
+                    <td>Último agendamento</td>
+                    <td>Último usuário</td>
+                    <td>Ocupado</td>
+                </tr>
+            </table>
+            <br>
+            <h2>Arquivados</h2>
+            <table id="arquivados"></table>
+            <table id="falseArquivados" hidden>
+                <tr>
+                    <td><button onclick="changeSortArquivados(ORDENAR_ID)">ID</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_DATE)">Data</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_START)">Horário do empréstimo</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_END)">Horário da devolução</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_TURMA)">Turma</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_NOME)">Nome</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_EMAIL)">Email</button></td>
+                    <td><button onclick="changeSortArquivados(ORDENAR_CHROMES)">Chromes</button></td>
+                    <td>Observações</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="footer">
+        <h3> Site desenvolvido pela Equipe de TI </h3>
+        <h4> Email para suporte: gustavo.martinez@colegiosatelite.com.br </h4>
     </div>
 </body>
 </html>

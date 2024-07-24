@@ -19,7 +19,7 @@
       let gisInited = false;
 
       if (document.getElementById('authorize_button') != null) {
-        document.getElementById('signout_button').style.visibility = 'hidden';
+        document.getElementById('signout_button').hidden = true;
       };
 
       /**
@@ -60,7 +60,7 @@
        */
       function maybeEnableButtons() {
         if (gapiInited && gisInited && document.getElementById('authorize_button') != null) {
-          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').hidden = false;
         }
       }
 
@@ -98,8 +98,8 @@
 
       async function showAgendamentos(){
         getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
-        document.getElementById('authorize_button').style.visibility = 'hidden';
-        document.getElementById('signout_button').style.visibility = 'visible';
+        document.getElementById('authorize_button').hidden = true;
+        document.getElementById('signout_button').hidden = false;
         document.getElementById("content").style.visibility = 'visible';
       }
 
@@ -126,8 +126,8 @@
                 return;
               }
 
-              document.getElementById('authorize_button').style.visibility = 'hidden';
-              document.getElementById('signout_button').style.visibility = 'visible';
+              document.getElementById('authorize_button').hidden = true;
+              document.getElementById('signout_button').hidden = false;
               document.getElementById("paginaPainel").hidden = false;
               criarTabelaAgendamentos();
               criarTabelaChromes();
@@ -156,8 +156,8 @@
         if (token !== null) {
           google.accounts.oauth2.revoke(token.access_token);
           gapi.client.setToken('');
-          document.getElementById('signout_button').style.visibility = 'hidden';
-          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('signout_button').hidden = true;
+          document.getElementById('authorize_button').hidden = false;
           if (painel) document.getElementById("paginaPainel").hidden = true;
           if (!painel) document.getElementById("content").style.visibility = 'hidden';
         }

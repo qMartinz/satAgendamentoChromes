@@ -123,9 +123,8 @@ Start page CSS
 }
 
 .adminpanel {
-    position: absolute;
-    transform: translate(-50%, -100%);
-    left: 50%;
+    height: 26px;
+    transform: translate(0, -100%);
     padding-bottom: 20px;
 }
 
@@ -198,7 +197,9 @@ Start page CSS
 }
 
 button {
-    display: block;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
     margin: auto;
 }
 

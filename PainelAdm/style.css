@@ -128,6 +128,158 @@ Start page CSS
     background-color: rgb(149, 169, 230);
 }
 
+#paginaPainel h2 {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 0;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    background-color: rgb(128, 96, 22);
+    border: solid white 2px;
+    border-bottom-style: none;
+}
+
+/*
+Start table CSS
+*/
+
+table {
+    width: 100%;
+}
+
+table tr {
+    background-color: rgb(63, 61, 78);
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+    width: 100%;
+}
+table tr td {
+    width: max-content;
+    text-wrap: balance;
+    word-break: break-word;
+    white-space: normal;
+    text-align: center;
+    padding: 5px;
+}
+table tr:first-child td button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    width: 100%;
+}
+table tr:first-child td button:hover::after {
+    content: '\25BC';
+}
+#agendamentos tr td:nth-child(1) {
+    width: 4%;
+}
+#agendamentos tr td:nth-child(2) {
+    width: 7%;
+}
+#agendamentos tr td:nth-child(3) {
+    width: 8%;
+}
+#agendamentos tr td:nth-child(4) {
+    width: 8%;
+}
+#agendamentos tr td:nth-child(5) {
+    width: 6%;
+}
+#agendamentos tr td:nth-child(7) {
+    word-break: normal;
+}
+#agendamentos tr td:nth-child(9) {
+    width: 7%;
+}
+#agendamentos tr:not(:first-child) td:nth-child(10) {
+    width: 15%;
+}
+#agendamentos tr td:nth-child(11) {
+    width: 7%;
+}
+table tr:nth-child(odd) {
+    background-color: rgb(69, 73, 103);
+}
+
+table tr:first-child {
+    background-color: rgb(128, 96, 22);
+}
+
+#agendamentos tr:not(:first-child) td:nth-child(9) button {
+    background-color: rgba(149, 169, 230, 0.218);
+    padding: 4px 10px 4px 10px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    transition: background-color .2s ease;
+}
+#agendamentos tr:not(:first-child) td:nth-child(9) button:hover {
+    background-color: rgb(149, 169, 230);
+}
+
+#agendamentos tr:not(:first-child):nth-child(odd) td:nth-child(9) button {
+    background-color: rgba(170, 189, 223, 0.218);
+}
+#agendamentos tr:not(:first-child):nth-child(odd) td:nth-child(9) button:hover {
+    background-color: rgb(170, 189, 223);
+}
+
+#agendamentos tr:not(:first-child) td:nth-child(11) button {
+    background-color: rgba(149, 169, 230, 0.218);
+    padding: 4px 10px 4px 10px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    transition: background-color .2s ease;
+}
+#agendamentos tr:not(:first-child) td:nth-child(11) button:hover {
+    background-color: rgb(149, 169, 230);
+}
+
+#agendamentos tr:not(:first-child):nth-child(odd) td:nth-child(11) button {
+    background-color: rgba(170, 189, 223, 0.218);
+}
+#agendamentos tr:not(:first-child):nth-child(odd) td:nth-child(11) button:hover {
+    background-color: rgb(170, 189, 223);
+}
+
+#arquivados tr td:nth-child(1) {
+    width: 4%;
+}
+#arquivados tr td:nth-child(2) {
+    width: 7%;
+}
+#arquivados tr td:nth-child(3) {
+    width: 8%;
+}
+#arquivados tr td:nth-child(4) {
+    width: 8%;
+}
+#arquivados tr td:nth-child(5) {
+    width: 6%;
+}
+#arquivados tr td:nth-child(6) {
+    width: 20%;
+}
+#arquivados tr td:nth-child(7) {
+    word-break: normal;
+}
+#arquivados tr td:nth-child(8) {
+    width: 7%;
+}
+#arquivados tr:not(:first-child) td:nth-child(9) {
+    width: 15%;
+}
+#arquivados tr td:nth-child(10) {
+    width: 6%;
+}
+
+/*
+End table CSS
+*/
+
 /*
 End page CSS
 */

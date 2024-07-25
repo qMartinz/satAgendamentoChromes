@@ -114,7 +114,7 @@
             var userId = about.result.user.permissionId;
             const permissions = gapi.client.drive.permissions.list({
               fileId: "1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A"
-            }).then(function(response) {
+            }).then(async function(response) {
               var permissions = response.result.permissions;
               var userHasPermission = permissions.some(function(permission) {
                   return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner'));
@@ -129,6 +129,19 @@
               document.getElementById('authorize_button').hidden = true;
               document.getElementById('signout_button').hidden = false;
               document.getElementById("paginaPainel").hidden = false;
+
+              await getSheetDataCallback("Agendamentos", (sheetData) => {
+                agndmnts = [];
+                for(var id = 0; id < sheetData.length; id++) {
+                  const element = sheetData[id];
+                  element.id = id;
+                  agndmnts.push(element);
+                }
+                agendamentos = agndmnts;
+              });
+              await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
+              await getSheetDataCallback("Arquivados", (sheetData) => arquivados = sheetData);
+
               criarTabelaAgendamentos();
               criarTabelaChromes();
               criarTabelaArquivados();

@@ -164,14 +164,39 @@ table tr td {
     padding: 5px;
 }
 table tr:first-child td button {
-    background-color: transparent;
+    background-color: rgb(166, 120, 42);
+    transition: background-color ease .2s;
+    padding: 4px;
+    border-radius: 5px;
     color: white;
     border: none;
     width: 100%;
 }
-table tr:first-child td button:hover::after {
+
+table tr:first-child td button:hover {
+    background-color: rgb(232, 183, 135);
+}
+
+table tr:first-child td button:not(.decr, .cres):hover::after {
+    content: '\25B2';
+}
+
+table tr:first-child td .decr:hover::after {
+    content: '\25B2';
+}
+
+table tr:first-child td .cres:hover::after {
     content: '\25BC';
 }
+
+table tr:first-child td .decr::after {
+    content: '\25BC';
+}
+
+table tr:first-child td .cres::after {
+    content: '\25B2';
+}
+
 #agendamentos tr td:nth-child(1) {
     width: 4%;
 }

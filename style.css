@@ -488,6 +488,7 @@ Start overlay CSS
     background-color: rgb(73, 54, 5);
     border-radius: 10px;
     width: max-content;
+    max-width: 80%;
     padding: 20px;
     position: absolute;
     left: 50%;

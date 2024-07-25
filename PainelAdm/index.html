@@ -19,6 +19,14 @@
 
     <div id="page">
 
+        <div id="devolucaoform-wrapper" hidden>
+            <form id="devolucaoform">
+                <input type="text" name="obs" id="obs" placeholder="Observação">
+                <button type="submit">Registrar Devolução</button>
+                <button type="button" onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
+            </form>
+        </div>
+
         <div id="listaChromes" hidden>
             <div>
                 <ul></ul>
@@ -57,11 +65,6 @@
                     <td>Devolução</td>
                 </tr>
             </table>
-            <form id="devolucaoform" hidden>
-                <input type="text" name="obs" id="obs">
-                <button type="submit">Registrar Devolução</button>
-                <button type="button" onclick="document.getElementById('devolucaoform').hidden = true">Cancelar</button>
-            </form>
             <br>
             <h2>Chromes</h2>
             <table id="chromes">

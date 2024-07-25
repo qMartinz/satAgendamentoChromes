@@ -349,7 +349,7 @@ function criarLinha(agendamento, arquivado){
         btnDevolvido.classList.add("devolvido");
         btnDevolvido.id = agendamento.id;
         btnDevolvido.onclick = function(e) { 
-            document.getElementById("devolucaoform").hidden = false;
+            document.getElementById("devolucaoform-wrapper").hidden = false;
             document.getElementById("devolucaoform").querySelector('button[type="submit"]').id = e.target.id;
         };
         devolvido.appendChild(btnDevolvido);
@@ -501,6 +501,8 @@ async function ocuparChrome(id, ocupado){
             valueInputOption: 'RAW',
             resource,
         });
+
+        await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
         
         await new Promise(() => criarTabelaChromes());
     } catch (err) {

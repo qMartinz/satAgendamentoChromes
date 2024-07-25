@@ -86,7 +86,7 @@ Start page CSS
 
 .auth {
     position: relative;
-    height: 25px; /* Ajuste a altura conforme necessário */
+    height: 25px;
     margin: 0 0 10px 0;
 }
 
@@ -99,7 +99,7 @@ Start page CSS
 
 .return {
     position: relative;
-    height: 25px; /* Ajuste a altura conforme necessário */
+    height: 25px;
     margin: 10px 0 20px 0;
 }
 

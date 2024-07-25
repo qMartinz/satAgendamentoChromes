@@ -375,13 +375,16 @@ function criarLinhaChromes(agendamentos, chrome){
     }
 
     const ocupar = document.createElement("td");
+    const btnOcuparWrapper = document.createElement("div");
+    btnOcuparWrapper.classList.add("ocupar-wrapper");
     const btnOcupar = document.createElement("input");
+    btnOcupar.classList.add("switch");
     btnOcupar.id = chrome.id;
     btnOcupar.type = "checkbox";
     btnOcupar.checked = chrome.ocupado == "on";
     btnOcupar.onchange = function (e){ ocuparChrome(e.target.id, e.target.checked); }
-    ocupar.appendChild(btnOcupar);
-    btnOcupar.textContent = "Ocupar";
+    btnOcuparWrapper.appendChild(btnOcupar);
+    ocupar.appendChild(btnOcuparWrapper);
 
     tr.appendChild(nome);
     tr.appendChild(modelo);

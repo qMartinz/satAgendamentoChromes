@@ -110,6 +110,12 @@ End header CSS
 Start page CSS
 */
 
+.page-wrapper{
+    position: relative;
+    top: 50%;
+    width: 100%;
+}
+
 .authpanel {
     height: max-content;
     padding-top: 20px;
@@ -155,10 +161,8 @@ Start page CSS
 .adminpanel {
     height: max-content;
     width: 100%;
-    padding-bottom: 20px;
-    position: absolute;
-    bottom: 0;
-    transform: translate(0, -100%);
+    padding: 8px 0 20px 0;
+    position: relative;
 }
 
 .adminpanel button {

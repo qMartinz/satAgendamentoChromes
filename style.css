@@ -527,6 +527,9 @@ Start overlay CSS
     font-size: 13px;
     text-align: center;
     transition: background-color 0.2s ease;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 #overlay .loading_return:hover {

@@ -14,11 +14,13 @@ html, body {
 
 #page {
     height: max-content;
-    min-height: 78%;
+    min-height: calc(78% - 40px);
     background-color: rgb(255, 255, 255);
-    display: block;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: bold;
+    padding: 20px 0 20px 0;
+    display: flex;
+    align-items: center;
 }
 
 input[type="datetime-local" i] {
@@ -110,31 +112,26 @@ End header CSS
 Start page CSS
 */
 
-.authpanel {
+.wrapper {
     height: max-content;
-    padding-top: 20px;
+    min-height: 100%;
+    width: 100%;
 }
 
-.authcontainer {
+.authpanel {
     position: relative;
     height: 25px;
+    margin: 0 0 10px 0;
 }
 
-.authcontainer button {
+.authpanel button {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
     height: 100%;
 }
 
-.login {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(0, -50%);
-}
-
-.authcontainer button, .submit {
+.authpanel button, .submit {
     background-color: rgb(63, 61, 78);
     border-width: 0px ;
     border-radius: 5px;
@@ -155,7 +152,6 @@ Start page CSS
 .adminpanel {
     height: max-content;
     width: 100%;
-    padding: 8px 0 20px 0;
     position: relative;
 }
 

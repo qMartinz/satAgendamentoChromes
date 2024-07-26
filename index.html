@@ -35,53 +35,55 @@
     </div>
 
     <div id="page">
-        <div class="authpanel">
-            <div class="authcontainer login"> <button id="authorize_button" onclick="authorizeAgendamentos()" class="auth">Login</button> </div>
-            <div class="authcontainer logout"> <button id="signout_button" onclick="handleSignoutClick(false)" class="auth" hidden>Logout</button> </div>
-        </div>
-    
-        <script type="text/javascript" src="./auth.js"></script>
-        <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-        <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
-        <script src="./getSheetData.js" type="text/javascript" defer></script>
-    
-        <div id="content" style="visibility: hidden;">
-            <form autocomplete="off" method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
-                <div class="date">
-                    <div class="dateinput">
-                        <label for="emprestimohora" class="inputlabel">Empréstimo</label> <input type="datetime-local" name="emprestimohora" id="emprestimohora" required>
+        <div class="wrapper">
+            <div class="authpanel">
+                <button id="authorize_button" onclick="authorizeAgendamentos()" class="auth">Login</button>
+                <button id="signout_button" onclick="handleSignoutClick(false)" class="auth" hidden>Logout</button>
+            </div>
+        
+            <script type="text/javascript" src="./auth.js"></script>
+            <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+            <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+            <script src="./getSheetData.js" type="text/javascript" defer></script>
+        
+            <div id="content" hidden>
+                <form autocomplete="off" method="POST" id="agendamento" action="https://script.google.com/macros/s/AKfycbzWp7bvGVa8RQAFJ1hiynsnX757FJ7bzFIKY9XgBF7HQKKjONCgi99_FuNMLMzE_4Cb/exec">
+                    <div class="date">
+                        <div class="dateinput">
+                            <label for="emprestimohora" class="inputlabel">Empréstimo</label> <input type="datetime-local" name="emprestimohora" id="emprestimohora" required>
+                        </div>
+                        <div class="dateinput">
+                            <label for="devolucaohora" class="inputlabel">Devolução</label> <input type="datetime-local" name="devolucaohora" id="devolucaohora" required>
+                        </div>
                     </div>
-                    <div class="dateinput">
-                        <label for="devolucaohora" class="inputlabel">Devolução</label> <input type="datetime-local" name="devolucaohora" id="devolucaohora" required>
-                    </div>
-                </div>
-                <select name="turma" id="turma">
-                    <option value="0">Maternal</option>
-                    <option value="1">Jardim</option>
-                    <option value="2">Pré</option>
-                    <option value="3">1º Ano</option>
-                    <option value="4">2º Ano</option>
-                    <option value="5">3º Ano</option>
-                    <option value="6">4º Ano</option>
-                    <option value="7">5º Ano</option>
-                    <option value="8">6º Ano</option>
-                    <option value="9">7º Ano</option>
-                    <option value="10">8º Ano</option>
-                    <option value="11">9º Ano</option>
-                    <option value="12">1º Médio</option>
-                    <option value="13">2º Médio</option>
-                    <option value="14">3º Médio</option>
-                    <option value="15">Bilíngue</option>
-                    <option value="16">Uso Próprio</option>
-                </select>
-                <div id="chrome"></div>
-                <input type="text" name="obs" id="obs" placeholder="Observação">
-                <button type="submit" class="submit">Agendar</button>
-            </form>
-        </div>
-    
-        <div class="adminpanel">
-            <button onclick="location.assign('https://qmartinz.github.io/satAgendamentoChromes/PainelAdm')">Painel do Administrador</button>
+                    <select name="turma" id="turma">
+                        <option value="0">Maternal</option>
+                        <option value="1">Jardim</option>
+                        <option value="2">Pré</option>
+                        <option value="3">1º Ano</option>
+                        <option value="4">2º Ano</option>
+                        <option value="5">3º Ano</option>
+                        <option value="6">4º Ano</option>
+                        <option value="7">5º Ano</option>
+                        <option value="8">6º Ano</option>
+                        <option value="9">7º Ano</option>
+                        <option value="10">8º Ano</option>
+                        <option value="11">9º Ano</option>
+                        <option value="12">1º Médio</option>
+                        <option value="13">2º Médio</option>
+                        <option value="14">3º Médio</option>
+                        <option value="15">Bilíngue</option>
+                        <option value="16">Uso Próprio</option>
+                    </select>
+                    <div id="chrome"></div>
+                    <input type="text" name="obs" id="obs" placeholder="Observação">
+                    <button type="submit" class="submit">Agendar</button>
+                </form>
+            </div>
+        
+            <div class="adminpanel">
+                <button onclick="location.assign('https://qmartinz.github.io/satAgendamentoChromes/PainelAdm')">Painel do Administrador</button>
+            </div>
         </div>
     </div>
 

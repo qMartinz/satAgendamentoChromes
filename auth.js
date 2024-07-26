@@ -100,7 +100,7 @@
         getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
         document.getElementById('authorize_button').hidden = true;
         document.getElementById('signout_button').hidden = false;
-        document.getElementById("content").style.visibility = 'visible';
+        document.getElementById("content").hidden = false;
       }
 
       /**
@@ -172,6 +172,6 @@
           document.getElementById('signout_button').hidden = true;
           document.getElementById('authorize_button').hidden = false;
           if (painel) document.getElementById("paginaPainel").hidden = true;
-          if (!painel) document.getElementById("content").style.visibility = 'hidden';
+          if (!painel) document.getElementById("content").hidden = true;
         }
       }

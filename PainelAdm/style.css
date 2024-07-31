@@ -510,7 +510,7 @@ Start devolucao CSS
     background-color: rgba(0, 0, 0, 0.544);
 }
 
-#devolucaoform {
+#devolucaoform, #success {
     background-color: rgb(73, 54, 5);
     width: max-content;
     padding: 20px;
@@ -519,9 +519,38 @@ Start devolucao CSS
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    color: white;
 }
 
-#devolucaoform button {
+#loading {
+    background-color: rgb(73, 54, 5);
+    border-radius: 10px;
+    width: max-content;
+    max-width: 80%;
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: background-color 1s ease;
+}
+
+#loading span {
+    color: white;
+    animation: blinker 2s linear infinite;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    padding: 10px;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+#devolucaoform button, #success button {
     display: block;
     background-color: rgb(128, 96, 22);
     border-width: 0px ;
@@ -540,7 +569,7 @@ Start devolucao CSS
     margin-top: 10px;
 }
 
-#devolucaoform button:hover {
+#devolucaoform button:hover, #success button:hover {
     background-color: rgb(243, 209, 130);
 }
 

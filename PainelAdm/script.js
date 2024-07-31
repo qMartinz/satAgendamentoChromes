@@ -501,7 +501,7 @@ async function ocuparChrome(id, ocupado){
             valueInputOption: 'RAW',
             resource,
         });
-
+        
         await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
         
         await new Promise(() => criarTabelaChromes());
@@ -528,9 +528,10 @@ function registrarDevolucao(id){
         agendamento.id = i;
         agndmnts.push(agendamento);
     }
-    
+
     devolverAgendamento(id);
     adicionarAoArquivo(agndmnts[id]);
+    document.getElementById('loading').hidden = false;
 }
 
 /**
@@ -595,11 +596,24 @@ async function adicionarAoArquivo(agendamento) {
         console.error('Erro ao adicionar dados:', err);
     } finally {
         // Atualiza as tabelas
+        await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
+        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = sheetData);
+        await getSheetDataCallback("Agendamentos", (sheetData) => {
+            agndmnts = [];
+            for(var id = 0; id < sheetData.length; id++) {
+                const element = sheetData[id];
+                element.id = id;
+                agndmnts.push(element);
+            }
+            agendamentos = agndmnts;
+        });
+        
         criarTabelaAgendamentos();
         criarTabelaChromes();
         criarTabelaArquivados();
-        document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
-        alert("Devolução registrada!");
+
+        document.getElementById('loading').hidden = true;
+        document.getElementById('success').hidden = false;
     }
 }
 
@@ -688,6 +702,13 @@ function criarTabelaArquivados() {
     
     // Ordena a tabela de acordo com a variável ordenarArquivados editável pelo usuário e cria uma linha para cada agendamento arquivado
     arquivo.forEach(a => criarLinha(a, true));
+}
+
+async function closeLoading(){
+    document.getElementById("devolucaoform-wrapper").hidden = true;
+    document.getElementById("devolucaoform").hidden = false;
+    document.getElementById("success").hidden = true;
+    document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = false);
 }
 
 /**

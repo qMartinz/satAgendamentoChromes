@@ -24,6 +24,15 @@
                 <button type="submit">Registrar Devolução</button>
                 <button type="button" onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
             </form>
+            <div id="loading" hidden>
+                <span>
+                    Registrando devolução...
+                </span>
+            </div>
+            <div class="success_text" id="success" hidden>
+                <span>Devolução registrada com sucesso.</span>
+                <button class="loading_return" id="loading_return" onclick="closeLoading()">Voltar</button>
+            </div>
         </div>
 
         <div id="listaChromes" hidden>

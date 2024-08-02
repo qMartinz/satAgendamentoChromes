@@ -476,7 +476,6 @@ function criarTabelaChromes() {
 * @param {boolean} ocupado Verdadeiro caso o usuário tenha definido o chrome como ocupado
 */
 async function ocuparChrome(id, ocupado){
-    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
     const range = "Chromes!" + "B" + (Number(id) + 2).toString();
     document.querySelectorAll("#chromes input").forEach(e => e.disabled = true);
     
@@ -496,7 +495,7 @@ async function ocuparChrome(id, ocupado){
     
     try {
         const result = await gapi.client.sheets.spreadsheets.values.update({
-            spreadsheetId: spreadsheetId,
+            spreadsheetId: SHEET,
             range: range,
             valueInputOption: 'RAW',
             resource,
@@ -562,8 +561,7 @@ function mostrarListaChromes(id){
 * @param {Object} agendamento Os dados do agendamento
 */
 async function adicionarAoArquivo(agendamento) {
-    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
-    const sheet = 'Arquivados';
+    const sheetrange = 'Arquivados';
     
     // Cria um array organizado com os valores a serem enviados para a planilha
     var agendValues = agendamento;
@@ -586,8 +584,8 @@ async function adicionarAoArquivo(agendamento) {
     
     try {
         const result1 = await gapi.client.sheets.spreadsheets.values.append({
-            spreadsheetId,
-            range: sheet,
+            SHEET,
+            range: sheetrange,
             valueInputOption: 'RAW',
             insertDataOption: 'INSERT_ROWS',
             resource,
@@ -622,7 +620,6 @@ async function adicionarAoArquivo(agendamento) {
 * @param {string} id O id do agendamento
 */
 async function devolverAgendamento(id){
-    const spreadsheetId = '1XUVqK59o1nPMhZTG_eh8ghd0SArB2fZyk1pnOf_ne7A';
     const range = "Agendamentos!" + "A" + (Number(id) + 2).toString();
     
     const data = {
@@ -639,7 +636,7 @@ async function devolverAgendamento(id){
     
     try {
         const result = await gapi.client.sheets.spreadsheets.values.append({
-            spreadsheetId,
+            SHEET,
             range: range,
             valueInputOption: 'RAW',
             resource,

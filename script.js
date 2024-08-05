@@ -54,7 +54,6 @@ document.getElementById("devolucaohora").addEventListener('change', async functi
 });
 
 async function agendar(e) {
-  let submitButton = agendamento.querySelector("[type='submit']");
   document.getElementById("overlay").hidden = false;
   
   e.preventDefault();

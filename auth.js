@@ -14,8 +14,6 @@ const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 // included, separated by spaces.
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid';
 
-const SHEET = '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk';
-
 let tokenClient;
 let gapiInited = false;
 let gisInited = false;
@@ -115,11 +113,13 @@ async function showPainel(){
     }).then((about) => {
       var userId = about.result.user.permissionId;
       const permissions = gapi.client.drive.permissions.list({
-        fileId: SHEET
+        fileId: '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk',
+        supportsAllDrives: true,
+        supportsTeamDrives: true
       }).then(async function(response) {
         var permissions = response.result.permissions;
         var userHasPermission = permissions.some(function(permission) {
-          return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner'));
+          return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner' || permission.role === 'organizer' || permission.role === 'fileOrganizer'));
         });
         
         if (!userHasPermission){

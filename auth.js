@@ -133,7 +133,7 @@ async function showPainel(){
         
         if (!userHasPermission){
           console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
-          location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+          location.assign("https://colegiosatelite.com.br/agendamento/PainelAdm/AcessoNegado");
           return;
         }
         
@@ -160,12 +160,12 @@ async function showPainel(){
         console.error('Erro ao verificar permissões:', error);
         if (error.status === 403) {
           console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
-          location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+          location.assign("https://colegiosatelite.com.br/agendamento/PainelAdm/AcessoNegado");
         }
         
         if (error.status === 404) {
           console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
-          location.assign("https://qmartinz.github.io/satAgendamentoChromes/PainelAdm/AcessoNegado");
+          location.assign("https://colegiosatelite.com.br/agendamento/PainelAdm/AcessoNegado");
         }
       });
     });

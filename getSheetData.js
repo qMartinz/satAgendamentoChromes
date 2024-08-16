@@ -15,7 +15,7 @@ const getSheetData = ({ sheetID, sheetName, callback }) => {
       console.error('Erro ao utilizar dados da planilha:', error);
       if (error.status === 403){
         console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
-        location.assign("https://qmartinz.github.io/satAgendamentoChromes/AcessoNegado");
+        location.assign("https://colegiosatelite.com.br/agendamento/acessonegado");
       }
     });
   });

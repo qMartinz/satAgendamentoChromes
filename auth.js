@@ -21,8 +21,8 @@ if (document.getElementById('authorize_button') != null) {
 /**
 * Callback after api.js is loaded.
 */
-function gapiLoaded() {
-  gapi.load('client', initializeGapiClient);
+async function gapiLoaded() {
+  await gapi.load('client', initializeGapiClient);
 }
 
 /**
@@ -88,6 +88,7 @@ function handleAuthorize(resolve, reject, painel){
       showAgendamentos();
     };
     
+    window.sessionStorage.setItem("access_token", gapi.client.getToken().access_token);
     resolve();
   };
   

@@ -169,6 +169,14 @@ function createChromeCheckboxes(chromeData){
 */
 window.addEventListener("DOMContentLoaded", function() {
   const agendamento = document.getElementById('agendamento');
+  gapi.load('client', function(){
+    gapi.client.init({}).then(function(){
+        if (window.sessionStorage.getItem("access_token") !== null) {
+            gapi.client.setToken({access_token:window.sessionStorage.getItem("access_token")});
+            showAgendamentos();
+        }
+    });
+  });
   
   // Evento acionado quando o usuário tenta realizar um agendamento
   agendamento.addEventListener("submit", (e) => agendar(e));

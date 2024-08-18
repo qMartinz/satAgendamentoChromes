@@ -295,6 +295,17 @@ function getAgendamentos(agendamentosData){
     return agndmnts;
 }
 
+window.addEventListener("DOMContentLoaded", function(){
+    gapi.load('client', function(){
+        gapi.client.init({}).then(function(){
+            if (window.sessionStorage.getItem("access_token") !== null) {
+                gapi.client.setToken({access_token:window.sessionStorage.getItem("access_token")});
+                showPainel();
+            }
+        });
+    });
+});
+
 /**
 * Cria uma linha de tabela para o agendamento especificado
 * @param {Object} agendamento O objeto com os dados do agendamento

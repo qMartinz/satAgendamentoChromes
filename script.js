@@ -67,7 +67,7 @@ async function agendar(e) {
     // Cancela o agendamento caso o usuário tenha colocado um horário inválido
     const horainicio = new Date(document.getElementById("emprestimohora").value);
     const horafim = new Date(document.getElementById("devolucaohora").value);
-    if (horafim <= horainicio || (horafim < new Date() || horainicio < new Date())){
+    if (horafim <= horainicio){
       rej(2);
     }
     

@@ -298,10 +298,12 @@ function getAgendamentos(agendamentosData){
 window.addEventListener("DOMContentLoaded", function(){
     gapi.load('client', function(){
         gapi.client.init({}).then(function(){
-            if (window.sessionStorage.getItem("access_token") !== null) {
-                gapi.client.setToken({access_token:window.sessionStorage.getItem("access_token")});
-                showPainel();
-            }
+            fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + window.sessionStorage.getItem("access_token")).then(function(response){
+                if (response.ok){
+                    gapi.client.setToken({access_token:window.sessionStorage.getItem("access_token")});
+                    showPainel();
+                }
+            });
         });
     });
 });
@@ -538,7 +540,7 @@ function registrarDevolucao(id){
         agendamento.id = i;
         agndmnts.push(agendamento);
     }
-
+    
     devolverAgendamento(id);
     adicionarAoArquivo(agndmnts[id]);
     document.getElementById('loading').hidden = false;
@@ -620,7 +622,7 @@ async function adicionarAoArquivo(agendamento) {
         criarTabelaAgendamentos();
         criarTabelaChromes();
         criarTabelaArquivados();
-
+        
         document.getElementById('loading').hidden = true;
         document.getElementById('success').hidden = false;
     }

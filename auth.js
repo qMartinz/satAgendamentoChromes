@@ -127,6 +127,7 @@ async function showPainel(){
         supportsAllDrives: true,
         supportsTeamDrives: true
       }).then(async function(response) {
+        
         var permissions = response.result.permissions;
         var userHasPermission = permissions.some(function(permission) {
           return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner' || permission.role === 'organizer' || permission.role === 'fileOrganizer'));
@@ -179,6 +180,7 @@ async function showPainel(){
 function handleSignoutClick(painel) {
   const token = gapi.client.getToken();
   if (token !== null) {
+    sessionStorage.removeItem("access_token");
     google.accounts.oauth2.revoke(token.access_token);
     gapi.client.setToken('');
     document.getElementById('signout_button').hidden = true;

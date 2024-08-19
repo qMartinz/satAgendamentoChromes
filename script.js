@@ -198,11 +198,11 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido
   var inicioEstaEntreAgendamento = inicio >= inicioAgendado && fimAgendado > inicio;
   
   if (fimAgendado < inicio && fimAgendado < new Date() && !devolvido) return true;
-  if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
-  if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento) return true;
-  if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento) return true;
-  if (fimAgendado < fim && fim > inicioAgendado && inicioAgendado > inicio && inicio < fimAgendado) return true;
-  if (fimAgendado == fim && inicio == inicioAgendado) return true;
+  if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento && !devolvido) return true;
+  if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento && !devolvido) return true;
+  if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento && !devolvido) return true;
+  if (fimAgendado < fim && fim > inicioAgendado && inicioAgendado > inicio && inicio < fimAgendado && !devolvido) return true;
+  if (fimAgendado == fim && inicio == inicioAgendado && !devolvido) return true;
   return false;
 }
 

@@ -295,7 +295,7 @@ function getAgendamentos(agendamentosData){
     return agndmnts;
 }
 
-window.addEventListener("DOMContentLoaded", function(){
+window.addEventListener("load", function(){
     gapi.load('client', function(){
         gapi.client.init({}).then(function(){
             fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + window.sessionStorage.getItem("access_token")).then(function(response){

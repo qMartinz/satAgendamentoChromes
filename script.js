@@ -167,7 +167,7 @@ function createChromeCheckboxes(chromeData){
 /**
 * Evento para fazer o que é necessário quando a página for aberta
 */
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("load", function() {
   const agendamento = document.getElementById('agendamento');
   gapi.load('client', function(){
     gapi.client.init({}).then(function(){

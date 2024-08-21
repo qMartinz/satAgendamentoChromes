@@ -135,6 +135,7 @@ async function showPainel(){
         
         if (!userHasPermission){
           console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+          handleSignoutClick(true);
           location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
           return;
         }
@@ -162,11 +163,13 @@ async function showPainel(){
         console.error('Erro ao verificar permissões:', error);
         if (error.status === 403) {
           console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+          handleSignoutClick(true);
           location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
         }
         
         if (error.status === 404) {
           console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
+          handleSignoutClick(true);
           location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
         }
       });

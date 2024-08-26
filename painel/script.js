@@ -35,7 +35,7 @@ const ORDENAR_STATUS = function(a, b) {
 }
 
 const ORDENAR_CHROMES = function(a, b) {
-    return b.chromes.length - a.chromes.length;
+    return a.chromes.length - b.chromes.length;
 }
 
 // Variáveis alteradas ao alterar função de ordenação
@@ -282,7 +282,8 @@ function getAgendamentos(agendamentosData){
         let agendamento = {};
         let chromesAgendados = [];
         Object.entries(element).forEach(element2 => {
-            if (element2[0].startsWith("chrome") && element2[1] == "on") {
+            console.log(element2);
+            if (element2[0].startsWith("chrome") && element2[1] === "on") {
                 chromesAgendados.push(element2[0]);
             } else if (!element2[0].startsWith("chrome")) {
                 agendamento[element2[0]] = element2[1];
@@ -389,11 +390,8 @@ function criarTabelaAgendamentos() {
     document.getElementById("agendamentos").innerHTML = "";
     document.getElementById("agendamentos").append(firstChild);
     
-    // Cria um array mais organizado com os agendamentos
-    let agndmnts = getAgendamentos(agendamentos);
-    
     // Filtra e ordena os agendamentos para criar uma linha na tabela para cada agendamento
-    agndmnts.filter(a => a.devolvido !== "on").forEach(a => criarLinha(a, false));
+    agendamentos.filter(a => a.devolvido !== "on").forEach(a => criarLinha(a, false));
 }
 
 document.getElementById("voltarListaChromes").addEventListener("click", function(){
@@ -547,11 +545,7 @@ function registrarDevolucao(id){
 * @param {number} id O id do agendamento
 */
 function mostrarListaChromes(id){
-    let chrms = [];
-    
-    Object.entries(agendamentos[id]).forEach(element2 => {
-        if (element2[0].startsWith("chrome") && element2[1] == "on") chrms.push(element2[0]);
-    });
+    let chrms = agendamentos[id].chromes;
     
     const listaDiv = document.getElementById("listaChromes")
     listaDiv.hidden = false;
@@ -604,7 +598,7 @@ async function adicionarAoArquivo(agendamento) {
     } finally {
         // Atualiza as tabelas
         await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
-        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = sheetData);
+        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getAgendamentos(sheetData));
         await getSheetDataCallback("Agendamentos", (sheetData) => {
             agndmnts = [];
             for(var id = 0; id < sheetData.length; id++) {
@@ -612,7 +606,7 @@ async function adicionarAoArquivo(agendamento) {
                 element.id = id;
                 agndmnts.push(element);
             }
-            agendamentos = agndmnts;
+            agendamentos = getAgendamentos(agndmnts);
         });
         
         criarTabelaAgendamentos();
@@ -689,25 +683,8 @@ function criarTabelaArquivados() {
     document.getElementById("arquivados").innerHTML = "";
     document.getElementById("arquivados").append(firstChild);
     
-    // Cria um array mais organizado com todos os agendamentos arquivados
-    let arquivo = [];
-    for (id = 0; id < arquivados.length; id++){
-        const element = arquivados[id];
-        let arquivado = {};
-        let chromes = [];
-        
-        Object.entries(element).forEach(element2 => {
-            if (element2[0].startsWith("chrome") && element2[1] == "on") chromes.push(element2[0]);
-            if (!element2[0].startsWith("chrome")) arquivado[element2[0]] = element2[1];
-        });
-        
-        arquivado.chromes = chromes;
-        arquivado.id = arquivados[id]["id"];
-        arquivo.push(arquivado);
-    }
-    
     // Ordena a tabela de acordo com a variável ordenarArquivados editável pelo usuário e cria uma linha para cada agendamento arquivado
-    arquivo.forEach(a => criarLinha(a, true));
+    arquivados.forEach(a => criarLinha(a, true));
 }
 
 async function closeLoading(){

@@ -412,9 +412,6 @@ function criarLinhaChromes(agendamentos, chrome){
     const nome = document.createElement("td");
     nome.textContent = "Chrome " + (Number(chrome.id) + 1).toString();
     
-    const modelo = document.createElement("td");
-    modelo.textContent = chrome.modelo;
-    
     const status = document.createElement("td")
     status.textContent = getChromeStatusString(getChromeStatus(agendamentos, chrome.id, chrome.ocupado == "on"));
     
@@ -450,7 +447,6 @@ function criarLinhaChromes(agendamentos, chrome){
     ocupar.appendChild(btnOcuparWrapper);
     
     tr.appendChild(nome);
-    tr.appendChild(modelo);
     tr.appendChild(status);
     tr.appendChild(ultimoAgendDate);
     tr.appendChild(ultimoUsuario);

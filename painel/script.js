@@ -282,7 +282,27 @@ function getAgendamentos(agendamentosData){
         let agendamento = {};
         let chromesAgendados = [];
         Object.entries(element).forEach(element2 => {
-            console.log(element2);
+            if (element2[0].startsWith("chrome") && element2[1] === "on") {
+                chromesAgendados.push(element2[0]);
+            } else if (!element2[0].startsWith("chrome")) {
+                agendamento[element2[0]] = element2[1];
+            }
+            
+            agendamento.chromes = chromesAgendados;
+            agendamento.id = id;
+        });
+        agndmnts.push(agendamento);
+    }
+    return agndmnts;
+}
+
+function getArquivos(arquivosData){
+    let arqvs = [];
+    for (id = 0; id < arquivosData.length; id++){
+        const element = arquivosData[id];
+        let agendamento = {};
+        let chromesAgendados = [];
+        Object.entries(element).forEach(element2 => {
             if (element2[0].startsWith("chrome") && element2[1] === "on") {
                 chromesAgendados.push(element2[0]);
             } else if (!element2[0].startsWith("chrome")) {
@@ -291,9 +311,9 @@ function getAgendamentos(agendamentosData){
             
             agendamento.chromes = chromesAgendados;
         });
-        agndmnts.push(agendamento);
+        arqvs.push(agendamento);
     }
-    return agndmnts;
+    return arqvs;
 }
 
 window.addEventListener("load", function(){
@@ -461,20 +481,12 @@ function criarTabelaChromes() {
     const firstChild = chromeTabela.firstElementChild;
     chromeTabela.innerHTML = "";
     chromeTabela.append(firstChild);
-    
-    let agndmnts = getAgendamentos(agendamentos);
-    agndmnts = agndmnts.sort(ordenarAgendamentos);
-    
-    let chrms = [];
-    for (id = 0; id < chromes.length; id++){
-        const element = chromes[id];
-        let chrome = {};
-        Object.entries(element).forEach(element2 => chrome[element2[0]] = element2[1]);
+
+    for (let id = 0; id < chromes.length; id++) {
+        const chrome = chromes[id];
         chrome.id = id;
-        chrms.push(chrome);
+        criarLinhaChromes(agendamentos, chrome);
     }
-    
-    chrms.forEach(chrome => criarLinhaChromes(agndmnts, chrome));
 }
 
 /**
@@ -525,18 +537,8 @@ async function ocuparChrome(id, ocupado){
 function registrarDevolucao(id){
     document.querySelectorAll(".devolvido").forEach(btn => btn.disabled = true);
     
-    let agndmnts = [];
-    
-    for (i = 0; i < agendamentos.length; i++){
-        const element = agendamentos[i];
-        let agendamento = {};
-        Object.entries(element).forEach(element2 => agendamento[element2[0]] = element2[1]);
-        agendamento.id = i;
-        agndmnts.push(agendamento);
-    }
-    
     devolverAgendamento(id);
-    adicionarAoArquivo(agndmnts[id]);
+    adicionarAoArquivo(agendamentos.find(a => a.id == id));
     document.getElementById('loading').hidden = false;
 }
 
@@ -545,7 +547,8 @@ function registrarDevolucao(id){
 * @param {number} id O id do agendamento
 */
 function mostrarListaChromes(id){
-    let chrms = agendamentos[id].chromes;
+    console.log(agendamentos.find(a => a.id == id));
+    let chrms = agendamentos.find(a => a.id == id).chromes;
     
     const listaDiv = document.getElementById("listaChromes")
     listaDiv.hidden = false;
@@ -576,8 +579,14 @@ async function adicionarAoArquivo(agendamento) {
         [agendValues.id, agendValues.Date, agendValues.emprestimohora, agendValues.devolucaohora, agendValues.turma, agendValues.nome, agendValues.email]
     ];
     
-    var chromes = Object.entries(agendValues).filter(p => p[0].startsWith('chrome'));
-    chromes.forEach(c => values[0].push(c[1]));
+    for (let id = 0; id < chromes.length; id++) {
+        const chrome = chromes[id];
+        if (agendValues.chromes.includes("chrome" + id)) {
+            values[0].push("on");
+        } else {
+            values[0].push("");
+        }
+    }
     
     values[0].push(agendValues.obs, agendValues.obsdevolucao);
     
@@ -598,7 +607,7 @@ async function adicionarAoArquivo(agendamento) {
     } finally {
         // Atualiza as tabelas
         await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
-        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getAgendamentos(sheetData));
+        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getArquivos(sheetData));
         await getSheetDataCallback("Agendamentos", (sheetData) => {
             agndmnts = [];
             for(var id = 0; id < sheetData.length; id++) {

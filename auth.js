@@ -154,7 +154,7 @@ async function showPainel(){
           agendamentos = getAgendamentos(agndmnts);
         });
         await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
-        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getAgendamentos(sheetData));
+        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getArquivos(sheetData));
         
         criarTabelaAgendamentos();
         criarTabelaChromes();

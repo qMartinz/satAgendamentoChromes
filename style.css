@@ -198,9 +198,7 @@ Start page CSS
 }
 
 #chrome {
-    display: grid;
-    grid-template-columns: max-content max-content max-content;
-    gap: 0 30px;
+    column-count: 3;
     margin: auto;
     width: max-content;
     padding: 20px;

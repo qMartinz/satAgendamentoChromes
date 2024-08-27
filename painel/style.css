@@ -462,10 +462,16 @@ Start chrome list CSS
     padding-bottom: 20px;
     list-style-type: decimal;
     color: white;
+    column-count: 3;
+    column-gap: 45px;
 }
 
 #listaChromes div ul li{
     padding: 5px;
+}
+
+#listaChromes div ul li::marker {
+    font-size: 12px;
 }
 
 #listaChromes div button {

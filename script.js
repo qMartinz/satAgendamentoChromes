@@ -59,9 +59,11 @@ async function agendar(e) {
   e.preventDefault();
   
   await new Promise(async (res, rej) => {
+    var trySending = true;
     // Cancela o agendamento caso o usuário não tenha selecionado um chrome
     if (!(document.querySelectorAll(".chrome:checked:not([disabled])").length>0)){
       rej(1);
+      trySending = false;
     }
     
     // Cancela o agendamento caso o usuário tenha colocado um horário inválido
@@ -69,39 +71,42 @@ async function agendar(e) {
     const horafim = new Date(document.getElementById("devolucaohora").value);
     if (horafim <= horainicio){
       rej(2);
+      trySending = false;
     }
     
     // Realiza o agendamento
-    await gapi.client.load('people', 'v1', function() {
-      gapi.client.people.people.get({
-        resourceName: "people/me",
-        personFields: "emailAddresses,names"
-      }).then(async function(response) {
-        const email = response.result.emailAddresses[0].value;
-        const domain = email.split('@')[1];
-        
-        // Cancela o agendamento se o usuário não possuir permissão
-        if (!(domain === 'colegiosatelite.com.br')) {
-          rej(3);
-        }
-        
-        // Adiciona o agendamento à planilha
-        const data = new FormData(agendamento);
-        data.append("email", email);
-        data.append("nome", response.result.names[0].displayName);
-        data.append("accesstoken", gapi.client.getToken().access_token);
-        const action = e.target.action;
-        await fetch(action, {
-          method: 'POST',
-          body: data,
-        }).then((r) => {
-          res();
-        }, function(err) {
-          console.error("Erro ao adicionar agendamento", err);
-          rej(4);
+    if(trySending) {
+      await gapi.client.load('people', 'v1', function() {
+        gapi.client.people.people.get({
+          resourceName: "people/me",
+          personFields: "emailAddresses,names"
+        }).then(async function(response) {
+          const email = response.result.emailAddresses[0].value;
+          const domain = email.split('@')[1];
+          
+          // Cancela o agendamento se o usuário não possuir permissão
+          if (!(domain === 'colegiosatelite.com.br')) {
+            rej(3);
+          }
+          
+          // Adiciona o agendamento à planilha
+          const data = new FormData(agendamento);
+          data.append("email", email);
+          data.append("nome", response.result.names[0].displayName);
+          data.append("accesstoken", gapi.client.getToken().access_token);
+          const action = e.target.action;
+          await fetch(action, {
+            method: 'POST',
+            body: data,
+          }).then((r) => {
+            res();
+          }, function(err) {
+            console.error("Erro ao adicionar agendamento", err);
+            rej(4);
+          });
         });
       });
-    });
+    }
   }).then(
     () => {successAgendamento()}, (err) => {errorAgendamento(err)}
   );

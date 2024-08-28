@@ -401,7 +401,7 @@ function criarLinha(agendamento, arquivado){
     linha.appendChild(horainicio);
     linha.appendChild(horafim);
     linha.appendChild(turma);
-    linha.appendChild(nome);
+    linha.appendChild(nome); 
     linha.appendChild(email);
     if (!arquivado) linha.appendChild(status);
     linha.appendChild(chromes);
@@ -503,7 +503,7 @@ function criarTabelaChromes() {
 * @param {boolean} ocupado Verdadeiro caso o usuário tenha definido o chrome como ocupado
 */
 async function ocuparChrome(id, ocupado){
-    const range = "Chromes!" + "B" + (Number(id) + 2).toString();
+    const range = "Chromes!" + "A" + (Number(id) + 2).toString();
     document.querySelectorAll("#chromes input").forEach(e => e.disabled = true);
     
     let value = ocupado ? "on" : "off";

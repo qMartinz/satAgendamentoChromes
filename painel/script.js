@@ -378,7 +378,10 @@ function criarLinha(agendamento, arquivado){
     chromes.appendChild(btnChromes);
     
     const obs = document.createElement("td");
-    obs.textContent = arquivado ? agendamento["obsdevolucao"] : agendamento["obs"];
+    obs.textContent = agendamento["obs"];
+
+    const obsdevol = document.createElement("td");
+    obsdevol.textContent = agendamento["obsdevolucao"];
     
     const devolvido = document.createElement("td");
     if (!arquivado) {
@@ -403,6 +406,7 @@ function criarLinha(agendamento, arquivado){
     if (!arquivado) linha.appendChild(status);
     linha.appendChild(chromes);
     linha.appendChild(obs);
+    if (arquivado) linha.appendChild(obsdevol);
     if (!arquivado) linha.appendChild(devolvido);
 }
 

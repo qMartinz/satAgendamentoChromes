@@ -63,15 +63,15 @@
                 <h2>Agendamentos</h2>
                 <table id="agendamentos">
                     <tr>
-                        <td><button class="cres" onclick="changeSortAgendamentos(event, ORDENAR_ID)">ID</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_DATE)">Data</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_START)">Empréstimo</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_END)">Devolução</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_TURMA)">Turma</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_NOME)">Nome</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_EMAIL)">Email</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_STATUS)">Status</button></td>
-                        <td><button onclick="changeSortAgendamentos(event, ORDENAR_CHROMES)">Chromes</button></td>
+                        <td><button class="cres" onclick="changeSortAgendamentos(event.target, ORDENAR_ID)">ID</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_DATE)">Data</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_START)">Empréstimo</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_END)">Devolução</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_TURMA)">Turma</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_NOME)">Nome</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_EMAIL)">Email</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_STATUS)">Status</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_CHROMES)">Chromes</button></td>
                         <td>Observações</td>
                         <td>Devolução</td>
                     </tr>
@@ -95,14 +95,14 @@
                 <h2>Arquivados</h2>
                 <table id="arquivados">
                     <tr>
-                        <td><button class="cres" onclick="changeSortArquivados(event, ORDENAR_ID)">ID</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_DATE)">Data</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_START)">Empréstimo</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_END)">Devolução</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_TURMA)">Turma</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_NOME)">Nome</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_EMAIL)">Email</button></td>
-                        <td><button onclick="changeSortArquivados(event, ORDENAR_CHROMES)">Chromes</button></td>
+                        <td><button class="cres" onclick="changeSortArquivados(event.target, ORDENAR_ID_ARQUIVADO)">ID</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_DATE)">Data</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_START)">Empréstimo</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_END)">Devolução</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_TURMA)">Turma</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_NOME)">Nome</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_EMAIL)">Email</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_CHROMES)">Chromes</button></td>
                         <td>Observações</td>
                     </tr>
                 </table>

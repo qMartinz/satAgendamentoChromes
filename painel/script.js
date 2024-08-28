@@ -2,6 +2,10 @@ const ORDENAR_ID = function(a, b) {
     return b - a;
 }
 
+const ORDENAR_ID_ARQUIVADO = function(a, b) {
+    return a.id - b.id;
+}
+
 const ORDENAR_DATE = function(a, b) {
     return new Date(b.Date) - new Date(a.Date);
 }
@@ -40,7 +44,7 @@ const ORDENAR_CHROMES = function(a, b) {
 
 // Variáveis alteradas ao alterar função de ordenação
 let ordenarAgendamentos = ORDENAR_ID;
-let ordenarArquivados = ORDENAR_ID;
+let ordenarArquivados = ORDENAR_ID_ARQUIVADO;
 
 // Dados das planilhas
 let chromes = [];
@@ -66,30 +70,30 @@ let arquivados = [];
 * Altera a função de ordenação utilizada na tabela de agendamentos
 * @param {sortFunction} sortFunction Função utilizada para definir a ordem da lista
 */
-function changeSortAgendamentos(event, sortFunction){
+function changeSortAgendamentos(element, sortFunction){
     if (ordenarAgendamentos == sortFunction) {
         agendamentos.reverse();
-        if (event.target.classList.contains('decr')) {
-            document.querySelectorAll("#agendamentos button").forEach(element => {
-                element.classList.remove("cres");
-                element.classList.remove("decr");
+        if (element.classList.contains('decr')) {
+            document.querySelectorAll("#agendamentos button").forEach(element2 => {
+                element2.classList.remove("cres");
+                element2.classList.remove("decr");
             });
-            event.target.classList.add("cres");
+            element.classList.add("cres");
         } else {
-            document.querySelectorAll("#agendamentos button").forEach(element => {
-                element.classList.remove("cres");
-                element.classList.remove("decr");
+            document.querySelectorAll("#agendamentos button").forEach(element2 => {
+                element2.classList.remove("cres");
+                element2.classList.remove("decr");
             });
-            event.target.classList.add("decr");
+            element.classList.add("decr");
         };
     } else {
-        document.querySelectorAll("#agendamentos button").forEach(element => {
-            element.classList.remove("cres");
-            element.classList.remove("decr");
+        document.querySelectorAll("#agendamentos button").forEach(element2 => {
+            element2.classList.remove("cres");
+            element2.classList.remove("decr");
         });
         ordenarAgendamentos = sortFunction;
         agendamentos.sort(ordenarAgendamentos);
-        event.target.classList.add("cres");
+        element.classList.add("cres");
     };
     criarTabelaAgendamentos();
 }
@@ -98,30 +102,30 @@ function changeSortAgendamentos(event, sortFunction){
 * Altera a função de ordenação utilizada na tabela de arquivados
 * @param {sortFunction} sortFunction Função utilizada para definir a ordem da lista
 */
-function changeSortArquivados(event, sortFunction){
+function changeSortArquivados(element, sortFunction){
     if (ordenarArquivados == sortFunction) {
         arquivados.reverse();
-        if (event.target.classList.contains('decr')) {
-            document.querySelectorAll("#arquivados button").forEach(element => {
-                element.classList.remove("cres");
-                element.classList.remove("decr");
+        if (element.classList.contains('decr')) {
+            document.querySelectorAll("#arquivados button").forEach(element2 => {
+                element2.classList.remove("cres");
+                element2.classList.remove("decr");
             });
-            event.target.classList.add("cres");
+            element.classList.add("cres");
         } else {
-            document.querySelectorAll("#arquivados button").forEach(element => {
-                element.classList.remove("cres");
-                element.classList.remove("decr");
+            document.querySelectorAll("#arquivados button").forEach(element2 => {
+                element2.classList.remove("cres");
+                element2.classList.remove("decr");
             });
-            event.target.classList.add("decr");
+            element.classList.add("decr");
         };
     } else {
-        document.querySelectorAll("#arquivados button").forEach(element => {
-            element.classList.remove("cres");
-            element.classList.remove("decr");
+        document.querySelectorAll("#arquivados button").forEach(element2 => {
+            element2.classList.remove("cres");
+            element2.classList.remove("decr");
         });
         ordenarArquivados = sortFunction;
         arquivados.sort(ordenarArquivados);
-        event.target.classList.add("decr");
+        element.classList.add("decr");
     };
     criarTabelaArquivados();
 }
@@ -607,7 +611,10 @@ async function adicionarAoArquivo(agendamento) {
     } finally {
         // Atualiza as tabelas
         await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
-        await getSheetDataCallback("Arquivados", (sheetData) => arquivados = getArquivos(sheetData));
+        await getSheetDataCallback("Arquivados", (sheetData) => {
+            arquivados = getArquivos(sheetData);
+            changeSortArquivados(document.querySelector('#arquivados tbody tr td:first-child'), ORDENAR_ID_ARQUIVADO);
+        });
         await getSheetDataCallback("Agendamentos", (sheetData) => {
             agndmnts = [];
             for(var id = 0; id < sheetData.length; id++) {
@@ -616,6 +623,7 @@ async function adicionarAoArquivo(agendamento) {
                 agndmnts.push(element);
             }
             agendamentos = getAgendamentos(agndmnts);
+            changeSortAgendamentos(document.querySelector('#agendamentos tbody tr td:first-child'), ORDENAR_ID);
         });
         
         criarTabelaAgendamentos();

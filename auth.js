@@ -14,10 +14,6 @@ let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-if (document.getElementById('authorize_button') != null) {
-  document.getElementById('signout_button').hidden = true;
-};
-
 /**
 * Callback after api.js is loaded.
 */
@@ -62,15 +58,6 @@ function gisPainelLoaded() {
   });
   gisInited = true;
   maybeEnableButtons();
-}
-
-/**
-* Enables user interaction after all libraries are loaded.
-*/
-function maybeEnableButtons() {
-  if (gapiInited && gisInited && document.getElementById('authorize_button') != null) {
-    document.getElementById('authorize_button').hidden = false;
-  }
 }
 
 /**

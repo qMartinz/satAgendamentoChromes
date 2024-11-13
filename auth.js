@@ -31,7 +31,6 @@ async function initializeGapiClient() {
     discoveryDocs: [DISCOVERY_DOC],
   });
   gapiInited = true;
-  maybeEnableButtons();
 }
 
 /**
@@ -44,7 +43,6 @@ function gisAgendamentoLoaded() {
     callback: '', // defined later
   });
   gisInited = true;
-  maybeEnableButtons();
 }
 
 /**
@@ -75,7 +73,7 @@ function handleAuthorize(resolve, reject, painel){
       showAgendamentos();
     };
     
-    window.sessionStorage.setItem("access_token", gapi.client.getToken().access_token);
+    window.localStorage.setItem("agendamentos_access_token", gapi.client.getToken().access_token);
     resolve();
   };
   
@@ -174,7 +172,7 @@ async function showPainel(){
 function handleSignoutClick(painel) {
   const token = gapi.client.getToken();
   if (token !== null) {
-    sessionStorage.removeItem("access_token");
+    localStorage.removeItem("agendamentos_access_token");
     google.accounts.oauth2.revoke(token.access_token);
     gapi.client.setToken('');
     document.getElementById('signout_button').hidden = true;

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="192x192">
+    <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png">
+
+    <title>Agendamento</title>
+</head>
+<body>
+    <header>
+        <div class="title">
+            <img src="../logo.png" alt="logo">
+            <h1>Agendamento de Chromes</h1>
+        </div>
+        <nav>
+            <a href="https://colegiosatelite.com.br/agendamento">Início</a>
+            <a href="https://colegiosatelite.com.br/agendamento/painel">Administrador</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="authpanel">
+            <button id="authorize_button" onclick="authorizeAgendamentos()" class="auth">Login</button>
+            <button id="signout_button" onclick="handleSignoutClick(false)" class="auth" hidden>Logout</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Site desenvolvido pela equipe de TI</p>
+        <p>Email para suporte: <a target="_blank" href="https://mail.google.com/a/colegiosatelite.com.br/mail/?extsrc=mailto&url=mailto%3Agustavo.martinez%40colegiosatelite.com.br%3Fsubject%3DSuporte%20para%20o%20website%20de%20Agendamentos">gustavo.martinez@colegiosatelite.com.br</a></p>
+    </footer>
+
+    <script type="text/javascript" src="../auth.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisAgendamentoLoaded()"></script>
+    <script src="./script.js" type="text/javascript" defer></script>
+    <script src="../getSheetData.js" type="text/javascript" defer></script>
+</body>
+</html>

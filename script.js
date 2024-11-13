@@ -176,9 +176,9 @@ window.addEventListener("load", function() {
   const agendamento = document.getElementById('agendamento');
   gapi.load('client', function(){
     gapi.client.init({}).then(function(){
-      fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + window.sessionStorage.getItem("access_token")).then(function(response){
+      fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + window.localStorage.getItem("agendamentos_access_token")).then(function(response){
         if (response.ok){
-          gapi.client.setToken({access_token:window.sessionStorage.getItem("access_token")});
+          gapi.client.setToken({access_token:window.localStorage.getItem("agendamentos_access_token")});
           showAgendamentos();
         }
       });

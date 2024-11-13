@@ -716,8 +716,76 @@ async function closeLoading(){
 }
 
 /**
+* Abre o painel de administrador caso o usuário possua permissão de editar a planilha com os dados dos agendamentos.
+*/
+async function showPainel(){        
+    gapi.client.load('drive', 'v3', function() {
+      gapi.client.drive.about.get({
+        fields: "user"
+      }).then((about) => {
+        var userId = about.result.user.permissionId;
+        const permissions = gapi.client.drive.permissions.list({
+          fileId: '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk',
+          supportsAllDrives: true,
+          supportsTeamDrives: true
+        }).then(async function(response) {
+          
+          var permissions = response.result.permissions;
+          var userHasPermission = permissions.some(function(permission) {
+            return (permission.id === userId && (permission.role === 'writer' || permission.role === 'owner' || permission.role === 'organizer' || permission.role === 'fileOrganizer'));
+          });
+          
+          if (!userHasPermission){
+            console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+            handleSignoutClick(true);
+            location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
+            return;
+          }
+          
+          document.getElementById('authorize_button').hidden = true;
+          document.getElementById('signout_button').hidden = false;
+          document.getElementById("paginaPainel").hidden = false;
+          
+          await getSheetDataCallback("Agendamentos", (sheetData) => {
+            agndmnts = [];
+            for(var id = 0; id < sheetData.length; id++) {
+              const element = sheetData[id];
+              element.id = id;
+              agndmnts.push(element);
+            }
+            agendamentos = getAgendamentos(agndmnts);
+            agendamentos.sort(ordenarAgendamentos);
+          });
+          await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
+          await getSheetDataCallback("Arquivados", (sheetData) => {
+            arquivados = getArquivos(sheetData);
+            arquivados.sort(ordenarArquivados);
+          });
+          
+          criarTabelaAgendamentos();
+          criarTabelaChromes();
+          criarTabelaArquivados();
+        }, function(error) {
+          console.error('Erro ao verificar permissões:', error);
+          if (error.status === 403) {
+            console.log('Usuário não tem permissão para editar o arquivo. Redirecionando...');
+            handleSignoutClick(true);
+            location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
+          }
+          
+          if (error.status === 404) {
+            console.log('Usuário não tem permissão para acessar o arquivo. Redirecionando...');
+            handleSignoutClick(true);
+            location.assign("https://colegiosatelite.com.br/agendamento/painel/acessonegado");
+          }
+        });
+      });
+    });
+  }
+
+/**
 * Implementação de {@link handleAuthorize} para realizar o login e abrir o painel de administrador
 */
 async function authorizePainel() {
-    await new Promise((resolve, reject) => handleAuthorize(resolve, reject, true));
+    await new Promise((resolve, reject) => handleAuthorize(resolve, reject, showPainel));
 }

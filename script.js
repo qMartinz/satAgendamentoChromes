@@ -211,9 +211,16 @@ function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido
   return false;
 }
 
+async function showAgendamentos(){
+  getSheetDataCallback("Chromes", (chromeData) => createChromeCheckboxes(chromeData));
+  document.getElementById('authorize_button').hidden = true;
+  document.getElementById('signout_button').hidden = false;
+  document.getElementById("content").hidden = false;
+}
+
 /**
 * Implementação de {@link handleAuthorize} para realizar o login e abrir o painel de administrador
 */
 async function authorizeAgendamentos() {
-  await new Promise((resolve, reject) => handleAuthorize(resolve, reject, false));
+  await new Promise((resolve, reject) => handleAuthorize(resolve, reject, showAgendamentos));
 }

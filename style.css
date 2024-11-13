@@ -48,6 +48,7 @@ header {
     justify-content: space-between;
     padding: 10px;
     align-items: center;
+    text-align: center;
 }
 header h1 {
     margin: 0;
@@ -152,6 +153,7 @@ main {
     gap: 20px;
     flex: 1;
     padding: 15px;
+    max-width: 100%;
 }
 main .authpanel button, main .submit {
     background-color: rgb(63, 61, 78);
@@ -170,12 +172,20 @@ main .authpanel button, main .submit {
 main #signout_button:hover, main #authorize_button:hover, main .submit:hover {
     background-color: rgb(149, 169, 230);
 }
+main section {
+    max-width: 80%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
 main form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     font-family: 'Prima';
+    width: 100%;
 }
 main form input[type="datetime-local" i] {
     font-family: 'Prima';
@@ -201,6 +211,7 @@ main form #chrome {
     width: max-content;
     padding: 20px;
     font-weight: normal;
+    font-size: 0.8rem;
 }
 main form .dateinput {
     display: flex;
@@ -273,6 +284,7 @@ footer {
     justify-content: space-between;
     padding: 10px;
     align-items: center;
+    text-align: center;
 }
 footer p {
     margin: 0;
@@ -415,8 +427,48 @@ End checkbox CSS
 Start responsivity CSS
 */
 
+@media only screen and (max-width: 860px) {
+    header {
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 12px;
+    }
+    header .title {
+        flex-direction: column;
+        gap: 5px;
+    }
+    header .title h1 {
+        font-size: 1.7rem;
+    }
+    header nav a {
+        font-size: 1rem;
+    }
+
+    footer p {
+        font-size: 0.7rem;
+    }
+    footer p a {
+        font-size: 0.7rem;
+    }
+}
+
 @media only screen and (max-width: 426px) {
-    .date {
+    #chrome {
+        display: grid;
+        grid-template-columns: max-content max-content;
+    }
+
+    footer p {
+        font-size: 0.45rem;
+    }
+    footer p a {
+        font-size: 0.45rem;
+    }
+}
+
+@media only screen and (max-width: 426px) {
+    main form .date {
         display: grid;
         grid-template-columns: max-content;
         grid-template-rows: max-content max-content;

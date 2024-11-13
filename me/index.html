@@ -24,10 +24,17 @@
     </header>
 
     <main>
-        <section class="authpanel">
-            <button id="authorize_button" onclick="authorizeAgendamentos()" class="auth">Login</button>
+        <section class="authpanel" id="auth" hidden>
+            <button id="authorize_button" onclick="authorizeMe()" class="auth">Login</button>
             <button id="signout_button" onclick="handleSignoutClick(false)" class="auth" hidden>Logout</button>
         </section>
+
+        <section id="content" hidden>
+            <img id="photo" src="">
+            <p id="user"></p>
+            <p id="count"></p>
+        </section>
+
     </main>
 
     <footer>

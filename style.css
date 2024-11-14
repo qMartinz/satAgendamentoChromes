@@ -3,6 +3,10 @@ html, body {
     height: 100vh;
 }
 
+*[hidden] {
+    display: none;
+}
+
 @font-face {
     font-family: 'Prima';
     src: url("./font/Prima/prima.otf");

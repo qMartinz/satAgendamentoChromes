@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="192x192">
     <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="32x32">
     <link rel="apple-touch-icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png">
@@ -19,6 +20,7 @@
         </div>
         <nav>
             <a href="https://colegiosatelite.com.br/agendamento">Início</a>
+            <a href="https://colegiosatelite.com.br/agendamento/me">Meus Agendamentos</a>
             <a href="https://colegiosatelite.com.br/agendamento/painel">Administrador</a>
         </nav>
     </header>
@@ -29,11 +31,45 @@
             <button id="signout_button" onclick="handleSignoutClick(false)" class="auth" hidden>Logout</button>
         </section>
 
-        <section id="content" hidden>
-            <img id="photo" src="">
-            <p id="user"></p>
-            <p id="count"></p>
-        </section>
+        <div id="content" class="content" hidden>
+            <section class="userinfo">
+                <img id="photo" src="">
+                <p id="user"></p>
+                <p id="count"></p>
+            </section>
+
+            <section class="agendamentos">
+                <div class="item">
+                    <div class="title">
+                        <h3>Turma - X Chromes</h3>
+                    </div>
+                    <div class="info">
+                        <p>Empréstimo</p>
+                        <p>Devolução</p>
+                        <ul>
+                            <li>Chrome x</li>
+                            <li>Chrome y</li>
+                            <li>Chrome z</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="title">
+                        <h3>Turma - X Chromes</h3>
+                    </div>
+                    <div class="info">
+                        <p>Empréstimo</p>
+                        <p>Devolução</p>
+                        <ul>
+                            <li>Chrome x</li>
+                            <li>Chrome y</li>
+                            <li>Chrome z</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
 
     </main>
 
@@ -42,6 +78,15 @@
         <p>Email para suporte: <a target="_blank" href="https://mail.google.com/a/colegiosatelite.com.br/mail/?extsrc=mailto&url=mailto%3Agustavo.martinez%40colegiosatelite.com.br%3Fsubject%3DSuporte%20para%20o%20website%20de%20Agendamentos">gustavo.martinez@colegiosatelite.com.br</a></p>
     </footer>
 
+    <script>
+        document.querySelectorAll('.item .title *').forEach(element => element.addEventListener('click', (e) => {
+            if (e.target.classList.contains('expanded')) {e.target.classList.remove('expanded')} else {e.target.classList.add('expanded')};
+
+            console.log(e.target.parentElement.parentElement);
+
+            if (e.target.parentElement.parentElement.querySelector('.info').classList.contains('expanded')) {e.target.parentElement.parentElement.querySelector('.info').classList.remove('expanded')} else {e.target.parentElement.parentElement.querySelector('.info').classList.add('expanded')};
+        }));
+    </script>
     <script type="text/javascript" src="../auth.js"></script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisAgendamentoLoaded()"></script>

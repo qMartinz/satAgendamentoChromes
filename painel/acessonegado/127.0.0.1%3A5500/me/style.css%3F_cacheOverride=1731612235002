@@ -1,0 +1,94 @@
+
+
+.content {
+    width: 100%;
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.userinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 15px;
+}
+.userinfo img {
+    border-radius: 100%;
+}
+.userinfo p {
+    margin: 0;
+    font-family: 'Prima';
+    font-size: 1rem;
+}
+.userinfo p#count {
+    font-size: 0.8rem;
+}
+
+.agendamentos {
+    display: flex;
+    width: 80%;
+    font-family: 'Prima';
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.agendamentos div#select {
+    width: 100%;
+    background-color: var(--light-blue);
+    border-radius: 20px;
+    padding: 10px;
+    border: var(--blue) 2px solid;
+    transition: border 0.1s ease-in-out, border-radius 0.1s ease-in-out;
+}
+.agendamentos div.item {
+    width: 100%;
+}
+.agendamentos div.item .title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    gap: 15px;
+    background-color: var(--light-blue);
+    color: var(--white);
+    padding: 10px;
+    z-index: 2;
+    position: relative;
+    border-radius: 10px;
+}
+.agendamentos div.item .title h3 {
+    margin: 0;
+}
+.agendamentos div.item .info {
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    gap: 15px;
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 20px 10px 10px 10px;
+    margin-top: -10px;
+    max-height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    opacity: 0%;
+    transition: max-height 0.4s ease-in-out, visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.agendamentos div.item .info.expanded {
+    max-height: 100%;
+    visibility: visible;
+    opacity: 100%;
+}
+.agendamentos div.item p, .agendamentos div.item h3 {
+    margin: 0;
+}

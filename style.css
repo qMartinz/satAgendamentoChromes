@@ -3,7 +3,7 @@ html, body {
     height: 100vh;
 }
 
-*[hidden] {
+main *[hidden] {
     display: none;
 }
 
@@ -34,6 +34,7 @@ html, body {
 
 :root {
     --blue: rgb(63, 61, 78);
+    --light-blue: rgb(112, 112, 141);
     --yellow: rgb(128, 96, 22);
     --white: rgb(255, 255, 255);
 }
@@ -110,7 +111,7 @@ header nav a:hover {
     color: white;
     animation: blinker 2s linear infinite;
     text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Prima';
     font-size: 15px;
     padding: 10px;
 }
@@ -118,7 +119,7 @@ header nav a:hover {
     display: block;
     color: white;
     text-align: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Prima';
     font-size: 15px;
     padding-bottom: 5px;
 }
@@ -130,7 +131,7 @@ header nav a:hover {
     padding: 5px  20px 5px 20px;
     width: max-content;
     color: white;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Prima';
     font-weight: bold;
     font-size: 13px;
     text-align: center;
@@ -166,7 +167,7 @@ main .authpanel button, main .submit {
     padding: 5px  20px 5px 20px;
     width: max-content;
     color: white;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Prima';
     font-weight: bold;
     font-size: 13px;
     text-align: center;

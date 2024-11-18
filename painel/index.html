@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
 
     <title>Painel de Administrador</title>
 </head>
+
 <body>
     <div id="header">
         <h1>Agendamento de Empréstimo de Chromes</h1>
@@ -22,7 +24,8 @@
             <form id="devolucaoform" method="post">
                 <input type="text" name="obs" id="obs" placeholder="Observação">
                 <button type="submit">Registrar Devolução</button>
-                <button type="button" onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
+                <button type="button"
+                    onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
             </form>
             <div id="loading" hidden>
                 <span>
@@ -42,16 +45,10 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="../auth.js"></script>
-        <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-        <script async defer src="https://accounts.google.com/gsi/client" onload="gisPainelLoaded()"></script>
-        <script src="./script.js" type="text/javascript" defer></script>
-        <script src="../getSheetData.js" type="text/javascript" defer></script>
-
         <div class="buttons">
             <div class="auth">
                 <button id="authorize_button" onclick="authorizePainel()">Login</button>
-                <button id="signout_button" onclick="handleSignoutClick(true)" hidden>Logout</button>
+                <button id="signout_button" onclick="signoutPainel()" hidden>Logout</button>
             </div>
             <div class="return">
                 <button onclick="location.assign('../')">Voltar</button>
@@ -63,15 +60,18 @@
                 <h2>Agendamentos</h2>
                 <table id="agendamentos">
                     <tr>
-                        <td><button class="cres" onclick="changeSortAgendamentos(event.target, ORDENAR_ID)">ID</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_ID)">ID</button>
+                        </td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_DATE)">Data</button></td>
-                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_START)">Empréstimo</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_START)">Empréstimo</button>
+                        </td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_END)">Devolução</button></td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_TURMA)">Turma</button></td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_NOME)">Nome</button></td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_EMAIL)">Email</button></td>
                         <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_STATUS)">Status</button></td>
-                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_CHROMES)">Chromes</button></td>
+                        <td><button onclick="changeSortAgendamentos(event.target, ORDENAR_CHROMES)">Chromes</button>
+                        </td>
                         <td>Observações</td>
                         <td>Devolução</td>
                     </tr>
@@ -95,7 +95,7 @@
                 <h2>Arquivados</h2>
                 <table id="arquivados">
                     <tr>
-                        <td><button class="cres" onclick="changeSortArquivados(event.target, ORDENAR_ID_ARQUIVADO)">ID</button></td>
+                        <td><button onclick="changeSortArquivados(event.target, ORDENAR_ID)">ID</button></td>
                         <td><button onclick="changeSortArquivados(event.target, ORDENAR_DATE)">Data</button></td>
                         <td><button onclick="changeSortArquivados(event.target, ORDENAR_START)">Empréstimo</button></td>
                         <td><button onclick="changeSortArquivados(event.target, ORDENAR_END)">Devolução</button></td>
@@ -115,5 +115,12 @@
         <h3> Site desenvolvido pela Equipe de TI </h3>
         <h4> Email para suporte: gustavo.martinez@colegiosatelite.com.br </h4>
     </div>
+
+    <script type="text/javascript" src="../auth.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisPainelLoaded()"></script>
+    <script src="./script.js" type="text/javascript" defer></script>
+    <script src="../getSheetData.js" type="text/javascript" defer></script>
 </body>
+
 </html>

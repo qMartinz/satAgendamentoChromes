@@ -65,8 +65,8 @@ header .title {
     gap: 25px;
     align-items: center;
 }
-header img {
-    height: 2rem;
+header .title img {
+    width: 6rem;
 }
 header nav {
     display: flex;

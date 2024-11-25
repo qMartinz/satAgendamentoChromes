@@ -16,6 +16,31 @@
 
 <body>
 
+    <div id="devolucaoform-wrapper" hidden>
+        <form id="devolucaoform" method="post">
+            <input type="text" name="obs" id="obs" placeholder="Observação">
+            <button type="submit">Registrar Devolução</button>
+            <button type="button"
+                onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
+        </form>
+        <div id="loading" hidden>
+            <span>
+                Registrando devolução...
+            </span>
+        </div>
+        <div class="success_text" id="success" hidden>
+            <span>Devolução registrada com sucesso.</span>
+            <button class="loading_return" id="loading_return" onclick="closeLoading()">Voltar</button>
+        </div>
+    </div>
+
+    <div id="listaChromes" hidden>
+        <div>
+            <ul></ul>
+            <button id="voltarListaChromes">Voltar</button>
+        </div>
+    </div>
+
     <header>
         <div class="title">
             <img src="../logo.png" alt="logo">
@@ -34,7 +59,7 @@
             <button id="signout_button" onclick="signoutPainel()" class="auth" hidden>Logout</button>
         </section>
 
-        <div id="paginaPainel" hidden>
+        <div id="paginaPainel" class="content" hidden>
             <div>
                 <h2>Agendamentos</h2>
                 <table id="agendamentos">

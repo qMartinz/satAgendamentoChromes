@@ -647,7 +647,6 @@ function registrarDevolucao(id) {
 * @param {number} id O id do agendamento
 */
 function mostrarListaChromes(id) {
-    console.log(agendamentos.find(a => a.id == id));
     let chrms = agendamentos.find(a => a.id == id).chromes;
 
     const listaDiv = document.getElementById("listaChromes")
@@ -904,7 +903,6 @@ function refresh() {
         gapi.client.drive.about.get({
             fields: "user"
         }).then(async function (about) {
-            console.log("Refreshed");
 
             await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
             await getSheetDataCallback("Arquivados", (sheetData) => {

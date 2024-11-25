@@ -3,11 +3,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
 }
 
 #paginaPainel div {
-    max-width: 90%;
+    overflow-x: auto;
+    width: max-content;
 }
 
 #paginaPainel div h2 {
@@ -20,12 +20,13 @@
     background-color: rgb(128, 96, 22);
     border: solid white 2px;
     border-bottom-style: none;
+    max-width: 100%;
 }
 
 table {
     display: block;
+    /* overflow-x: auto; */
     white-space: nowrap;
-    overflow-x: auto;
 }
 
 table tr {

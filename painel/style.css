@@ -8,6 +8,7 @@
 
 #paginaPainel div {
     max-width: 90%;
+    font-family: 'Prima Sans';
 }
 
 #paginaPainel div h2 {
@@ -283,6 +284,7 @@ Start chrome list CSS
     height:100%;
     width:100%;
     background-color: rgba(0, 0, 0, 0.473);
+    font-family: 'Prima Sans';
 }
 
 #listaChromes div {
@@ -356,6 +358,7 @@ Start devolucao CSS
     bottom: 0;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.544);
+    font-family: 'Prima Sans';
 }
 
 #devolucaoform, #success {

@@ -93,3 +93,11 @@
 .agendamentos div.item p, .agendamentos div.item h3 {
     margin: 0;
 }
+.agendamentos div.item .chromes {
+    column-count: 2;
+    margin: auto;
+    width: max-content;
+    padding: 20px;
+    font-weight: normal;
+    column-gap: 2.5rem;
+}

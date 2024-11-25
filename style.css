@@ -72,6 +72,8 @@ header nav {
     display: flex;
     gap: 16px;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 header nav a {
     font-size: 1.2rem;

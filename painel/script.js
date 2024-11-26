@@ -565,7 +565,7 @@ function criarLinhaChromes(agendamentos, chrome) {
     ocupar.appendChild(btnOcuparWrapper);
 
     const obs = document.createElement("td");
-    const obsInput = document.createElement("input");
+    const obsInput = document.createElement("textarea");
     obsInput.classList.add("chromeObs");
     obsInput.value = chrome.obs == undefined ? "" : chrome.obs;
     obsInput.id = chrome.id;

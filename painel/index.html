@@ -18,7 +18,7 @@
 
     <div id="devolucaoform-wrapper" hidden>
         <form id="devolucaoform" method="post">
-            <input type="text" name="obs" id="obs" placeholder="Observação">
+            <input type="text" name="obs" id="obs" placeholder="Observação" autocomplete="off">
             <button type="submit">Registrar Devolução</button>
             <button type="button"
                 onclick="document.getElementById('devolucaoform-wrapper').hidden = true">Cancelar</button>
@@ -91,6 +91,7 @@
                         <td>Último agendamento</td>
                         <td>Último usuário</td>
                         <td>Ocupado</td>
+                        <td>Observação</td>
                     </tr>
                 </table>
             </div>

@@ -140,6 +140,20 @@ table tr:first-child {
     background-color: rgb(170, 189, 223);
 }
 
+.chromeObs {
+    background-color: rgba(149, 169, 230, 0.218);
+    padding: 4px 10px 4px 10px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    transition: background-color .2s ease;
+}
+
+.chromeObs:hover, .chromeObs:focus {
+    background-color: rgb(126, 140, 180);
+    outline: none;
+}
+
 /*
 Start switch CSS
 */

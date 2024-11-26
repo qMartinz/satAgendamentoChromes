@@ -564,11 +564,20 @@ function criarLinhaChromes(agendamentos, chrome) {
     btnOcuparWrapper.appendChild(btnOcupar);
     ocupar.appendChild(btnOcuparWrapper);
 
+    const obs = document.createElement("td");
+    const obsInput = document.createElement("input");
+    obsInput.classList.add("chromeObs");
+    obsInput.value = chrome.obs == undefined ? "" : chrome.obs;
+    obsInput.id = chrome.id;
+    obsInput.autocomplete = "off";
+    obs.appendChild(obsInput);
+
     tr.appendChild(nome);
     tr.appendChild(status);
     tr.appendChild(ultimoAgendDate);
     tr.appendChild(ultimoUsuario);
     tr.appendChild(ocupar);
+    tr.appendChild(obs);
 
     document.getElementById("chromes").appendChild(tr);
 }
@@ -587,6 +596,40 @@ function criarTabelaChromes() {
         chrome.id = id;
         criarLinhaChromes(agendamentos, chrome);
     }
+
+    document.querySelectorAll('.chromeObs').forEach(input => input.addEventListener('change', async function (e) {
+        console.log("evemt fired!!!")
+        const range = "Chromes!" + "B" + (Number(e.target.id) + 2).toString();
+    
+        let value = e.target.value;
+    
+        const data = {
+            properties: value
+        };
+    
+        const values = [
+            [value]
+        ];
+    
+        const resource = {
+            values,
+        };
+    
+        try {
+            const result = await gapi.client.sheets.spreadsheets.values.update({
+                spreadsheetId: '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk',
+                range: range,
+                valueInputOption: 'RAW',
+                resource,
+            });
+
+            await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
+        } catch (err) {
+            console.error('Erro ao adicionar dados:', err);
+        } finally {
+            document.querySelectorAll("#chromes input").forEach(e => e.disabled = false);
+        }
+    }));
 }
 
 /**
@@ -921,7 +964,7 @@ function refresh() {
             });
 
             criarTabelaAgendamentos();
-            criarTabelaChromes();
+            if (!document.activeElement.classList.contains('chromeObs')) criarTabelaChromes();
             criarTabelaArquivados();
 
         },

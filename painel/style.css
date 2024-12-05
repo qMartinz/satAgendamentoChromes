@@ -25,7 +25,6 @@
 
 table {
     display: block;
-    white-space: nowrap;
     overflow-x: auto;
 }
 
@@ -39,7 +38,7 @@ table tr {
 table tr td {
     text-align: center;
     padding: 5px;
-    min-width: calc(50px);
+    min-width: 50px;
 }
 table tr:first-child td button {
     background-color: rgb(166, 120, 42);
@@ -83,6 +82,10 @@ table tr:first-child {
     background-color: rgb(128, 96, 22);
 }
 
+#agendamentos tr td:nth-child(2), #agendamentos tr td:nth-child(3), #agendamentos tr td:nth-child(4) {
+    white-space: nowrap;
+}
+
 #agendamentos tr:not(:first-child) td:nth-child(9) button {
     background-color: rgba(149, 169, 230, 0.218);
     padding: 4px 10px 4px 10px;
@@ -121,6 +124,10 @@ table tr:first-child {
     background-color: rgb(170, 189, 223);
 }
 
+#chromes tr td:first-child, #chromes tr td:nth-child(3) {
+    white-space: nowrap;
+}
+
 #arquivados tr:not(:first-child) td:nth-child(8) button {
     background-color: rgba(149, 169, 230, 0.218);
     padding: 4px 10px 4px 10px;
@@ -139,6 +146,15 @@ table tr:first-child {
 #arquivados tr:not(:first-child):nth-child(odd) td:nth-child(8) button:hover {
     background-color: rgb(170, 189, 223);
 }
+#arquivados tr td:nth-child(2), #arquivados tr td:nth-child(3), #arquivados tr td:nth-child(4) {
+    white-space: nowrap;
+}
+#arquivados tr td:nth-child(9) div, #agendamentos tr td:nth-child(10) div {
+    word-wrap: break-word;
+    width: 200px;
+    display: inline-block;
+}
+
 
 .chromeObs {
     background-color: rgba(149, 169, 230, 0.218);

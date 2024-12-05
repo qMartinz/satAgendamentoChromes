@@ -470,7 +470,9 @@ function criarLinha(agendamento, arquivado) {
     chromes.appendChild(btnChromes);
 
     const obs = document.createElement("td");
-    obs.textContent = agendamento["obs"];
+    const obsP = document.createElement("div");
+    obs.appendChild(obsP);
+    obsP.textContent = agendamento["obs"];
 
     const obsdevol = document.createElement("td");
     obsdevol.textContent = agendamento["obsdevolucao"];

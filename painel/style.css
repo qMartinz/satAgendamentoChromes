@@ -124,6 +124,12 @@ table tr:first-child {
     background-color: rgb(170, 189, 223);
 }
 
+#agendamentos tr:not(:first-child) td:last-child svg {
+    display: inline-block;
+    height: 30px;
+    cursor: pointer;
+}
+
 #chromes tr td:first-child, #chromes tr td:nth-child(3) {
     white-space: nowrap;
 }
@@ -511,4 +517,261 @@ Start footer CSS
 
 /*
 End footer CSS
+*/
+
+#editar {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.544);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#editar form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Prima';
+    background-color: rgb(73, 54, 5);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+#editar form input[type="datetime-local" i] {
+    font-family: 'Prima';
+}
+#editar form select {
+    font-family: 'Prima';
+}
+#editar form input::-webkit-input-placeholder {
+    font-family: 'Prima';
+}
+#editar form input:-ms-input-placeholder {
+    font-family: 'Prima';
+}
+#editar form input:-moz-placeholder {
+    font-family: 'Prima';
+}
+#editar form input::-moz-placeholder {
+    font-family: 'Prima';
+}
+#editar form #chrome {
+    column-count: 3;
+    margin: auto;
+    width: max-content;
+    padding: 20px;
+    font-weight: normal;
+    font-size: 0.8rem;
+}
+#editar form .dateinput {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+#editar form .date {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 0 30px;
+    text-align: center;
+    width: max-content;
+    margin: auto;
+    padding-bottom: 20px;
+    font-weight: normal;
+}
+#editar form .dateinput input {
+    background-color: rgb(128, 96, 22);
+    padding: 2px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease, visibility 0s;
+    color: white;
+    color-scheme: dark;
+}
+#editar form .dateinput input[type="datetime-local"]:hover {
+    background: rgb(243, 209, 130);
+}
+#editar form .dateinput input[type="datetime-local"]:focus {
+    background: rgb(243, 209, 130);
+    outline: none;
+}
+#editar form #turma {
+    background: rgb(128, 96, 22);
+    border: none;
+    color: white;
+    padding: 2px;
+    border-radius: 4px;
+    transition: all 0.2s ease, visibility 0s;
+    box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
+}
+#editar form #turma:hover {
+    background: rgb(243, 209, 130);
+}
+#editar form #turma:focus {
+    background: rgb(204, 167, 80);
+    outline: none;
+}
+#editar form #obs {
+    background: rgb(128, 96, 22);
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease, visibility 0s;
+    box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
+    color: white;
+    padding: 4px;
+    width: 100%;
+    text-align: center;
+}
+#editar form #obs::placeholder {
+    color: rgb(203, 170, 94);
+}
+#editar form #obs:hover {
+    background: rgb(243, 209, 130);
+}
+#editar form #obs:focus {
+    background: rgb(243, 209, 130);
+    outline: none;
+}
+
+#editar form button {
+    background-color: rgb(128, 96, 22);
+    border-width: 0px ;
+    border-radius: 5px;
+    padding: 5px  20px 5px 20px;
+    width: max-content;
+    color: white;
+    font-family: 'Prima';
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+#editar form button:hover {
+    background-color: rgb(204, 167, 80);
+}
+
+/*
+Start checkbox CSS
+*/
+
+.checkbox-wrapper-5 * {
+    box-sizing: border-box;
+}
+.checkbox-wrapper-5 .cbx {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    padding: 2px 3px;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.2s ease, visibility 0s;
+    display: inline-block;
+}
+.checkbox-wrapper-5 .cbx:not(:last-child) {
+    margin-right: 6px;
+}
+.checkbox-wrapper-5 .cbx:hover {
+    background: rgba(128, 96, 22, 0.205);
+}
+.checkbox-wrapper-5 .cbx span {
+    float: left;
+    vertical-align: middle;
+    transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-5 .cbx span:first-child {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    transform: scale(1);
+    border: 1px solid #cccfdb;
+    transition: all 0.2s ease, visibility 0s;
+    box-shadow: 0 1px 1px rgb(30, 75, 163, 0.05);
+}
+.checkbox-wrapper-5 .cbx span:first-child svg {
+    position: absolute;
+    top: 3px;
+    left: 2px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16px;
+    stroke-dashoffset: 16px;
+    transition: all 0.3s ease, visibility 0s;
+    transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-5 .cbx span:last-child {
+    padding-left: 8px;
+    line-height: 18px;
+}
+.checkbox-wrapper-5 .inp-cbx {
+    position: absolute;
+    visibility: hidden;
+}
+.checkbox-wrapper-5 .inp-cbx:checked + .cbx span:first-child {
+    background: rgb(128, 96, 22);
+    border-color: rgb(128, 96, 22);
+    animation: wave-4 0.4s ease;
+}
+.checkbox-wrapper-5 .inp-cbx:checked + .cbx span:first-child svg {
+    stroke-dashoffset: 0;
+}
+.checkbox-wrapper-5 .inline-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+.checkbox-wrapper-5 .inp-cbx:disabled + .cbx span:first-child {
+    background: rgb(128, 96, 22, 0.5);
+    border-color: rgb(128, 96, 22, 0);
+}
+.checkbox-wrapper-5 .inp-cbx:disabled + .cbx:hover {
+    background: rgb(243, 209, 130, 0.06);
+}
+.checkbox-wrapper-5 .inp-cbx:disabled + .cbx span:last-child {
+    text-decoration: line-through;
+    color: rgba(243, 209, 130, 0.5);
+}
+@media screen and (max-width: 640px) {
+    .checkbox-wrapper-5 .cbx {
+        width: 100%;
+        display: inline-block;
+    }
+}
+@-moz-keyframes wave-4 {
+    50% {
+        transform: scale(0.9);
+    }
+}
+@-webkit-keyframes wave-4 {
+    50% {
+        transform: scale(0.9);
+    }
+}
+@-o-keyframes wave-4 {
+    50% {
+        transform: scale(0.9);
+    }
+}
+@keyframes wave-4 {
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+/*
+End checkbox CSS
 */

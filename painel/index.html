@@ -10,11 +10,49 @@
     <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="192x192">
     <link rel="icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png" sizes="32x32">
     <link rel="apple-touch-icon" href="https://colegiosatelite.com.br/wp-content/uploads/2021/05/icon-1.png">
+    <script src="https://kit.fontawesome.com/4167d199e8.js" crossorigin="anonymous"></script>
 
     <title>Painel de Administrador</title>
 </head>
 
 <body>
+
+    <div id="editar" style="visibility: hidden;">
+        <form autocomplete="off" id="edit" style="visibility: hidden;">
+            <div class="date">
+                <div class="dateinput">
+                    <label for="emprestimohora" class="inputlabel">Empréstimo</label> <input type="datetime-local" name="emprestimohora" id="emprestimohora" required>
+                </div>
+                <div class="dateinput">
+                    <label for="devolucaohora" class="inputlabel">Devolução</label> <input type="datetime-local" name="devolucaohora" id="devolucaohora" required>
+                </div>
+            </div>
+            <select name="turma" id="turma" required>
+                <option value="">Selecione uma Turma</option>
+                <option value="0">Maternal</option>
+                <option value="1">Jardim</option>
+                <option value="2">Pré</option>
+                <option value="3">1º Ano</option>
+                <option value="4">2º Ano</option>
+                <option value="5">3º Ano</option>
+                <option value="6">4º Ano</option>
+                <option value="7">5º Ano</option>
+                <option value="8">6º Ano</option>
+                <option value="9">7º Ano</option>
+                <option value="10">8º Ano</option>
+                <option value="11">9º Ano</option>
+                <option value="12">1º Médio</option>
+                <option value="13">2º Médio</option>
+                <option value="14">3º Médio</option>
+                <option value="15">Bilíngue</option>
+                <option value="16">Uso Próprio</option>
+            </select>
+            <div id="chrome"></div>
+            <input type="text" name="obs" id="obs" placeholder="Observação" autocomplete="off">
+            <button type="submit" class="submit">Salvar</button>
+            <button type="button" class="cancel" onclick="closeEditWindow()">Cancelar</button>
+        </form>
+    </div>
 
     <div id="devolucaoform-wrapper" hidden>
         <form id="devolucaoform" method="post">
@@ -78,6 +116,7 @@
                         </td>
                         <td>Observações</td>
                         <td>Devolução</td>
+                        <td>Editar</td>
                     </tr>
                 </table>
             </div>

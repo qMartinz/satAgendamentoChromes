@@ -490,6 +490,11 @@ function criarLinha(agendamento, arquivado) {
         devolvido.appendChild(btnDevolvido);
     }
 
+    const editar = document.createElement("td");
+    editar.innerHTML = `
+        <svg id="${agendamento.id}" class="edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path id="${agendamento.id}" fill="#ffffff" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
+    `
+
     linha.appendChild(id);
     linha.appendChild(data);
     linha.appendChild(horainicio);
@@ -502,6 +507,7 @@ function criarLinha(agendamento, arquivado) {
     linha.appendChild(obs);
     if (arquivado) linha.appendChild(obsdevol);
     if (!arquivado) linha.appendChild(devolvido);
+    if (!arquivado) linha.appendChild(editar);
 }
 
 /**
@@ -514,6 +520,9 @@ function criarTabelaAgendamentos() {
 
     // Filtra e ordena os agendamentos para criar uma linha na tabela para cada agendamento
     agendamentos.filter(a => a.devolvido !== "on").forEach(a => criarLinha(a, false));
+    document.querySelectorAll('.edit').forEach(element => element.addEventListener('click', (e) => {
+        openEditWindow(Number(e.target.id));
+    }));
 }
 
 document.getElementById("voltarListaChromes").addEventListener("click", function () {
@@ -602,21 +611,21 @@ function criarTabelaChromes() {
     document.querySelectorAll('.chromeObs').forEach(input => input.addEventListener('change', async function (e) {
         console.log("evemt fired!!!")
         const range = "Chromes!" + "B" + (Number(e.target.id) + 2).toString();
-    
+
         let value = e.target.value;
-    
+
         const data = {
             properties: value
         };
-    
+
         const values = [
             [value]
         ];
-    
+
         const resource = {
             values,
         };
-    
+
         try {
             const result = await gapi.client.sheets.spreadsheets.values.update({
                 spreadsheetId: '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk',
@@ -781,10 +790,6 @@ async function adicionarAoArquivo(agendamento) {
 */
 async function devolverAgendamento(id) {
     const range = "Agendamentos!" + "A" + (Number(id) + 2).toString();
-
-    const data = {
-        properties: "on"
-    };
 
     const values = [
         ["on"]
@@ -983,3 +988,187 @@ function stopRefresh() {
     // release our interval from the variable
     intervalId = null;
 }
+
+/**
+* Desabilita as checkboxes correspondentes aos chromes indisponíveis no horário selecionado
+* @param {Object[]} agendamentos array com os agendamentos já feitos
+* @param {Object[]} chromeSheetData array com os chromes registrados
+*/
+function desabilitarChromes(agendamentos, chromeSheetData){
+    let horainicio = new Date(document.getElementById("emprestimohora").value);
+    let horafim = new Date(document.getElementById("devolucaohora").value);
+    if (isNaN(horafim) || isNaN(horainicio)) return; // Retorna o código caso algum dos dois inputs estiver vazio
+    
+    document.querySelectorAll(".chrome").forEach(chrome => {
+      chrome.disabled = false;
+      const agendados = agendamentos.filter(e => e.chromes.includes('chrome' + (Number(chrome.id) + 1)));
+      
+      // Desabilita checkbox para cada agendamento já feito
+      agendados.forEach(element => {
+        let fimAgendado = element.devolucaohora;
+        let splitFimAgendado = fimAgendado.split("T");
+        
+        let inicioAgendado = element.emprestimohora;
+        let splitInicioAgendado = inicioAgendado.split("T");
+        
+        const horafimAgendado = new Date(splitFimAgendado[0] + " " + splitFimAgendado[1]);
+        const horainicioAgendado = new Date(splitInicioAgendado[0] + " " + splitInicioAgendado[1]);
+        
+        if (horarioIncompativel(horainicio, horafim, horainicioAgendado, horafimAgendado, element.devolvido)) chrome.disabled = true;
+      });
+      
+      // Desabilita checkbox caso o chrome esteja marcado como Ocupado
+      if (chromeSheetData[Number(chrome.id)].ocupado == "on") chrome.disabled = true;
+    });
+  }
+
+/**
+* Cria os checkboxes para cada chrome
+* @param {Object[]} chromeData Dados da planilha de Chromes 
+*/
+function checkboxes(chromeData) {
+    document.getElementById("chrome").innerHTML = "";
+    for (id = 0; id < chromeData.length; id++) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add('checkbox-wrapper-5');
+        wrapper.innerHTML = '<label class="cbx" for="' + id + '"><span><svg width="12px" height="10px"><use xlink:href="#check-4"></use></svg></span><span>' + "Chrome " + (Number(id) + 1).toString() + '</span></label><svg class="inline-svg"><symbol id="check-4" viewBox="0 0 12 10"><polyline points="1.5 6 4.5 9 10.5 1"></polyline></symbol></svg>'
+
+        const input = document.createElement("input");
+
+        input.type = "checkbox";
+        input.classList.add("chrome", "inp-cbx");
+        input.name = "chrome" + (Number(id) + 1).toString();
+        input.id = id;
+
+        wrapper.insertBefore(input, wrapper.childNodes[0]);
+        if (chromeData[id].ocupado == "on") input.disabled = true;
+        document.getElementById("chrome").appendChild(wrapper);
+    }
+}
+
+async function openEditWindow(id) {
+    let agendamento = agendamentos.find(e => Number(e.id) == id);
+    console.log(agendamento, id);
+    document.getElementById("editar").style.visibility = "visible";
+    document.getElementById("edit").setAttribute("agendamento", agendamento.id);
+    document.getElementById('emprestimohora').value = agendamento.emprestimohora;
+    document.getElementById('devolucaohora').value = agendamento.devolucaohora;
+    await getSheetDataCallback("Chromes", (chromeData) => {
+        checkboxes(chromeData);
+        desabilitarChromes(agendamentos.filter(agendamento1 => id != agendamento1.id), chromeData);
+    });
+    document.querySelectorAll(".chrome").forEach(item => {
+        item.checked = agendamento.chromes.some(chrome => Number(chrome.replace("chrome", "")) === Number(item.id) + 1);
+    });
+    document.getElementById('turma').value = agendamento.turma;
+    document.getElementById('obs').value = agendamento.obs == undefined ? "" : agendamento.obs;
+    document.getElementById("edit").style.visibility = "visible";
+}
+
+function closeEditWindow() {
+    document.getElementById("editar").style.visibility = "hidden";
+    document.getElementById("edit").style.visibility = "hidden";
+}
+
+document.getElementById('edit').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+
+    // Cria um array organizado com os valores a serem enviados para a planilha
+    var id = document.getElementById("edit").getAttribute("agendamento");
+    let agendamento = agendamentos.find(e => Number(e.id) == id);
+
+    const sheetrange = `Agendamentos!A${Number(id) + 2}`;
+
+    console.log(agendamento);
+
+    const values = [
+        [agendamento.devolvido, agendamento.Date, formData.get("emprestimohora"), formData.get("devolucaohora"), formData.get("turma"), agendamento.nome, agendamento.email]
+    ];
+
+    for (let id = 1; id < 31; id++) {
+        values[0].push(formData.get(`chrome${id}`));
+    }
+
+    values[0].push(formData.get('obs'));
+
+    const resource = {
+        values,
+    };
+
+
+    document.getElementById("edit").style.visibility = "hidden";
+
+    try {
+        const result = await gapi.client.sheets.spreadsheets.values.append({
+            spreadsheetId: '1CJybEPi2DvzoqQjYFjCcbi8AyQlptxlT0uV9aTggFbk',
+            range: sheetrange,
+            valueInputOption: 'RAW',
+            resource,
+        });
+    } catch (err) {
+        console.error('Erro ao adicionar dados:', err);
+    } finally {
+        // Atualiza as tabelas
+        await getSheetDataCallback("Chromes", (sheetData) => chromes = sheetData);
+        await getSheetDataCallback("Agendamentos", (sheetData) => {
+            agndmnts = [];
+            for (var id = 0; id < sheetData.length; id++) {
+                const element = sheetData[id];
+                element.id = id;
+                agndmnts.push(element);
+            }
+            agendamentos = getAgendamentos(agndmnts);
+            agendamentos.sort(ordenarAgendamentosFunc);
+        });
+
+        criarTabelaAgendamentos();
+        criarTabelaChromes();
+    }
+
+    closeEditWindow();
+});
+
+/**
+* Realiza a verificação do horário para o agendamento para cada chrome
+* @param {Date} inicio Horário de empréstimo colocado
+* @param {Date} fim Horário de devolução colocado
+* @param {Date} inicioAgendado Horário de empréstimo do agendamento
+* @param {Date} fimAgendado Horário de devolução do agendamento
+* @param {boolean} devolvido Verdadeiro caso o agendamento já tenha sido devolvido
+* @returns Verdadeiro caso o chrome esteja indisponível para o horário colocado
+*/
+function horarioIncompativel(inicio, fim, inicioAgendado, fimAgendado, devolvido){
+    var fimEstaEntreAgendamento = fimAgendado >= fim && fim > inicioAgendado;
+    var inicioEstaEntreAgendamento = inicio >= inicioAgendado && fimAgendado > inicio;
+    
+    if (fimAgendado < inicio && fimAgendado < new Date() && !devolvido) return true;
+    if (fimEstaEntreAgendamento && inicioEstaEntreAgendamento && !devolvido) return true;
+    if (!fimEstaEntreAgendamento && inicioEstaEntreAgendamento && !devolvido) return true;
+    if (fimEstaEntreAgendamento && !inicioEstaEntreAgendamento && !devolvido) return true;
+    if (fimAgendado < fim && fim > inicioAgendado && inicioAgendado > inicio && inicio < fimAgendado && !devolvido) return true;
+    if (fimAgendado == fim && inicio == inicioAgendado && !devolvido) return true;
+    return false;
+  }
+
+/**
+* Evento para desabilitar chromes quando #emprestimohora for alterado
+*/
+document.getElementById("emprestimohora").addEventListener('change', async function (e) {
+    document.getElementById('edit').querySelector("[type='submit']").disabled = true;
+    await getSheetDataCallback("Chromes", (chromeSheetData) => {
+        desabilitarChromes(agendamentos.filter(agendamento => document.getElementById('edit').getAttribute('agendamento') != agendamento.id), chromeSheetData);
+    });
+    document.getElementById('edit').querySelector("[type='submit']").disabled = false;
+});
+
+/**
+* Evento para desabilitar chromes quando #devolucaohora for alterado
+*/
+document.getElementById("devolucaohora").addEventListener('change', async function (e) {
+    document.getElementById('edit').querySelector("[type='submit']").disabled = true;
+    await getSheetDataCallback("Chromes", (chromeSheetData) => {
+        desabilitarChromes(agendamentos.filter(agendamento => document.getElementById('edit').getAttribute('agendamento') != agendamento.id), chromeSheetData);
+    });
+    document.getElementById('edit').querySelector("[type='submit']").disabled = false;
+});

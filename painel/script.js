@@ -1053,10 +1053,8 @@ async function openEditWindow(id) {
     document.getElementById("edit").setAttribute("agendamento", agendamento.id);
     document.getElementById('emprestimohora').value = agendamento.emprestimohora;
     document.getElementById('devolucaohora').value = agendamento.devolucaohora;
-    await getSheetDataCallback("Chromes", (chromeData) => {
-        checkboxes(chromeData);
-        desabilitarChromes(agendamentos.filter(agendamento1 => id != agendamento1.id), chromeData);
-    });
+    checkboxes(chromes);
+    desabilitarChromes(agendamentos.filter(agendamento1 => id != agendamento1.id), chromes);
     document.querySelectorAll(".chrome").forEach(item => {
         item.checked = agendamento.chromes.some(chrome => Number(chrome.replace("chrome", "")) === Number(item.id) + 1);
     });
@@ -1087,7 +1085,7 @@ document.getElementById('edit').addEventListener('submit', async (e) => {
     ];
 
     for (let id = 1; id < 31; id++) {
-        values[0].push(formData.get(`chrome${id}`));
+        values[0].push(formData.get(`chrome${id}`) === "on" ? "on" : " ");
     }
 
     values[0].push(formData.get('obs'));
@@ -1106,6 +1104,8 @@ document.getElementById('edit').addEventListener('submit', async (e) => {
             valueInputOption: 'RAW',
             resource,
         });
+
+        console.log("trying", result, values);
     } catch (err) {
         console.error('Erro ao adicionar dados:', err);
     } finally {
